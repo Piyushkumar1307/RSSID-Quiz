@@ -65,7 +65,7 @@ function PodiumLeaderboard({ entries, refreshSeconds }) {
 
 const WHEEL_COLORS = ['#ef7b3b', '#f5be3e', '#3868a9', '#4cae9b', '#d8576c', '#8263b5', '#e59d39', '#467ea1', '#c95842', '#5c9f7d', '#e8ba55', '#697ac0'];
 
-function SpinWheelPage({ onBack }) {
+function SpinWheelPage() {
   const [candidates, setCandidates] = useState([]);
   const [winner, setWinner] = useState('');
   const [rotation, setRotation] = useState(0);
@@ -74,6 +74,7 @@ function SpinWheelPage({ onBack }) {
   const [error, setError] = useState('');
   const pendingWinner = useRef('');
   const winnerSound = useRef(null);
+  const spinLock = useRef(false);
 
   const wheelStyle = useMemo(() => {
     if (!candidates.length) return { '--wheel-fill': 'conic-gradient(#ef7b3b, #f5be3e, #3868a9, #4cae9b, #d8576c, #8263b5, #ef7b3b)' };
@@ -83,23 +84,12 @@ function SpinWheelPage({ onBack }) {
   }, [candidates, rotation]);
 
   const spin = async () => {
-    if (spinning) return;
+    if (spinning || spinLock.current) return;
+    spinLock.current = true;
     setError('');
     setWinner('');
     setCelebrating(false);
     setSpinning(true);
-    if (!winnerSound.current) {
-      winnerSound.current = new Audio('/audio/confetti.mp3');
-      winnerSound.current.preload = 'auto';
-    }
-    // Prime the celebration audio from this tap so it can play after the spin on mobile browsers.
-    winnerSound.current.muted = true;
-    winnerSound.current.currentTime = 0;
-    winnerSound.current.play().then(() => {
-      winnerSound.current.pause();
-      winnerSound.current.currentTime = 0;
-      winnerSound.current.muted = false;
-    }).catch(() => {});
     try {
       const response = await fetch(`${API}/spin-winner`, { method: 'POST' });
       const data = await response.json();
@@ -117,14 +107,16 @@ function SpinWheelPage({ onBack }) {
         winnerSound.current.volume = 0.7;
         winnerSound.current.play().catch(() => {});
         setSpinning(false);
+        spinLock.current = false;
       }, 4700);
     } catch (spinError) {
       setError(spinError.message || 'The wheel could not load participants.');
       setSpinning(false);
+      spinLock.current = false;
     }
   };
 
-  return <main className="page wheel-page">{celebrating && <Confetti />}<section className="wheel-card"><button className="back" onClick={onBack}>← Back to quiz</button><span className="eyebrow">RSSDI PARTICIPANT DRAW</span><h1>Spin the<br /><em>winner wheel.</em></h1><p className="wheel-intro">Tap the center to choose one unique quiz participant at random from the database.</p><div className="wheel-wrap"><div className="wheel-pointer" aria-hidden="true" /><div className={`spin-wheel ${spinning ? 'is-spinning' : ''}`} style={wheelStyle} /><button className={`wheel-hub ${winner ? 'has-winner' : ''}`} disabled={spinning} onClick={spin} aria-label={spinning ? 'Selecting a winner' : 'Spin the winner wheel'}>{spinning ? <span>SPINNING</span> : winner ? <><small>WINNER</small><strong>{winner}</strong><em>Congratulations!</em></> : <><span>TAP TO</span><b>SPIN</b></>}</button></div>{error && <p className="error wheel-error">{error}</p>}</section></main>;
+  return <main className="page wheel-page">{celebrating && <Confetti />}<section className="wheel-card"><span className="eyebrow">RSSDI PARTICIPANT DRAW</span><h1>Spin the<br /><em>winner wheel.</em></h1><p className="wheel-intro">Tap the center to choose one unique quiz participant at random from the database.</p><div className="wheel-wrap"><div className="wheel-pointer" aria-hidden="true" /><div className={`spin-wheel ${spinning ? 'is-spinning' : ''}`} style={wheelStyle} /><button className={`wheel-hub ${winner ? 'has-winner' : ''}`} disabled={spinning} onClick={spin} aria-label={spinning ? 'Selecting a winner' : 'Spin the winner wheel'}>{spinning ? <span>SPINNING</span> : winner ? <><small>WINNER</small><strong>{winner}</strong><em>Congratulations!</em></> : <><span>TAP TO</span><b>SPIN</b></>}</button></div>{error && <p className="error wheel-error">{error}</p>}</section></main>;
 }
 
 function App() {
@@ -296,7 +288,6 @@ function App() {
 
   const current = quiz[index];
   const scorePotential = useMemo(() => Math.max(1, Math.ceil(remaining)), [remaining]);
-  const returnHome = () => { window.history.pushState({}, '', '/'); setScreen('welcome'); };
 
   if (screen === 'welcome') return <main className="page welcome"><div className="glow glow-one" /><div className="hero-card"><div className="hero-art"><div className="brand"><span className="heart">♡</span><span>Telmi<span>fast</span></span></div><div className="molecule">+</div><p>RSSDI MEDICAL QUIZ</p><div className="road">THE <i>FAST</i> TRACK TO BP CONTROL</div></div><div className="hero-copy"><span className="eyebrow">CARDIO–DIABETES CHALLENGE</span><h1>Think fast.<br /><em>Make every second count.</em></h1><p>10 clinical questions. 10 seconds each. Faster correct answers earn more points.</p><button className="primary" onClick={() => setScreen('details')}>Touch to start <span>→</span></button><a className="wheel-link" href="/spin-wheel">Spin the winner wheel <span>↻</span></a></div></div></main>;
 
@@ -304,7 +295,7 @@ function App() {
 
   if (screen === 'saving') return <main className="page"><div className="saving"><div className="spinner" /><h2>Calculating your score…</h2><p>Saving your place on the board.</p></div></main>;
 
-  if (screen === 'spin') return <SpinWheelPage onBack={returnHome} />;
+  if (screen === 'spin') return <SpinWheelPage />;
 
   if (screen === 'leaderboard') return <main className="page results-page"><section className="result-card leaderboard-page"><span className="eyebrow">TELMIFAST × RSSDI</span><h1>Champions<br /><em>of this round.</em></h1><PodiumLeaderboard entries={leaderboard} refreshSeconds={refreshSeconds} />{error && <p className="error">{error}</p>}</section></main>;
 
