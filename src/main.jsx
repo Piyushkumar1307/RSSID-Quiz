@@ -39,6 +39,10 @@ function Confetti() {
   return <div className="confetti" aria-hidden="true">{pieces.map((piece) => <i key={piece.id} style={{ '--x': piece.x, '--y': piece.y, '--delay': piece.delay, '--duration': piece.duration, '--drift': piece.drift, '--rise': piece.rise, '--drop': piece.drop, '--spin': piece.spin, '--color': piece.color }} />)}</div>;
 }
 
+function QuizBanner() {
+  return <div className="question-banner" aria-label="Telmifast hypertension management banner"><div className="question-banner-track">{Array.from({ length: 8 }, (_, index) => <img key={index} src="/images/telmifast-hypertension-banner.png" alt="" />)}</div></div>;
+}
+
 const formatTime = (seconds) => `00:${String(Math.max(0, seconds)).padStart(2, '0')}`;
 
 function PodiumLeaderboard({ entries, refreshSeconds }) {
@@ -316,7 +320,7 @@ function App() {
 
   if (screen === 'results') return <main className="page results-page"><Confetti /><section className="result-card"><span className="eyebrow">QUIZ COMPLETE</span><h1>Great pace, {participant.name.split(' ')[0]}!</h1><div className="score-ring"><strong>{result?.score ?? 0}</strong><span>out of 100</span></div><p><b>{result?.correctCount ?? 0}/10</b> correct answers. Your score rewards accuracy and speed.</p>{error && <p className="error">{error}</p>}</section></main>;
 
-  return <main className="page quiz-page"><header className="quiz-header"><div className="mini-brand">♡ <b>Telmi<span>fast</span></b></div><span>QUESTION {index + 1}<small>/ 10</small></span><div className={`timer ${remaining <= 3 ? 'urgent' : ''}`}><i style={{ '--progress': `${(remaining / 10) * 100}%` }} /><b>{formatTime(remaining)}</b></div></header><section className="question-card"><div className="progress"><i style={{ width: `${((index + 1) / 10) * 100}%` }} /></div><div className="question-number">QUESTION {String(index + 1).padStart(2, '0')} <span>UP TO {scorePotential} POINTS</span></div><h1>{current?.question}</h1><div className="answers">{current && Object.entries(current.options).map(([key, text]) => <button disabled={Boolean(feedback)} className={feedback?.answer === key ? 'selected' : ''} key={key} onClick={() => resolveAnswer(key)}><b>{key}</b><span>{text}</span></button>)}</div>{feedback && <div className="feedback">{feedback.message}</div>}</section></main>;
+  return <main className="page quiz-page"><header className="quiz-header"><div className="mini-brand">♡ <b>Telmi<span>fast</span></b></div><span>QUESTION {index + 1}<small>/ 10</small></span><div className={`timer ${remaining <= 3 ? 'urgent' : ''}`}><i style={{ '--progress': `${(remaining / 10) * 100}%` }} /><b>{formatTime(remaining)}</b></div></header><QuizBanner /><section className="question-card"><div className="progress"><i style={{ width: `${((index + 1) / 10) * 100}%` }} /></div><div className="question-number">QUESTION {String(index + 1).padStart(2, '0')} <span>UP TO {scorePotential} POINTS</span></div><h1>{current?.question}</h1><div className="answers">{current && Object.entries(current.options).map(([key, text]) => <button disabled={Boolean(feedback)} className={feedback?.answer === key ? 'selected' : ''} key={key} onClick={() => resolveAnswer(key)}><b>{key}</b><span>{text}</span></button>)}</div>{feedback && <div className="feedback">{feedback.message}</div>}</section></main>;
 }
 
 createRoot(document.getElementById('root')).render(<App />);
