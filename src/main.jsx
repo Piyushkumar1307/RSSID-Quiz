@@ -79,6 +79,7 @@ function App() {
   const startedAt = useRef(0);
   const settling = useRef(false);
   const sounds = useRef({});
+  const backgroundMusic = useRef(null);
 
   const prepareSound = useCallback(() => {
     Object.entries(SOUND_FILES).forEach(([kind, source]) => {
@@ -97,6 +98,17 @@ function App() {
     sound.currentTime = 0;
     sound.play().catch(() => {});
   }, [prepareSound]);
+
+  const prepareBackgroundMusic = useCallback(() => {
+    if (!backgroundMusic.current) {
+      const music = new Audio('/audio/background.mp3');
+      music.loop = true;
+      music.preload = 'auto';
+      music.volume = 0;
+      backgroundMusic.current = music;
+    }
+    return backgroundMusic.current;
+  }, []);
 
   const getLeaderboard = useCallback(async () => {
     const response = await fetch(`${API}/leaderboard`);
@@ -131,6 +143,19 @@ function App() {
   }, [screen, playSound]);
 
   useEffect(() => {
+    if (screen === 'quiz') {
+      const music = prepareBackgroundMusic();
+      music.volume = 0.7;
+      music.play().catch(() => {});
+      return;
+    }
+    if (backgroundMusic.current) {
+      backgroundMusic.current.pause();
+      backgroundMusic.current.currentTime = 0;
+    }
+  }, [screen, prepareBackgroundMusic]);
+
+  useEffect(() => {
     if (screen !== 'quiz' || feedback) return;
     startedAt.current = performance.now();
     const interval = window.setInterval(() => {
@@ -152,12 +177,20 @@ function App() {
     }
     // Preload the provided feedback tracks while the browser has a user gesture.
     prepareSound();
+    // Start silently during the tap so mobile browsers permit the quiz music on the next screen.
+    const music = prepareBackgroundMusic();
+    music.volume = 0;
+    music.play().catch(() => {});
     try {
       const response = await fetch(`${API}/quiz`);
       if (!response.ok) throw new Error();
       const data = await response.json();
       setQuiz(data.questions); setAnswers([]); setIndex(0); setRemaining(10); setScreen('quiz');
-    } catch { setError('Quiz is not available yet. Please check the server connection.'); }
+    } catch {
+      music.pause();
+      music.currentTime = 0;
+      setError('Quiz is not available yet. Please check the server connection.');
+    }
   };
 
   const finishQuiz = async (finalAnswers) => {
