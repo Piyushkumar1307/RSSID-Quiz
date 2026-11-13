@@ -185,3 +185,9 @@ label { color: #d9edfa; }input { border-color: #2d82b3; color: #f6fbff; backgrou
 .score-ring { border-color: #16d3ff; box-shadow: inset 0 0 0 10px #112942, 0 0 24px #00bfff77; }.score-ring span { color: #b7d0e5; }.secondary { border-color: #1bd9ff; color: #c6f5ff; }.secondary:hover { background: #0b3150; }
 .wheel-card::before { border-color: #16caff1c; }.wheel-hub { background: #0b2950; }.wheel-hub.has-winner, .winner-reveal { background: linear-gradient(145deg, #071f43, #10275b); box-shadow: 0 0 26px #00caff88; }.spin-wheel { box-shadow: 0 0 0 5px #13cfff, 0 18px 36px #000a, inset 0 0 0 2px #ffffff88; }.wheel-pointer { background: #ef2855; }.wheel-candidates span { background: #0a1b31; color: #d5eeff; }
 @media (max-width: 730px) { .hero-card, .form-card, .result-card, .wheel-card, .question-card { box-shadow: 0 0 0 1px #ec1e4d44, 0 0 20px #008fe044, 0 18px 48px #000a; } }
+
+/* Home sponsor and bottom ticker placement */
+.linux-logo { width: min(430px, 88%); max-height: 260px; filter: drop-shadow(0 0 17px #ff6d1c88) drop-shadow(0 15px 20px #000b); }
+.quiz-page .question-banner { position: fixed; right: 0; bottom: 0; left: 0; z-index: 10; }
+.quiz-page .question-card { margin-bottom: 108px; }
+@media (max-width: 730px) { .linux-logo { width: min(310px, 88%); max-height: 180px; }.quiz-header { position: relative; }.question-logo { position: absolute; top: 50%; left: 50%; animation-name: fastrack-3d-turn-mobile; }.quiz-page .question-card { margin-bottom: 82px; }@keyframes fastrack-3d-turn-mobile { 0%, 100% { transform: translate(-50%, -50%) perspective(460px) rotateX(7deg) rotateY(-18deg) scale(1); } 50% { transform: translate(-50%, -50%) perspective(460px) rotateX(-7deg) rotateY(18deg) scale(1.08); } } }
