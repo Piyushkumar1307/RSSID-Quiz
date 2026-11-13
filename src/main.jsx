@@ -75,6 +75,7 @@ function SpinWheelPage() {
   const pendingWinner = useRef('');
   const winnerSound = useRef(null);
   const spinLock = useRef(false);
+  const winnerResetTimer = useRef(null);
 
   const wheelStyle = useMemo(() => {
     if (!candidates.length) return { '--wheel-fill': 'conic-gradient(#ef7b3b, #f5be3e, #3868a9, #4cae9b, #d8576c, #8263b5, #ef7b3b)' };
@@ -86,10 +87,20 @@ function SpinWheelPage() {
   const spin = async () => {
     if (spinning || spinLock.current) return;
     spinLock.current = true;
+    if (winnerResetTimer.current) window.clearTimeout(winnerResetTimer.current);
     setError('');
     setWinner('');
     setCelebrating(false);
     setSpinning(true);
+    if (!winnerSound.current) {
+      winnerSound.current = new Audio('/audio/confetti.mp3');
+      winnerSound.current.preload = 'auto';
+    }
+    // Start muted on the tap to unlock delayed playback on mobile browsers.
+    winnerSound.current.muted = true;
+    winnerSound.current.volume = 0;
+    winnerSound.current.currentTime = 0;
+    winnerSound.current.play().catch(() => {});
     try {
       const response = await fetch(`${API}/spin-winner`, { method: 'POST' });
       const data = await response.json();
@@ -108,6 +119,10 @@ function SpinWheelPage() {
         winnerSound.current.play().catch(() => {});
         setSpinning(false);
         spinLock.current = false;
+        winnerResetTimer.current = window.setTimeout(() => {
+          setWinner('');
+          setCelebrating(false);
+        }, 10_000);
       }, 4700);
     } catch (spinError) {
       setError(spinError.message || 'The wheel could not load participants.');
@@ -116,7 +131,7 @@ function SpinWheelPage() {
     }
   };
 
-  return <main className="page wheel-page">{celebrating && <Confetti />}<section className="wheel-card"><span className="eyebrow">RSSDI PARTICIPANT DRAW</span><h1>Spin the<br /><em>winner wheel.</em></h1><p className="wheel-intro">Tap the center to choose one unique quiz participant at random from the database.</p><div className="wheel-wrap"><div className="wheel-pointer" aria-hidden="true" /><div className={`spin-wheel ${spinning ? 'is-spinning' : ''}`} style={wheelStyle} /><button className={`wheel-hub ${winner ? 'has-winner' : ''}`} disabled={spinning} onClick={spin} aria-label={spinning ? 'Selecting a winner' : 'Spin the winner wheel'}>{spinning ? <span>SPINNING</span> : winner ? <><small>WINNER</small><strong>{winner}</strong><em>Congratulations!</em></> : <><span>TAP TO</span><b>SPIN</b></>}</button></div>{error && <p className="error wheel-error">{error}</p>}</section></main>;
+  return <main className="page wheel-page">{celebrating && <Confetti />}<section className="wheel-card"><span className="eyebrow">RSSDI PARTICIPANT DRAW</span><h1>Spin the<br /><em>winner wheel.</em></h1><p className="wheel-intro">Tap the center to choose one unique quiz participant at random from the database.</p><div className="wheel-wrap"><div className="wheel-pointer" aria-hidden="true" /><div className={`spin-wheel ${spinning ? 'is-spinning' : ''}`} style={wheelStyle} /><button className={`wheel-hub ${winner ? 'has-winner' : ''}`} disabled={spinning || Boolean(winner)} onClick={spin} aria-label={spinning ? 'Selecting a winner' : 'Spin the winner wheel'}>{spinning ? <span>SPINNING</span> : winner ? <><small>WINNER</small><strong>{winner}</strong><em>Congratulations!</em></> : <><span>TAP TO</span><b>SPIN</b></>}</button></div>{error && <p className="error wheel-error">{error}</p>}</section></main>;
 }
 
 function App() {
