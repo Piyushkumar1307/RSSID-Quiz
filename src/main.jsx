@@ -63,8 +63,56 @@ function PodiumLeaderboard({ entries, refreshSeconds }) {
   </section>;
 }
 
+const WHEEL_COLORS = ['#ef7b3b', '#f5be3e', '#3868a9', '#4cae9b', '#d8576c', '#8263b5', '#e59d39', '#467ea1', '#c95842', '#5c9f7d', '#e8ba55', '#697ac0'];
+
+function SpinWheelPage({ onBack }) {
+  const [candidates, setCandidates] = useState([]);
+  const [winner, setWinner] = useState('');
+  const [rotation, setRotation] = useState(0);
+  const [spinning, setSpinning] = useState(false);
+  const [error, setError] = useState('');
+  const pendingWinner = useRef('');
+
+  const wheelStyle = useMemo(() => {
+    if (!candidates.length) return { '--wheel-fill': 'conic-gradient(#ef7b3b, #f5be3e, #3868a9, #4cae9b, #d8576c, #8263b5, #ef7b3b)' };
+    const slice = 360 / candidates.length;
+    const stops = candidates.map((_, index) => `${WHEEL_COLORS[index % WHEEL_COLORS.length]} ${index * slice}deg ${(index + 1) * slice}deg`).join(', ');
+    return { '--wheel-fill': `conic-gradient(from ${-slice / 2}deg, ${stops})`, transform: `rotate(${rotation}deg)` };
+  }, [candidates, rotation]);
+
+  const spin = async () => {
+    if (spinning) return;
+    setError('');
+    setWinner('');
+    setSpinning(true);
+    try {
+      const response = await fetch(`${API}/spin-winner`, { method: 'POST' });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      const slice = 360 / data.candidates.length;
+      pendingWinner.current = data.winner;
+      setCandidates(data.candidates);
+      setRotation((previous) => (Math.ceil(previous / 360) * 360) + (360 * 6) - (data.winnerIndex * slice));
+      window.setTimeout(() => {
+        setWinner(pendingWinner.current);
+        setSpinning(false);
+      }, 4700);
+    } catch (spinError) {
+      setError(spinError.message || 'The wheel could not load participants.');
+      setSpinning(false);
+    }
+  };
+
+  return <main className="page wheel-page"><section className="wheel-card"><button className="back" onClick={onBack}>← Back to quiz</button><span className="eyebrow">RSSDI PARTICIPANT DRAW</span><h1>Spin the<br /><em>winner wheel.</em></h1><p className="wheel-intro">Every spin chooses one unique quiz participant at random from the database.</p><div className="wheel-wrap"><div className="wheel-pointer" aria-hidden="true" /><div className={`spin-wheel ${spinning ? 'is-spinning' : ''}`} style={wheelStyle}><div className="wheel-hub">{spinning ? 'SPINNING' : 'SPIN'}</div></div></div><button className="spin-button" disabled={spinning} onClick={spin}>{spinning ? 'Selecting winner…' : 'Spin the wheel'} <span>↻</span></button>{winner && <div className="winner-reveal"><small>THE WINNER IS</small><strong>{winner}</strong><span>Congratulations!</span></div>}{error && <p className="error wheel-error">{error}</p>}{candidates.length > 0 && <div className="wheel-candidates" aria-label="Participants on the wheel">{candidates.map((candidate, index) => <span key={`${candidate}-${index}`}><i style={{ background: WHEEL_COLORS[index % WHEEL_COLORS.length] }} />{candidate}</span>)}</div>}</section></main>;
+}
+
 function App() {
-  const [screen, setScreen] = useState(() => (window.location.hash === '#leaderboard' || window.location.pathname.replace(/\/+$/, '') === '/leaderboard') ? 'leaderboard' : 'welcome');
+  const [screen, setScreen] = useState(() => {
+    const path = window.location.pathname.replace(/\/+$/, '');
+    if (window.location.hash === '#leaderboard' || path === '/leaderboard') return 'leaderboard';
+    if (window.location.hash === '#spin-wheel' || path === '/spin-wheel') return 'spin';
+    return 'welcome';
+  });
   const [participant, setParticipant] = useState({ name: '', city: '', phone: '' });
   const [quiz, setQuiz] = useState([]);
   const [index, setIndex] = useState(0);
@@ -227,12 +275,15 @@ function App() {
 
   const current = quiz[index];
   const scorePotential = useMemo(() => Math.max(1, Math.ceil(remaining)), [remaining]);
+  const returnHome = () => { window.history.pushState({}, '', '/'); setScreen('welcome'); };
 
-  if (screen === 'welcome') return <main className="page welcome"><div className="glow glow-one" /><div className="hero-card"><div className="hero-art"><div className="brand"><span className="heart">♡</span><span>Telmi<span>fast</span></span></div><div className="molecule">+</div><p>RSSDI MEDICAL QUIZ</p><div className="road">THE <i>FAST</i> TRACK TO BP CONTROL</div></div><div className="hero-copy"><span className="eyebrow">CARDIO–DIABETES CHALLENGE</span><h1>Think fast.<br /><em>Make every second count.</em></h1><p>10 clinical questions. 10 seconds each. Faster correct answers earn more points.</p><button className="primary" onClick={() => setScreen('details')}>Touch to start <span>→</span></button></div></div></main>;
+  if (screen === 'welcome') return <main className="page welcome"><div className="glow glow-one" /><div className="hero-card"><div className="hero-art"><div className="brand"><span className="heart">♡</span><span>Telmi<span>fast</span></span></div><div className="molecule">+</div><p>RSSDI MEDICAL QUIZ</p><div className="road">THE <i>FAST</i> TRACK TO BP CONTROL</div></div><div className="hero-copy"><span className="eyebrow">CARDIO–DIABETES CHALLENGE</span><h1>Think fast.<br /><em>Make every second count.</em></h1><p>10 clinical questions. 10 seconds each. Faster correct answers earn more points.</p><button className="primary" onClick={() => setScreen('details')}>Touch to start <span>→</span></button><a className="wheel-link" href="/spin-wheel">Spin the winner wheel <span>↻</span></a></div></div></main>;
 
   if (screen === 'details') return <main className="page form-page"><section className="form-card"><button className="back" onClick={() => setScreen('welcome')}>← Back</button><span className="eyebrow">WELCOME, CHALLENGER</span><h1>Before we begin</h1><p>Enter your details to join the five-minute leaderboard.</p><label>Full name<input autoComplete="name" placeholder="Your name" value={participant.name} onChange={(event) => setParticipant({ ...participant, name: event.target.value })} /></label><label>City<input placeholder="Your city" value={participant.city} onChange={(event) => setParticipant({ ...participant, city: event.target.value })} /></label><label>Phone number<input inputMode="numeric" autoComplete="tel" maxLength="10" placeholder="9876543210" value={participant.phone} onChange={(event) => setParticipant({ ...participant, phone: event.target.value.replace(/\D/g, '').slice(0, 10) })} /></label>{error && <p className="error">{error}</p>}<button className="primary full" onClick={startQuiz}>Start the challenge <span>→</span></button></section></main>;
 
   if (screen === 'saving') return <main className="page"><div className="saving"><div className="spinner" /><h2>Calculating your score…</h2><p>Saving your place on the board.</p></div></main>;
+
+  if (screen === 'spin') return <SpinWheelPage onBack={returnHome} />;
 
   if (screen === 'leaderboard') return <main className="page results-page"><section className="result-card leaderboard-page"><span className="eyebrow">TELMIFAST × RSSDI</span><h1>Champions<br /><em>of this round.</em></h1><PodiumLeaderboard entries={leaderboard} refreshSeconds={refreshSeconds} />{error && <p className="error">{error}</p>}</section></main>;
 

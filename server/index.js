@@ -66,6 +66,22 @@ app.get('/api/leaderboard', async (_req, res, next) => {
   } catch (error) { next(error); }
 });
 
+app.post('/api/spin-winner', async (_req, res, next) => {
+  try {
+    // The database randomizes the eligible unique participant names; the first is the winner.
+    const { rows } = await pool.query(
+      `SELECT participant_name AS name
+       FROM quiz_submissions
+       GROUP BY participant_name
+       ORDER BY random()
+       LIMIT 12`,
+    );
+    if (!rows.length) return res.status(404).json({ message: 'No quiz participants are available for the wheel yet.' });
+    const candidates = rows.map((row) => row.name);
+    res.json({ candidates, winner: candidates[0], winnerIndex: 0 });
+  } catch (error) { next(error); }
+});
+
 app.post('/api/submissions', async (req, res, next) => {
   try {
     const { name, city, phone, answers } = req.body ?? {};
