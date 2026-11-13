@@ -64,7 +64,7 @@ function PodiumLeaderboard({ entries, refreshSeconds }) {
 }
 
 function App() {
-  const [screen, setScreen] = useState(() => window.location.hash === '#leaderboard' ? 'leaderboard' : 'welcome');
+  const [screen, setScreen] = useState(() => (window.location.hash === '#leaderboard' || window.location.pathname.replace(/\/+$/, '') === '/leaderboard') ? 'leaderboard' : 'welcome');
   const [participant, setParticipant] = useState({ name: '', city: '', phone: '' });
   const [quiz, setQuiz] = useState([]);
   const [index, setIndex] = useState(0);

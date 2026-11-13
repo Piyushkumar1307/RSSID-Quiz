@@ -2,6 +2,7 @@ import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
 import pg from 'pg';
+import path from 'node:path';
 import { questions } from './questions.js';
 
 const { Pool } = pg;
@@ -105,6 +106,8 @@ app.post('/api/submissions', async (req, res, next) => {
 
 // `npm run build && npm start` serves the finished front end from this same server.
 app.use(express.static('dist'));
+// Keep direct links to client-side screens working after deployment or refresh.
+app.get('/{*splat}', (_req, res) => res.sendFile(path.resolve('dist/index.html')));
 
 app.use((error, _req, res, _next) => {
   console.error(error);
