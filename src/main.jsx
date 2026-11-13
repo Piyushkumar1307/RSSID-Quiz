@@ -219,8 +219,9 @@ function App() {
   }, [screen, nextRefreshAt, getLeaderboard]);
 
   useEffect(() => {
-    if (screen === 'results') playSound('confetti');
-  }, [screen, playSound]);
+    if (screen !== 'results') return;
+    playSound((result?.score ?? 0) > 0 ? 'confetti' : 'wrong');
+  }, [screen, result?.score, playSound]);
 
   useEffect(() => {
     if (screen === 'quiz') {
@@ -318,7 +319,7 @@ function App() {
 
   if (screen === 'leaderboard') return <main className="page results-page"><section className="result-card leaderboard-page"><span className="eyebrow">TELMIFAST × RSSDI</span><h1>Champions<br /><em>of this round.</em></h1><PodiumLeaderboard entries={leaderboard} refreshSeconds={refreshSeconds} />{error && <p className="error">{error}</p>}</section></main>;
 
-  if (screen === 'results') return <main className="page results-page"><Confetti /><section className="result-card"><span className="eyebrow">QUIZ COMPLETE</span><h1>Great pace, {participant.name.split(' ')[0]}!</h1><div className="score-ring"><strong>{result?.score ?? 0}</strong><span>out of 100</span></div><p><b>{result?.correctCount ?? 0}/10</b> correct answers. Your score rewards accuracy and speed.</p>{error && <p className="error">{error}</p>}</section></main>;
+  if (screen === 'results') return <main className="page results-page">{(result?.score ?? 0) > 0 && <Confetti />}<section className="result-card"><span className="eyebrow">QUIZ COMPLETE</span><h1>Great pace, {participant.name.split(' ')[0]}!</h1><div className="score-ring"><strong>{result?.score ?? 0}</strong><span>out of 100</span></div><p><b>{result?.correctCount ?? 0}/10</b> correct answers. Your score rewards accuracy and speed.</p>{error && <p className="error">{error}</p>}</section></main>;
 
   return <main className="page quiz-page"><header className="quiz-header"><img className="question-logo" src="/images/fastrack-telmifast-logo.png" alt="Fastrack with Telmifast" /><span>QUESTION {index + 1}<small>/ 10</small></span><div className={`timer ${remaining <= 3 ? 'urgent' : ''}`}><i style={{ '--progress': `${(remaining / 10) * 100}%` }} /><b>{formatTime(remaining)}</b></div></header><section className="question-card"><div className="progress"><i style={{ width: `${((index + 1) / 10) * 100}%` }} /></div><div className="question-number">QUESTION {String(index + 1).padStart(2, '0')} <span>UP TO {scorePotential} POINTS</span></div><h1>{current?.question}</h1><div className="answers">{current && Object.entries(current.options).map(([key, text]) => <button disabled={Boolean(feedback)} className={feedback?.answer === key ? 'selected' : ''} key={key} onClick={() => resolveAnswer(key)}><b>{key}</b><span>{text}</span></button>)}</div>{feedback && <div className="feedback">{feedback.message}</div>}</section><QuizBanner /></main>;
 }
