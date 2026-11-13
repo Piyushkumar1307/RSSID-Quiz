@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:3001/api' : '/api');
 const DURATION = 10_000;
 const SOUND_FILES = {
   correct: '/audio/correct.mp3',
