@@ -70,8 +70,10 @@ function SpinWheelPage({ onBack }) {
   const [winner, setWinner] = useState('');
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
+  const [celebrating, setCelebrating] = useState(false);
   const [error, setError] = useState('');
   const pendingWinner = useRef('');
+  const winnerSound = useRef(null);
 
   const wheelStyle = useMemo(() => {
     if (!candidates.length) return { '--wheel-fill': 'conic-gradient(#ef7b3b, #f5be3e, #3868a9, #4cae9b, #d8576c, #8263b5, #ef7b3b)' };
@@ -84,7 +86,20 @@ function SpinWheelPage({ onBack }) {
     if (spinning) return;
     setError('');
     setWinner('');
+    setCelebrating(false);
     setSpinning(true);
+    if (!winnerSound.current) {
+      winnerSound.current = new Audio('/audio/confetti.mp3');
+      winnerSound.current.preload = 'auto';
+    }
+    // Prime the celebration audio from this tap so it can play after the spin on mobile browsers.
+    winnerSound.current.muted = true;
+    winnerSound.current.currentTime = 0;
+    winnerSound.current.play().then(() => {
+      winnerSound.current.pause();
+      winnerSound.current.currentTime = 0;
+      winnerSound.current.muted = false;
+    }).catch(() => {});
     try {
       const response = await fetch(`${API}/spin-winner`, { method: 'POST' });
       const data = await response.json();
@@ -95,6 +110,12 @@ function SpinWheelPage({ onBack }) {
       setRotation((previous) => (Math.ceil(previous / 360) * 360) + (360 * 6) - (data.winnerIndex * slice));
       window.setTimeout(() => {
         setWinner(pendingWinner.current);
+        setCelebrating(true);
+        winnerSound.current.pause();
+        winnerSound.current.currentTime = 0;
+        winnerSound.current.muted = false;
+        winnerSound.current.volume = 0.7;
+        winnerSound.current.play().catch(() => {});
         setSpinning(false);
       }, 4700);
     } catch (spinError) {
@@ -103,7 +124,7 @@ function SpinWheelPage({ onBack }) {
     }
   };
 
-  return <main className="page wheel-page"><section className="wheel-card"><button className="back" onClick={onBack}>← Back to quiz</button><span className="eyebrow">RSSDI PARTICIPANT DRAW</span><h1>Spin the<br /><em>winner wheel.</em></h1><p className="wheel-intro">Every spin chooses one unique quiz participant at random from the database.</p><div className="wheel-wrap"><div className="wheel-pointer" aria-hidden="true" /><div className={`spin-wheel ${spinning ? 'is-spinning' : ''}`} style={wheelStyle}><div className="wheel-hub">{spinning ? 'SPINNING' : 'SPIN'}</div></div></div><button className="spin-button" disabled={spinning} onClick={spin}>{spinning ? 'Selecting winner…' : 'Spin the wheel'} <span>↻</span></button>{winner && <div className="winner-reveal"><small>THE WINNER IS</small><strong>{winner}</strong><span>Congratulations!</span></div>}{error && <p className="error wheel-error">{error}</p>}{candidates.length > 0 && <div className="wheel-candidates" aria-label="Participants on the wheel">{candidates.map((candidate, index) => <span key={`${candidate}-${index}`}><i style={{ background: WHEEL_COLORS[index % WHEEL_COLORS.length] }} />{candidate}</span>)}</div>}</section></main>;
+  return <main className="page wheel-page">{celebrating && <Confetti />}<section className="wheel-card"><button className="back" onClick={onBack}>← Back to quiz</button><span className="eyebrow">RSSDI PARTICIPANT DRAW</span><h1>Spin the<br /><em>winner wheel.</em></h1><p className="wheel-intro">Tap the center to choose one unique quiz participant at random from the database.</p><div className="wheel-wrap"><div className="wheel-pointer" aria-hidden="true" /><div className={`spin-wheel ${spinning ? 'is-spinning' : ''}`} style={wheelStyle} /><button className={`wheel-hub ${winner ? 'has-winner' : ''}`} disabled={spinning} onClick={spin} aria-label={spinning ? 'Selecting a winner' : 'Spin the winner wheel'}>{spinning ? <span>SPINNING</span> : winner ? <><small>WINNER</small><strong>{winner}</strong><em>Congratulations!</em></> : <><span>TAP TO</span><b>SPIN</b></>}</button></div>{error && <p className="error wheel-error">{error}</p>}</section></main>;
 }
 
 function App() {
@@ -287,7 +308,7 @@ function App() {
 
   if (screen === 'leaderboard') return <main className="page results-page"><section className="result-card leaderboard-page"><span className="eyebrow">TELMIFAST × RSSDI</span><h1>Champions<br /><em>of this round.</em></h1><PodiumLeaderboard entries={leaderboard} refreshSeconds={refreshSeconds} />{error && <p className="error">{error}</p>}</section></main>;
 
-  if (screen === 'results') return <main className="page results-page"><Confetti /><section className="result-card"><span className="eyebrow">QUIZ COMPLETE</span><h1>Great pace, {participant.name.split(' ')[0]}!</h1><div className="score-ring"><strong>{result?.score ?? 0}</strong><span>out of 100</span></div><p><b>{result?.correctCount ?? 0}/10</b> correct answers. Your score rewards accuracy and speed.</p>{error && <p className="error">{error}</p>}<button className="secondary" onClick={() => { setResult(null); setError(''); setScreen('welcome'); }}>Play another round</button></section></main>;
+  if (screen === 'results') return <main className="page results-page"><Confetti /><section className="result-card"><span className="eyebrow">QUIZ COMPLETE</span><h1>Great pace, {participant.name.split(' ')[0]}!</h1><div className="score-ring"><strong>{result?.score ?? 0}</strong><span>out of 100</span></div><p><b>{result?.correctCount ?? 0}/10</b> correct answers. Your score rewards accuracy and speed.</p>{error && <p className="error">{error}</p>}</section></main>;
 
   return <main className="page quiz-page"><header className="quiz-header"><div className="mini-brand">♡ <b>Telmi<span>fast</span></b></div><span>QUESTION {index + 1}<small>/ 10</small></span><div className={`timer ${remaining <= 3 ? 'urgent' : ''}`}><i style={{ '--progress': `${(remaining / 10) * 100}%` }} /><b>{formatTime(remaining)}</b></div></header><section className="question-card"><div className="progress"><i style={{ width: `${((index + 1) / 10) * 100}%` }} /></div><div className="question-number">QUESTION {String(index + 1).padStart(2, '0')} <span>UP TO {scorePotential} POINTS</span></div><h1>{current?.question}</h1><div className="answers">{current && Object.entries(current.options).map(([key, text]) => <button disabled={Boolean(feedback)} className={feedback?.answer === key ? 'selected' : ''} key={key} onClick={() => resolveAnswer(key)}><b>{key}</b><span>{text}</span></button>)}</div>{feedback && <div className="feedback">{feedback.message}</div>}</section></main>;
 }
