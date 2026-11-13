@@ -1,6 +1,6 @@
 # Telmifast RSSDI Quiz
 
-An interactive 10-question cardio-diabetes quiz with a 10-second timer per question, speed-weighted marks (1–10 points per correct answer), audio feedback, and a live all-time top-three leaderboard refreshed every five minutes.
+An interactive 10-question cardio-diabetes quiz with a 20-second timer per question, speed-weighted marks (1–10 points per correct answer), audio feedback, and a live all-time top-three leaderboard refreshed every five minutes.
 
 ## Run locally
 

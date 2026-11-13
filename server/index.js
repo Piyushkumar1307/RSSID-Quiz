@@ -46,7 +46,7 @@ function publicQuestion(question) {
 
 app.get('/api/quiz', (_req, res) => {
   const selected = [...questions].sort(() => Math.random() - 0.5).slice(0, 10).map(publicQuestion);
-  res.json({ questions: selected, durationSeconds: 10, maxScorePerQuestion: 10 });
+  res.json({ questions: selected, durationSeconds: 20, maxScorePerQuestion: 10 });
 });
 
 app.post('/api/check-answer', (req, res) => {
@@ -109,8 +109,8 @@ app.post('/api/submissions', async (req, res, next) => {
       }
       if (response.answer === question.answer) {
         correctCount += 1;
-        const elapsedMs = Math.max(0, Math.min(10000, Number(response.elapsedMs) || 10000));
-        score += Math.max(1, Math.ceil(10 - elapsedMs / 1000));
+        const elapsedMs = Math.max(0, Math.min(20000, Number(response.elapsedMs) || 20000));
+        score += Math.max(1, Math.ceil(10 - elapsedMs / 2000));
       }
     }
     const windowStart = currentWindow();
