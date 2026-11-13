@@ -10,13 +10,14 @@ button { cursor: pointer; }
 .glow { position: absolute; width: 480px; height: 480px; border-radius: 50%; filter: blur(80px); opacity: .28; pointer-events: none; }
 .glow-one { background: #e86f31; bottom: -260px; left: -120px; }
 .hero-card { width: min(1120px, 100%); min-height: 590px; display: grid; grid-template-columns: 1.1fr .9fr; background: #f5f2e9; color: #182842; border-radius: 24px; overflow: hidden; box-shadow: 0 30px 90px #0008; }
-.hero-art { background: linear-gradient(145deg, #f8f5ee 0 55%, #e8e4d8); position: relative; padding: 54px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; }
+.hero-art { background: linear-gradient(145deg, #f8f5ee 0 55%, #e8e4d8); position: relative; padding: 54px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .hero-art:before { content: ''; position: absolute; width: 330px; height: 330px; right: -100px; top: 40px; border: 45px solid #172b66; border-left-color: #e86f31; border-radius: 50%; opacity: .12; }
 .brand { position: relative; z-index: 1; font-size: clamp(2.4rem, 5vw, 4.8rem); font-weight: 700; font-style: italic; letter-spacing: -4px; color: #172b66; display: flex; align-items: center; gap: 14px; }
 .brand span span, .mini-brand span { color: #e86f31; }
 .heart { font-family: Georgia, serif; color: #e86f31; font-size: 1.3em; letter-spacing: -12px; transform: rotate(-12deg); }
 .molecule { position: relative; z-index: 1; color: #e86f31; font: 180px/1 Georgia, serif; opacity: .8; align-self: flex-end; margin: -58px 50px -40px 0; }
 .hero-art p { position: relative; z-index: 1; color: #687080; letter-spacing: .2em; font-size: .72rem; font-weight: 700; }
+.home-logo { position: relative; z-index: 1; width: min(410px, 88%); max-height: 410px; margin-bottom: 28px; object-fit: contain; filter: drop-shadow(0 15px 18px #172b6624); }
 .road { position: absolute; bottom: 0; left: 0; right: 0; background: #162a32; color: white; padding: 21px; text-align: center; font-weight: 700; font-style: italic; letter-spacing: .05em; font-size: clamp(.72rem, 1.5vw, 1.15rem); border-top: 5px solid #e86f31; }
 .road i { color: #e86f31; }
 .hero-copy { background: #172b66; padding: clamp(42px, 6vw, 74px); display: flex; flex-direction: column; justify-content: center; color: #fff; }
@@ -84,6 +85,7 @@ button { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
   .welcome { padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
   .hero-card { min-height: 0; border-radius: 18px; }
   .hero-art { min-height: 270px; padding: 29px; }
+  .home-logo { width: min(300px, 84%); max-height: 225px; margin-bottom: 18px; }
   .hero-art:before { width: 250px; height: 250px; border-width: 34px; right: -85px; top: 24px; }
   .molecule { font-size: 112px; margin: -38px 24px -26px 0; }
   .hero-copy { padding: 36px 29px 40px; }
