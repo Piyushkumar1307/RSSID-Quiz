@@ -145,7 +145,7 @@ function App() {
     if (window.location.hash === '#spin-wheel' || path === '/spin-wheel') return 'spin';
     return 'welcome';
   });
-  const [participant, setParticipant] = useState({ name: '', city: '', phone: '' });
+  const [participant, setParticipant] = useState({ name: '', city: '', state: '', phone: '' });
   const [quiz, setQuiz] = useState([]);
   const [index, setIndex] = useState(0);
   const [remaining, setRemaining] = useState(10);
@@ -252,8 +252,8 @@ function App() {
 
   const startQuiz = async () => {
     setError('');
-    if (!participant.name.trim() || !participant.city.trim() || !/^\d{10}$/.test(participant.phone)) {
-      setError('Please add your name, city, and a valid 10-digit phone number.'); return;
+    if (!participant.name.trim() || !participant.city.trim() || !participant.state.trim() || !/^\d{10}$/.test(participant.phone)) {
+      setError('Please add your name, city, state, and a valid 10-digit phone number.'); return;
     }
     // Preload the provided feedback tracks while the browser has a user gesture.
     prepareSound();
@@ -310,7 +310,7 @@ function App() {
 
   if (screen === 'welcome') return <main className="page welcome"><div className="glow glow-one" /><div className="hero-card"><div className="hero-art"><img className="home-logo" src="/images/telmifast-linux-meta-logo.png" alt="Telmifast Linux Meta" /><div className="road">THE <i>FAST</i> TRACK TO BP CONTROL</div></div><div className="hero-copy"><span className="eyebrow">CARDIO–DIABETES CHALLENGE</span><h1>Think fast.<br /><em>Make every second count.</em></h1><p>10 clinical questions. 10 seconds each. Faster correct answers earn more points.</p><button className="primary" onClick={() => setScreen('details')}>Touch to start <span>→</span></button></div></div></main>;
 
-  if (screen === 'details') return <main className="page form-page"><section className="form-card"><button className="back" onClick={() => setScreen('welcome')}>← Back</button><span className="eyebrow">WELCOME, CHALLENGER</span><h1>Before we begin</h1><p>Get Ready with your Credentials<br />on Fast Track with Telmifast!</p><label>Full name<input autoComplete="name" placeholder="Your name" value={participant.name} onChange={(event) => setParticipant({ ...participant, name: event.target.value })} /></label><label>City<input placeholder="Your city" value={participant.city} onChange={(event) => setParticipant({ ...participant, city: event.target.value })} /></label><label>Phone number<input inputMode="numeric" autoComplete="tel" maxLength="10" placeholder="9876543210" value={participant.phone} onChange={(event) => setParticipant({ ...participant, phone: event.target.value.replace(/\D/g, '').slice(0, 10) })} /></label>{error && <p className="error">{error}</p>}<button className="primary full" onClick={startQuiz}>Start the challenge <span>→</span></button></section></main>;
+  if (screen === 'details') return <main className="page form-page"><section className="form-card"><button className="back" onClick={() => setScreen('welcome')}>← Back</button><span className="eyebrow">WELCOME, CHALLENGER</span><h1>Before we begin</h1><p>Get Ready with your Credentials<br />on Fast Track with Telmifast!</p><label>Full name<input autoComplete="name" placeholder="Your name" value={participant.name} onChange={(event) => setParticipant({ ...participant, name: event.target.value })} /></label><label>City<input placeholder="Your city" value={participant.city} onChange={(event) => setParticipant({ ...participant, city: event.target.value })} /></label><label>State<input autoComplete="address-level1" placeholder="Your state" value={participant.state} onChange={(event) => setParticipant({ ...participant, state: event.target.value })} /></label><label>Phone number<input inputMode="numeric" autoComplete="tel" maxLength="10" placeholder="9876543210" value={participant.phone} onChange={(event) => setParticipant({ ...participant, phone: event.target.value.replace(/\D/g, '').slice(0, 10) })} /></label>{error && <p className="error">{error}</p>}<button className="primary full" onClick={startQuiz}>Start the challenge <span>→</span></button></section></main>;
 
   if (screen === 'saving') return <main className="page"><div className="saving"><div className="spinner" /><h2>Calculating your score…</h2><p>Saving your place on the board.</p></div></main>;
 

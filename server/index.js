@@ -25,6 +25,7 @@ async function setupDatabase() {
       id BIGSERIAL PRIMARY KEY,
       participant_name VARCHAR(100) NOT NULL,
       city VARCHAR(100) NOT NULL,
+      state VARCHAR(100),
       phone VARCHAR(25) NOT NULL,
       score INTEGER NOT NULL CHECK (score >= 0 AND score <= 100),
       correct_count SMALLINT NOT NULL CHECK (correct_count >= 0 AND correct_count <= 10),
@@ -35,6 +36,7 @@ async function setupDatabase() {
       ON quiz_submissions (window_start, score DESC, submitted_at ASC);
     CREATE INDEX IF NOT EXISTS quiz_submissions_all_time_score_idx
       ON quiz_submissions (score DESC, submitted_at ASC);
+    ALTER TABLE quiz_submissions ADD COLUMN IF NOT EXISTS state VARCHAR(100);
   `);
 }
 
@@ -84,12 +86,13 @@ app.post('/api/spin-winner', async (_req, res, next) => {
 
 app.post('/api/submissions', async (req, res, next) => {
   try {
-    const { name, city, phone, answers } = req.body ?? {};
+    const { name, city, state, phone, answers } = req.body ?? {};
     const cleanName = typeof name === 'string' ? name.trim().replace(/\s+/g, ' ') : '';
     const cleanCity = typeof city === 'string' ? city.trim().replace(/\s+/g, ' ') : '';
+    const cleanState = typeof state === 'string' ? state.trim().replace(/\s+/g, ' ') : '';
     const cleanPhone = typeof phone === 'string' ? phone.trim() : '';
-    if (!cleanName || !cleanCity || !/^\d{10}$/.test(cleanPhone)) {
-      return res.status(400).json({ message: 'Please provide a name, city, and a valid 10-digit phone number.' });
+    if (!cleanName || !cleanCity || !cleanState || !/^\d{10}$/.test(cleanPhone)) {
+      return res.status(400).json({ message: 'Please provide a name, city, state, and a valid 10-digit phone number.' });
     }
     if (!Array.isArray(answers) || answers.length !== 10 || new Set(answers.map((item) => item?.questionId)).size !== 10) {
       return res.status(400).json({ message: 'A complete quiz submission is required.' });
@@ -112,9 +115,9 @@ app.post('/api/submissions', async (req, res, next) => {
     }
     const windowStart = currentWindow();
     await pool.query(
-      `INSERT INTO quiz_submissions (participant_name, city, phone, score, correct_count, window_start)
-       VALUES ($1, $2, $3, $4, $5, $6)`,
-      [cleanName.slice(0, 100), cleanCity.slice(0, 100), cleanPhone.slice(0, 25), score, correctCount, windowStart],
+      `INSERT INTO quiz_submissions (participant_name, city, state, phone, score, correct_count, window_start)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [cleanName.slice(0, 100), cleanCity.slice(0, 100), cleanState.slice(0, 100), cleanPhone.slice(0, 25), score, correctCount, windowStart],
     );
     res.status(201).json({ score, correctCount, windowStart: windowStart.toISOString(), nextRefreshAt: new Date(windowStart.getTime() + 300000).toISOString() });
   } catch (error) { next(error); }
