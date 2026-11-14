@@ -41,7 +41,7 @@ function Confetti() {
 }
 
 function QuizBanner() {
-  return <div className="question-banner" aria-label="Telmifast hypertension management banner"><div className="question-banner-track">{Array.from({ length: 16 }, (_, index) => <img key={index} src="/images/telmifast-hypertension-banner.png" alt="" />)}</div></div>;
+  return <div className="question-banner" aria-label="Telmifast banner"><div className="question-banner-track">{Array.from({ length: 8 }, (_, index) => <img key={index} src="/images/telmifast-bottom-banner.png" alt="" />)}</div></div>;
 }
 
 const formatTime = (seconds) => `00:${String(Math.max(0, seconds)).padStart(2, '0')}`;

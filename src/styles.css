@@ -213,3 +213,6 @@ label { color: #d9edfa; }input { border-color: #2d82b3; color: #f6fbff; backgrou
 
 .leaderboard-hero { display: block; width: 100%; border: 1px solid #22d8ff77; border-radius: 14px; box-shadow: 0 0 20px #00cfff66; }.leaderboard-page .podium-board { margin-top: 22px; }
 @media (max-width: 500px) { .leaderboard-hero { border-radius: 10px; }.leaderboard-page .podium-board { margin-top: 16px; } }
+
+/* Static Telmifast bottom banner. */
+.question-banner-track { animation: none !important; transform: none !important; }
