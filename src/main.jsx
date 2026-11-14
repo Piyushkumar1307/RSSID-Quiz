@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
@@ -42,6 +42,45 @@ function Confetti() {
 
 function QuizBanner() {
   return <div className="question-banner" aria-label="Telmifast banner"><div className="question-banner-track"><img src="/images/telmifast-sticker.png" alt="Telmifast — The Fast Track to BP Control" /></div></div>;
+}
+
+function useViewportFit(screen) {
+  useLayoutEffect(() => {
+    const page = document.querySelector('main.page');
+    if (!page) return undefined;
+    let frame = 0;
+    const fit = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        page.style.setProperty('--page-fit', '1');
+        page.style.setProperty('--question-fit', '1');
+        if (page.classList.contains('quiz-page')) {
+          const header = page.querySelector('.quiz-header');
+          const card = page.querySelector('.question-card');
+          const footer = page.querySelector('.question-banner');
+          if (!header || !card || !footer) return;
+          const available = page.clientHeight - header.offsetHeight - footer.offsetHeight - 20;
+          const bounds = card.getBoundingClientRect();
+          const scale = Math.min(1, available / bounds.height, (page.clientWidth - 16) / bounds.width);
+          page.style.setProperty('--question-fit', `${Math.max(.55, scale)}`);
+          return;
+        }
+        const panel = page.querySelector(':scope > .hero-card, :scope > .form-card, :scope > .result-card, :scope > .wheel-card, :scope > .saving');
+        if (!panel) return;
+        const bounds = panel.getBoundingClientRect();
+        const scale = Math.min(1, (page.clientWidth - 24) / bounds.width, (page.clientHeight - 24) / bounds.height);
+        page.style.setProperty('--page-fit', `${Math.max(.5, scale)}`);
+      });
+    };
+    const observer = new ResizeObserver(fit);
+    observer.observe(page);
+    page.querySelectorAll(':scope > *').forEach((child) => observer.observe(child));
+    const mutations = new MutationObserver(fit);
+    mutations.observe(page, { childList: true, subtree: true });
+    window.addEventListener('resize', fit);
+    fit();
+    return () => { window.cancelAnimationFrame(frame); observer.disconnect(); mutations.disconnect(); window.removeEventListener('resize', fit); };
+  }, [screen]);
 }
 
 const formatTime = (seconds) => `00:${String(Math.max(0, seconds)).padStart(2, '0')}`;
@@ -161,6 +200,8 @@ function App() {
   const settling = useRef(false);
   const sounds = useRef({});
   const backgroundMusic = useRef(null);
+
+  useViewportFit(screen);
 
   const prepareSound = useCallback(() => {
     Object.entries(SOUND_FILES).forEach(([kind, source]) => {

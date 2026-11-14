@@ -253,3 +253,7 @@ label { color: #d9edfa; }input { border-color: #2d82b3; color: #f6fbff; backgrou
 /* The quiz is a full-screen experience: no document or route scrolling. */
 html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-behavior: none; }
 .page, .welcome, .form-page, .results-page, .wheel-page, .quiz-page { height: 100dvh; min-height: 100dvh; max-height: 100dvh; overflow: hidden; }
+
+/* Keep every panel visible when the available viewport is short. */
+.page > .hero-card, .page > .form-card, .page > .result-card, .page > .wheel-card, .page > .saving { transform: scale(var(--page-fit, 1)); transform-origin: center; }
+.quiz-page .question-card { min-height: 0; transform: scale(var(--question-fit, 1)); transform-origin: center; }
