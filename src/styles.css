@@ -210,3 +210,6 @@ label { color: #d9edfa; }input { border-color: #2d82b3; color: #f6fbff; backgrou
 /* One full-screen racetrack backdrop across every route. */
 .page, .welcome, .form-page, .results-page, .wheel-page, .quiz-page { background: linear-gradient(#03102470, #03102470), url('/images/racetrack-quiz-background.png') center/cover fixed no-repeat; }
 @media (max-width: 730px) { .page, .welcome, .form-page, .results-page, .wheel-page, .quiz-page { min-height: 100svh; background: linear-gradient(#03102455, #03102455), url('/images/racetrack-mobile-background.png') center/cover scroll no-repeat; } }
+
+.leaderboard-hero { display: block; width: 100%; border: 1px solid #22d8ff77; border-radius: 14px; box-shadow: 0 0 20px #00cfff66; }.leaderboard-page .podium-board { margin-top: 22px; }
+@media (max-width: 500px) { .leaderboard-hero { border-radius: 10px; }.leaderboard-page .podium-board { margin-top: 16px; } }
