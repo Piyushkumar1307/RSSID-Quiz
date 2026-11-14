@@ -249,3 +249,7 @@ label { color: #d9edfa; }input { border-color: #2d82b3; color: #f6fbff; backgrou
   .quiz-page { grid-template-rows: 118px minmax(0, 1fr) 92px; overflow: hidden; }
   .quiz-page .question-card { align-self: center; margin: 10px auto; }
 }
+
+/* The quiz is a full-screen experience: no document or route scrolling. */
+html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-behavior: none; }
+.page, .welcome, .form-page, .results-page, .wheel-page, .quiz-page { height: 100dvh; min-height: 100dvh; max-height: 100dvh; overflow: hidden; }
