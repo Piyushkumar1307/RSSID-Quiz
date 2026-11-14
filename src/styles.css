@@ -237,3 +237,12 @@ label { color: #d9edfa; }input { border-color: #2d82b3; color: #f6fbff; backgrou
 .quiz-page .question-banner-track { width: min(285px, 52vw); height: auto; }
 .quiz-page .question-banner img { width: 100%; height: auto; max-width: none; object-fit: contain; filter: drop-shadow(0 5px 8px #000b); }
 @media (max-width: 730px) { .quiz-page .question-banner { height: 92px; padding-bottom: 8px; }.quiz-page .question-banner-track { width: min(245px, 58vw); }.quiz-page .question-card { margin-bottom: 104px; } }
+
+/* Keep the live quiz in a stable viewport: header, question, then sponsor sticker. */
+.quiz-page { height: 100dvh; min-height: 100dvh; grid-template-rows: 82px minmax(0, 1fr) 104px; overflow: hidden; }
+.quiz-page .question-banner { position: static; grid-row: 3; align-self: end; }
+.quiz-page .question-card { grid-row: 2; align-self: center; margin: clamp(14px, 3vh, 32px) auto; }
+@media (max-width: 730px) {
+  .quiz-page { grid-template-rows: 118px minmax(0, 1fr) 92px; overflow: hidden; }
+  .quiz-page .question-card { align-self: center; margin: 10px auto; }
+}
