@@ -224,3 +224,10 @@ label { color: #d9edfa; }input { border-color: #2d82b3; color: #f6fbff; backgrou
 .question-banner-track { display: grid; place-items: center; width: min(760px, 94vw); height: 100%; animation: none !important; transform: none !important; }
 .question-banner img { width: auto; max-width: 100%; height: 82px; object-fit: contain; }
 @media (max-width: 730px) { .question-banner { height: 64px; }.question-banner-track { width: min(430px, 96vw); }.question-banner img { height: 58px; }.quiz-page .question-card { margin-bottom: 90px; } }
+
+/* On small screens the race logo and timer occupy separate header rows. */
+@media (max-width: 730px) {
+  .quiz-header { height: 118px; justify-content: flex-end; }
+  .question-logo { width: 160px; height: 52px; top: 33px; }
+  .timer { position: absolute; right: max(16px, env(safe-area-inset-right)); bottom: 9px; min-width: 92px; }
+}
