@@ -219,5 +219,8 @@ label { color: #d9edfa; }input { border-color: #2d82b3; color: #f6fbff; backgrou
 .leaderboard-page { width: min(1180px, 100%); }.leaderboard-hero { height: auto; aspect-ratio: auto; object-fit: contain; object-position: center; }.leaderboard-page .podium-board { margin-left: 0; margin-right: 0; }.leaderboard-page .podium-stage { min-height: 310px; }
 @media (max-width: 730px) { .leaderboard-page { width: min(720px, 100%); }.leaderboard-hero { height: auto; aspect-ratio: auto; object-fit: contain; }.leaderboard-page .podium-stage { min-height: 260px; } }
 
-/* Static Telmifast bottom banner. */
-.question-banner-track { animation: none !important; transform: none !important; }
+/* One centered Telmifast footer in a matching navy strip. */
+.question-banner { height: 92px; display: grid; place-items: center; background: #06183d; border-top: 1px solid #234b81; border-bottom: 1px solid #234b81; box-shadow: 0 -5px 18px #0008; }
+.question-banner-track { display: grid; place-items: center; width: min(760px, 94vw); height: 100%; animation: none !important; transform: none !important; }
+.question-banner img { width: auto; max-width: 100%; height: 82px; object-fit: contain; }
+@media (max-width: 730px) { .question-banner { height: 64px; }.question-banner-track { width: min(430px, 96vw); }.question-banner img { height: 58px; }.quiz-page .question-card { margin-bottom: 90px; } }
