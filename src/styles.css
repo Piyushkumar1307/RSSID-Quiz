@@ -214,5 +214,9 @@ label { color: #d9edfa; }input { border-color: #2d82b3; color: #f6fbff; backgrou
 .leaderboard-hero { display: block; width: 100%; border: 1px solid #22d8ff77; border-radius: 14px; box-shadow: 0 0 20px #00cfff66; }.leaderboard-page .podium-board { margin-top: 22px; }
 @media (max-width: 500px) { .leaderboard-hero { border-radius: 10px; }.leaderboard-page .podium-board { margin-top: 16px; } }
 
+/* Use the leaderboard artwork as a cinematic landscape header, not a tall poster. */
+.leaderboard-page { width: min(1180px, 100%); }.leaderboard-hero { aspect-ratio: 3.35 / 1; object-fit: cover; object-position: center 58%; }.leaderboard-page .podium-board { margin-left: 0; margin-right: 0; }.leaderboard-page .podium-stage { min-height: 310px; }
+@media (max-width: 730px) { .leaderboard-page { width: min(720px, 100%); }.leaderboard-hero { aspect-ratio: 16 / 9; object-position: center; }.leaderboard-page .podium-stage { min-height: 260px; } }
+
 /* Static Telmifast bottom banner. */
 .question-banner-track { animation: none !important; transform: none !important; }
