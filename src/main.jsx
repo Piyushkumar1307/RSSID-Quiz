@@ -41,7 +41,7 @@ function Confetti() {
 }
 
 function QuizBanner() {
-  return <div className="question-banner" aria-label="Telmifast banner"><div className="question-banner-track"><img src="/images/telmifast-bottom-banner.png" alt="Telmifast — The Fast Track to BP Control" /></div></div>;
+  return <div className="question-banner" aria-label="Telmifast banner"><div className="question-banner-track"><img src="/images/telmifast-sticker.png" alt="Telmifast — The Fast Track to BP Control" /></div></div>;
 }
 
 const formatTime = (seconds) => `00:${String(Math.max(0, seconds)).padStart(2, '0')}`;

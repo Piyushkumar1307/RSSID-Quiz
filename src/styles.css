@@ -235,5 +235,5 @@ label { color: #d9edfa; }input { border-color: #2d82b3; color: #f6fbff; backgrou
 /* Small sponsor mark over the racetrack, without a separate footer bar. */
 .quiz-page .question-banner { height: 104px; display: grid; place-items: end center; padding-bottom: 10px; background: transparent; border: 0; box-shadow: none; }
 .quiz-page .question-banner-track { width: min(285px, 52vw); height: auto; }
-.quiz-page .question-banner img { width: 100%; height: auto; max-width: none; object-fit: contain; mix-blend-mode: screen; filter: drop-shadow(0 5px 8px #000b); }
+.quiz-page .question-banner img { width: 100%; height: auto; max-width: none; object-fit: contain; filter: drop-shadow(0 5px 8px #000b); }
 @media (max-width: 730px) { .quiz-page .question-banner { height: 92px; padding-bottom: 8px; }.quiz-page .question-banner-track { width: min(245px, 58vw); }.quiz-page .question-card { margin-bottom: 104px; } }
