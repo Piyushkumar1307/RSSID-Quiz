@@ -44,6 +44,10 @@ function QuizBanner() {
   return <div className="question-banner" aria-label="Telmifast banner"><div className="question-banner-track"><img src="/images/telmifast-sticker.png" alt="Telmifast — The Fast Track to BP Control" /></div></div>;
 }
 
+function PageStickers() {
+  return <div className="page-stickers" aria-hidden="true"><img className="page-top-sticker" src="/images/quiz-header-sticker.png" alt="" /><img className="page-bottom-sticker" src="/images/telmifast-sticker.png" alt="" /></div>;
+}
+
 function useViewportFit(screen) {
   useLayoutEffect(() => {
     const page = document.querySelector('main.page');
@@ -68,7 +72,8 @@ function useViewportFit(screen) {
         const panel = page.querySelector(':scope > .hero-card, :scope > .form-card, :scope > .result-card, :scope > .wheel-card, :scope > .saving');
         if (!panel) return;
         const bounds = panel.getBoundingClientRect();
-        const scale = Math.min(1, (page.clientWidth - 24) / bounds.width, (page.clientHeight - 24) / bounds.height);
+        const decorationSpace = page.querySelector('.page-stickers') ? 190 : 24;
+        const scale = Math.min(1, (page.clientWidth - 24) / bounds.width, (page.clientHeight - decorationSpace) / bounds.height);
         page.style.setProperty('--page-fit', `${Math.max(.5, scale)}`);
       });
     };
@@ -351,9 +356,9 @@ function App() {
   const current = quiz[index];
   const scorePotential = useMemo(() => Math.max(1, Math.ceil(10 - (DURATION_SECONDS - remaining) / 2)), [remaining]);
 
-  if (screen === 'welcome') return <main className="page welcome"><div className="glow glow-one" /><div className="hero-card"><div className="hero-art"><img className="home-logo linux-logo" src="/images/linux-laboratories-logo.png" alt="Linux Laboratories" /><div className="road">THE <i>FAST</i> TRACK TO BP CONTROL</div></div><div className="hero-copy"><span className="eyebrow">CARDIO–DIABETES CHALLENGE</span><h1>Think fast.<br /><em>Make every second count.</em></h1><p>10 clinical questions. 20 seconds each. Faster correct answers earn more points.</p><button className="primary" onClick={() => setScreen('details')}>Touch to start <span>→</span></button></div></div></main>;
+  if (screen === 'welcome') return <main className="page welcome"><div className="glow glow-one" /><div className="hero-card"><div className="hero-art"><img className="home-logo telmifast-home-logo" src="/images/telmifast-sticker.png" alt="Telmifast" /><img className="home-linux-logo" src="/images/linux-laboratories-logo.png" alt="Linux Laboratories" /><div className="road">THE <i>FAST</i> TRACK TO BP CONTROL</div></div><div className="hero-copy"><span className="eyebrow">CARDIO–DIABETES CHALLENGE</span><h1>Think fast.<br /><em>Make every second count.</em></h1><p>10 clinical questions. 20 seconds each. Faster correct answers earn more points.</p><button className="primary" onClick={() => setScreen('details')}>Touch to start <span>→</span></button></div></div></main>;
 
-  if (screen === 'details') return <main className="page form-page"><section className="form-card"><button className="back" onClick={() => setScreen('welcome')}>← Back</button><span className="eyebrow">WELCOME, CHALLENGER</span><h1>Before we begin</h1><p>Get Ready with your Credentials<br />on Fast Track with Telmifast!</p><label>Full name<input autoComplete="name" placeholder="Your name" value={participant.name} onChange={(event) => setParticipant({ ...participant, name: event.target.value })} /></label><label>City<input placeholder="Your city" value={participant.city} onChange={(event) => setParticipant({ ...participant, city: event.target.value })} /></label><label>State<input autoComplete="address-level1" placeholder="Your state" value={participant.state} onChange={(event) => setParticipant({ ...participant, state: event.target.value })} /></label><label>Phone number<input inputMode="numeric" autoComplete="tel" maxLength="10" placeholder="9876543210" value={participant.phone} onChange={(event) => setParticipant({ ...participant, phone: event.target.value.replace(/\D/g, '').slice(0, 10) })} /></label>{error && <p className="error">{error}</p>}<button className="primary full" onClick={startQuiz}>Start the challenge <span>→</span></button></section></main>;
+  if (screen === 'details') return <main className="page form-page"><PageStickers /><section className="form-card"><button className="back" onClick={() => setScreen('welcome')}>← Back</button><span className="eyebrow">WELCOME, CHALLENGER</span><h1>Before we begin</h1><p>Get Ready with your Credentials<br />on Fast Track with Telmifast!</p><label>Full name<input autoComplete="name" placeholder="Your name" value={participant.name} onChange={(event) => setParticipant({ ...participant, name: event.target.value })} /></label><label>City<input placeholder="Your city" value={participant.city} onChange={(event) => setParticipant({ ...participant, city: event.target.value })} /></label><label>State<input autoComplete="address-level1" placeholder="Your state" value={participant.state} onChange={(event) => setParticipant({ ...participant, state: event.target.value })} /></label><label>Phone number<input inputMode="numeric" autoComplete="tel" maxLength="10" placeholder="9876543210" value={participant.phone} onChange={(event) => setParticipant({ ...participant, phone: event.target.value.replace(/\D/g, '').slice(0, 10) })} /></label>{error && <p className="error">{error}</p>}<button className="primary full" onClick={startQuiz}>Start the challenge <span>→</span></button></section></main>;
 
   if (screen === 'saving') return <main className="page"><div className="saving"><div className="spinner" /><h2>Calculating your score…</h2><p>Saving your place on the board.</p></div></main>;
 
@@ -361,7 +366,7 @@ function App() {
 
   if (screen === 'leaderboard') return <main className="page results-page"><section className="result-card leaderboard-page"><img className="leaderboard-brand" src="/images/fastrack-leaderboard-logo.png" alt="Fastrack with Telmifast" /><img className="leaderboard-hero" src="/images/live-leaderboard-header.png" alt="Live Leader Board" /><PodiumLeaderboard entries={leaderboard} refreshSeconds={refreshSeconds} />{error && <p className="error">{error}</p>}</section></main>;
 
-  if (screen === 'results') return <main className="page results-page">{(result?.score ?? 0) > 0 && <Confetti />}<section className="result-card"><span className="eyebrow">QUIZ COMPLETE</span><h1>Great pace, {participant.name.split(' ')[0]}!</h1><div className="score-ring"><strong>{result?.score ?? 0}</strong><span>out of 100</span></div><p><b>{result?.correctCount ?? 0}/10</b> correct answers. Your score rewards accuracy and speed.</p>{error && <p className="error">{error}</p>}</section></main>;
+  if (screen === 'results') return <main className="page results-page">{(result?.score ?? 0) > 0 && <Confetti />}<PageStickers /><section className="result-card"><span className="eyebrow">QUIZ COMPLETE</span><h1>Great pace, {participant.name.split(' ')[0]}!</h1><div className="score-ring"><strong>{result?.score ?? 0}</strong><span>out of 100</span></div><p><b>{result?.correctCount ?? 0}/10</b> correct answers. Your score rewards accuracy and speed.</p>{error && <p className="error">{error}</p>}</section></main>;
 
   return <main className="page quiz-page"><header className="quiz-header"><img className="question-logo" src="/images/quiz-header-sticker.png" alt="Fastrack with Telmifast Quiz Contest" /><span>QUESTION {index + 1}<small>/ 10</small></span><div className={`timer ${remaining <= 3 ? 'urgent' : ''}`}><i style={{ '--progress': `${(remaining / DURATION_SECONDS) * 100}%` }} /><b>{formatTime(remaining)}</b></div></header><section className="question-card"><div className="progress"><i style={{ width: `${((index + 1) / 10) * 100}%` }} /></div><div className="question-number">QUESTION {String(index + 1).padStart(2, '0')} <span>UP TO {scorePotential} POINTS</span></div><h1>{current?.question}</h1><div className="answers">{current && Object.entries(current.options).map(([key, text]) => <button disabled={Boolean(feedback)} className={feedback?.answer === key ? 'selected' : ''} key={key} onClick={() => resolveAnswer(key)}><b>{key}</b><span>{text}</span></button>)}</div>{feedback && <div className="feedback">{feedback.message}</div>}</section><QuizBanner /></main>;
 }

@@ -257,3 +257,21 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 /* Keep every panel visible when the available viewport is short. */
 .page > .hero-card, .page > .form-card, .page > .result-card, .page > .wheel-card, .page > .saving { transform: scale(var(--page-fit, 1)); transform-origin: center; }
 .quiz-page .question-card { min-height: 0; transform: scale(var(--question-fit, 1)); transform-origin: center; }
+
+/* Home branding: Telmifast is the 3D hero, while Linux Laboratories anchors the bottom. */
+.telmifast-home-logo { width: min(465px, 88%); max-height: 245px; margin-bottom: 38px; }
+.home-linux-logo { position: absolute; z-index: 2; bottom: 66px; width: min(170px, 38%); height: auto; filter: drop-shadow(0 4px 9px #000b); }
+
+/* Reuse the quiz header and sponsor artwork on the credentials and score screens. */
+.page-stickers { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.page-top-sticker, .page-bottom-sticker { position: absolute; left: 50%; height: auto; object-fit: contain; filter: drop-shadow(0 6px 11px #0009); }
+.page-top-sticker { top: clamp(8px, 2vh, 24px); width: min(230px, 38vw); transform: translateX(-50%); transform-style: preserve-3d; animation: page-sticker-3d 5.5s ease-in-out infinite; }
+.page-bottom-sticker { bottom: clamp(8px, 2vh, 24px); width: min(200px, 34vw); transform: translateX(-50%); }
+.form-page .form-card, .results-page > .result-card { z-index: 1; }
+@keyframes page-sticker-3d { 0%, 100% { transform: translateX(-50%) perspective(520px) rotateX(4deg) rotateY(-8deg); } 50% { transform: translateX(-50%) perspective(520px) rotateX(-4deg) rotateY(8deg) scale(1.035); } }
+@media (max-width: 730px) {
+  .telmifast-home-logo { width: min(300px, 82%); max-height: 160px; margin-bottom: 28px; }
+  .home-linux-logo { bottom: 52px; width: min(124px, 36%); }
+  .page-top-sticker { top: max(6px, env(safe-area-inset-top)); width: min(170px, 48vw); }
+  .page-bottom-sticker { bottom: max(7px, env(safe-area-inset-bottom)); width: min(152px, 43vw); }
+}
