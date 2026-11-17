@@ -331,6 +331,21 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 .wheel-pointer { background: linear-gradient(180deg, #ffec76, #ff3a45 52%, #a6002f); filter: drop-shadow(0 0 8px #ffb32d) drop-shadow(0 4px 3px #0008); }
 @keyframes wheel-speed-glow { 0%, 100% { transform: scale(.96) rotate(0deg); opacity: .55; } 50% { transform: scale(1.04) rotate(18deg); opacity: .95; } }
 
+/* Racing-wheel layout: road/tire outside, thin-rimmed color spinner inside. */
+.wheel-wrap { overflow: visible; background: radial-gradient(circle, #0a1422 0 56%, #101923 57% 76%, #050a12 77% 100%); border: 7px solid #cbd8e4; box-shadow: 0 0 0 5px #0a1421, 0 0 0 7px #24d8ff, 0 0 26px #00cfffaa, 0 24px 42px #000c; }
+.wheel-wrap::before { inset: 0; z-index: 0; border: 0; border-radius: inherit; background: radial-gradient(circle, transparent 0 57%, #1b2029 58% 75%, transparent 76%); filter: none; opacity: 1; animation: none; }
+.wheel-wrap::after { inset: 4%; z-index: 1; border: 0; border-radius: 50%; background: repeating-conic-gradient(transparent 0 8deg, #f5f9ff 8deg 10deg, transparent 10deg 18deg); box-shadow: none; -webkit-mask: radial-gradient(circle, transparent 0 60%, #000 61% 82%, transparent 83%); mask: radial-gradient(circle, transparent 0 60%, #000 61% 82%, transparent 83%); }
+.spin-wheel { position: absolute; inset: 15%; z-index: 2; width: auto; height: auto; border: 4px solid #eaf8ff; background: var(--wheel-fill); transform: rotate(var(--wheel-rotation, 0deg)); transform-origin: center; box-shadow: 0 0 0 3px #00d8ff, 0 0 18px #00cfff, inset 0 0 0 1px #ffffffcc; transition: transform 4.6s cubic-bezier(.11, .67, .08, 1); }
+.spin-wheel::before { inset: 4%; border: 2px solid #ffffffbf; box-shadow: inset 0 0 18px #06172d88, 0 0 8px #00dbff; }
+.spin-wheel::after { inset: 2px; border: 0; background: repeating-conic-gradient(transparent 0 17deg, #ffffffa6 17deg 19deg, transparent 19deg 30deg); opacity: .9; -webkit-mask: radial-gradient(circle, transparent 0 59%, #000 60%); mask: radial-gradient(circle, transparent 0 59%, #000 60%); }
+.wheel-pointer { z-index: 4; top: 11%; width: 48px; height: 66px; }
+.wheel-hub { z-index: 5; border-width: 5px; }
+@media (max-width: 600px) {
+  .wheel-wrap { border-width: 5px; box-shadow: 0 0 0 3px #0a1421, 0 0 0 5px #24d8ff, 0 0 20px #00cfff88, 0 16px 30px #000c; }
+  .wheel-pointer { width: 38px; height: 54px; }
+  .spin-wheel { border-width: 3px; box-shadow: 0 0 0 2px #00d8ff, 0 0 13px #00cfff, inset 0 0 0 1px #ffffffcc; }
+}
+
 /* Mobile quiz header: a larger race logo with a dedicated timer position. */
 @media (max-width: 730px) {
   .quiz-header { height: 132px; }

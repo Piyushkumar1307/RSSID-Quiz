@@ -136,7 +136,7 @@ function SpinWheelPage() {
     if (!candidates.length) return { '--wheel-fill': 'conic-gradient(#ef7b3b, #f5be3e, #3868a9, #4cae9b, #d8576c, #8263b5, #ef7b3b)' };
     const slice = 360 / candidates.length;
     const stops = candidates.map((_, index) => `${WHEEL_COLORS[index % WHEEL_COLORS.length]} ${index * slice}deg ${(index + 1) * slice}deg`).join(', ');
-    return { '--wheel-fill': `conic-gradient(from ${-slice / 2}deg, ${stops})`, transform: `rotate(${rotation}deg)` };
+    return { '--wheel-fill': `conic-gradient(from ${-slice / 2}deg, ${stops})`, '--wheel-rotation': `${rotation}deg` };
   }, [candidates, rotation]);
 
   const spin = async () => {
