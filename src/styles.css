@@ -346,10 +346,15 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
   .spin-wheel { border-width: 3px; box-shadow: 0 0 0 2px #00d8ff, 0 0 13px #00cfff, inset 0 0 0 1px #ffffffcc; }
 }
 
+.card-timer { display: none; }
+
 /* Mobile quiz header: a larger race logo with a dedicated timer position. */
 @media (max-width: 730px) {
-  .quiz-header { height: 132px; }
+  .quiz-header { height: 132px; justify-content: center; }
   .quiz-page { grid-template-rows: 132px minmax(0, 1fr) 92px; }
-  .question-logo { width: min(205px, 54vw); height: 67px; top: 21px; left: 45%; }
-  .timer { right: max(14px, env(safe-area-inset-right)); bottom: 12px; min-width: 104px; height: 44px; font-size: 1rem; }
+  .question-logo { width: min(280px, 76vw); height: 98px; top: 14px; left: 50%; }
+  .header-timer { display: none; }
+  .question-card .card-timer { display: grid; position: absolute; top: 13px; right: auto; bottom: auto; left: 50%; min-width: 90px; height: 39px; transform: translateX(-50%); font-size: .9rem; z-index: 2; }
+  .question-card .question-number { font-size: .58rem; }
+  .question-card .question-number span { font-size: .54rem; }
 }
