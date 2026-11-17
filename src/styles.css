@@ -260,7 +260,8 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 
 /* Home branding: the contest artwork replaces the former floating sticker. */
 .home-quiz-banner { position: absolute; z-index: 1; inset: 0 0 auto; width: 100%; height: 62%; object-fit: cover; object-position: center; filter: drop-shadow(0 8px 14px #000a); }
-.home-linux-logo { position: absolute; z-index: 2; bottom: 66px; width: min(170px, 38%); height: auto; filter: drop-shadow(0 4px 9px #000b); }
+.home-linux-logo { position: absolute; z-index: 3; bottom: 66px; width: min(170px, 38%); height: auto; filter: drop-shadow(0 4px 9px #000b); }
+.fastrack-highlight { color: #ff7b1d; font-weight: 800; text-shadow: 0 0 12px #ff7b1d55; }
 
 /* Reuse the quiz header and sponsor artwork on the credentials and score screens. */
 .page-stickers { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
@@ -271,7 +272,7 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 @keyframes page-sticker-3d { 0%, 100% { transform: translateX(-50%) perspective(520px) rotateX(4deg) rotateY(-8deg); } 50% { transform: translateX(-50%) perspective(520px) rotateX(-4deg) rotateY(8deg) scale(1.035); } }
 @media (max-width: 730px) {
   .home-quiz-banner { height: 61%; }
-  .home-linux-logo { bottom: 52px; width: min(124px, 36%); }
+  .home-linux-logo { bottom: max(52px, env(safe-area-inset-bottom)); width: min(124px, 36%); }
   .page-top-sticker { top: max(6px, env(safe-area-inset-top)); width: min(170px, 48vw); }
   .page-bottom-sticker { bottom: max(7px, env(safe-area-inset-bottom)); width: min(152px, 43vw); }
 }

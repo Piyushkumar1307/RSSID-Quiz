@@ -48,6 +48,12 @@ function PageStickers() {
   return <div className="page-stickers" aria-hidden="true"><img className="page-top-sticker" src="/images/quiz-header-sticker.png" alt="" /><img className="page-bottom-sticker" src="/images/telmifast-sticker.png" alt="" /></div>;
 }
 
+function HighlightFastrack({ children }) {
+  if (typeof children !== 'string') return children;
+  const parts = children.split(/(fastrack|fast\s+track)/gi);
+  return <>{parts.map((part, index) => /^(fastrack|fast\s+track)$/i.test(part) ? <strong className="fastrack-highlight" key={index}>{part}</strong> : part)}</>;
+}
+
 function useViewportFit(screen) {
   useLayoutEffect(() => {
     const page = document.querySelector('main.page');
@@ -376,7 +382,7 @@ function App() {
 
   if (screen === 'results') return <main className="page results-page">{(result?.score ?? 0) > 0 && <Confetti />}<PageStickers /><section className="result-card"><span className="eyebrow">QUIZ COMPLETE</span><h1>Great pace, {participant.name.split(' ')[0]}!</h1><div className="score-ring"><strong>{result?.score ?? 0}</strong><span>out of 100</span></div><p><b>{result?.correctCount ?? 0}/10</b> correct answers. Your score rewards accuracy and speed.</p>{error && <p className="error">{error}</p>}</section></main>;
 
-  return <main className="page quiz-page"><header className="quiz-header"><img className="question-logo" src="/images/quiz-header-sticker.png" alt="Fastrack with Telmifast Quiz Contest" /><span>QUESTION {index + 1}<small>/ 10</small></span><div className={`timer ${remaining <= 3 ? 'urgent' : ''}`}><i style={{ '--progress': `${(remaining / DURATION_SECONDS) * 100}%` }} /><b>{formatTime(remaining)}</b></div></header><section className="question-card"><div className="progress"><i style={{ width: `${((index + 1) / 10) * 100}%` }} /></div><div className="question-number">QUESTION {String(index + 1).padStart(2, '0')} <span>UP TO {scorePotential} POINTS</span></div><h1>{current?.question}</h1><div className="answers">{current && Object.entries(current.options).map(([key, text]) => <button disabled={Boolean(feedback)} className={feedback?.answer === key ? 'selected' : ''} key={key} onClick={() => resolveAnswer(key)}><b>{key}</b><span>{text}</span></button>)}</div>{feedback && <div className="feedback">{feedback.message}</div>}</section><QuizBanner /></main>;
+  return <main className="page quiz-page"><header className="quiz-header"><img className="question-logo" src="/images/quiz-header-sticker.png" alt="Fastrack with Telmifast Quiz Contest" /><span>QUESTION {index + 1}<small>/ 10</small></span><div className={`timer ${remaining <= 3 ? 'urgent' : ''}`}><i style={{ '--progress': `${(remaining / DURATION_SECONDS) * 100}%` }} /><b>{formatTime(remaining)}</b></div></header><section className="question-card"><div className="progress"><i style={{ width: `${((index + 1) / 10) * 100}%` }} /></div><div className="question-number">QUESTION {String(index + 1).padStart(2, '0')} <span>UP TO {scorePotential} POINTS</span></div><h1><HighlightFastrack>{current?.question}</HighlightFastrack></h1><div className="answers">{current && Object.entries(current.options).map(([key, text]) => <button disabled={Boolean(feedback)} className={feedback?.answer === key ? 'selected' : ''} key={key} onClick={() => resolveAnswer(key)}><b>{key}</b><span><HighlightFastrack>{text}</HighlightFastrack></span></button>)}</div>{feedback && <div className="feedback">{feedback.message}</div>}</section><QuizBanner /></main>;
 }
 
 createRoot(document.getElementById('root')).render(<App />);
