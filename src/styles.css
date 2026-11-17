@@ -285,3 +285,16 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 .thankyou-page { display: grid; place-items: center; align-content: center; gap: 12px; padding: 20px; background: #fff; color: #152b65; }
 .thankyou-art { display: block; width: min(1100px, 94vw); max-height: calc(100dvh - 82px); object-fit: contain; filter: drop-shadow(0 10px 24px #112a5530); }
 .thankyou-page p { margin: 0; color: #364766; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+
+/* Higher-visibility identity and answer feedback. */
+.form-page .page-top-sticker { width: min(300px, 48vw); }
+.wheel-brand { width: min(440px, 88%); margin-bottom: 10px; }
+.wheel-card h1 { font-size: clamp(2rem, 4.8vw, 3.25rem); }
+.answers button.is-correct { background: linear-gradient(90deg, #0f684d, #159567); border-color: #4cffad; color: #f3fff9; box-shadow: 0 0 0 1px #4cffad99, 0 0 22px #26d88388; }
+.answers button.is-wrong { background: linear-gradient(90deg, #7d1c35, #b82e4e); border-color: #ff6d88; color: #fff5f7; box-shadow: 0 0 0 1px #ff6d8899, 0 0 22px #ff315d77; }
+.answers button.is-correct b, .answers button.is-wrong b { color: inherit; border-color: currentColor; background: #ffffff18; }
+@media (max-width: 730px) {
+  .form-page .page-top-sticker { width: min(240px, 64vw); }
+  .wheel-brand { width: min(340px, 90%); }
+  .wheel-card h1 { font-size: clamp(1.85rem, 9vw, 2.55rem); }
+}
