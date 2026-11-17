@@ -358,3 +358,13 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
   .question-card .question-number { font-size: .58rem; }
   .question-card .question-number span { font-size: .54rem; }
 }
+
+/* Exact plant-free road rim derived from the supplied wheel reference. */
+.wheel-wrap { background: transparent; border: 0; box-shadow: none; }
+.wheel-wrap::before, .wheel-wrap::after { display: none; }
+.wheel-road-ring { position: absolute; z-index: 3; inset: -3%; width: 106%; height: 106%; object-fit: contain; pointer-events: none; filter: drop-shadow(0 0 9px #00d9ff88) drop-shadow(0 16px 25px #000b); }
+.spin-wheel { inset: 19%; z-index: 2; border: 3px solid #f5fbff; box-shadow: 0 0 0 2px #00d8ff, 0 0 15px #00cfff, inset 0 0 0 1px #ffffffcc; }
+.spin-wheel::before { border-width: 1px; }
+.wheel-pointer { z-index: 4; top: 12%; }
+.wheel-hub { z-index: 5; }
+@media (max-width: 600px) { .wheel-road-ring { inset: -2%; width: 104%; height: 104%; }.spin-wheel { inset: 19%; border-width: 2px; } }
