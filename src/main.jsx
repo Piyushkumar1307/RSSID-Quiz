@@ -271,6 +271,12 @@ function App() {
   }, [screen, result?.score, playSound]);
 
   useEffect(() => {
+    if (screen !== 'thankyou') return undefined;
+    const timer = window.setTimeout(() => setScreen('results'), 3000);
+    return () => window.clearTimeout(timer);
+  }, [screen]);
+
+  useEffect(() => {
     if (screen === 'quiz') {
       const music = prepareBackgroundMusic();
       music.volume = 0.7;
@@ -327,7 +333,7 @@ function App() {
       const response = await fetch(`${API}/submissions`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...participant, answers: finalAnswers }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
-      setResult(data); setScreen('results');
+      setResult(data); setScreen('thankyou');
     } catch (submitError) { setError(submitError.message || 'Could not save this quiz.'); setScreen('quiz'); }
   };
 
@@ -356,11 +362,13 @@ function App() {
   const current = quiz[index];
   const scorePotential = useMemo(() => Math.max(1, Math.ceil(10 - (DURATION_SECONDS - remaining) / 2)), [remaining]);
 
-  if (screen === 'welcome') return <main className="page welcome"><div className="glow glow-one" /><div className="hero-card"><div className="hero-art"><img className="home-logo telmifast-home-logo" src="/images/telmifast-sticker.png" alt="Telmifast" /><img className="home-linux-logo" src="/images/linux-laboratories-logo.png" alt="Linux Laboratories" /><div className="road">THE <i>FAST</i> TRACK TO BP CONTROL</div></div><div className="hero-copy"><span className="eyebrow">CARDIO–DIABETES CHALLENGE</span><h1>Think fast.<br /><em>Make every second count.</em></h1><p>10 clinical questions. 20 seconds each. Faster correct answers earn more points.</p><button className="primary" onClick={() => setScreen('details')}>Touch to start <span>→</span></button></div></div></main>;
+  if (screen === 'welcome') return <main className="page welcome"><div className="glow glow-one" /><div className="hero-card"><div className="hero-art"><img className="home-quiz-banner" src="/images/home-quiz-banner.png" alt="Fastrack with Telmifast Quiz Contest" /><img className="home-linux-logo" src="/images/linux-laboratories-logo.png" alt="Linux Laboratories" /><div className="road">THE <i>FAST</i> TRACK TO BP CONTROL</div></div><div className="hero-copy"><span className="eyebrow">CARDIO–DIABETES CHALLENGE</span><h1>Think fast.<br /><em>Make every second count.</em></h1><p>10 clinical questions. 20 seconds each. Faster correct answers earn more points.</p><button className="primary" onClick={() => setScreen('details')}>Touch to start <span>→</span></button></div></div></main>;
 
   if (screen === 'details') return <main className="page form-page"><PageStickers /><section className="form-card"><button className="back" onClick={() => setScreen('welcome')}>← Back</button><span className="eyebrow">WELCOME, CHALLENGER</span><h1>Before we begin</h1><p>Get Ready with your Credentials<br />on Fast Track with Telmifast!</p><label>Full name<input autoComplete="name" placeholder="Your name" value={participant.name} onChange={(event) => setParticipant({ ...participant, name: event.target.value })} /></label><label>City<input placeholder="Your city" value={participant.city} onChange={(event) => setParticipant({ ...participant, city: event.target.value })} /></label><label>State<input autoComplete="address-level1" placeholder="Your state" value={participant.state} onChange={(event) => setParticipant({ ...participant, state: event.target.value })} /></label><label>Phone number<input inputMode="numeric" autoComplete="tel" maxLength="10" placeholder="9876543210" value={participant.phone} onChange={(event) => setParticipant({ ...participant, phone: event.target.value.replace(/\D/g, '').slice(0, 10) })} /></label>{error && <p className="error">{error}</p>}<button className="primary full" onClick={startQuiz}>Start the challenge <span>→</span></button></section></main>;
 
   if (screen === 'saving') return <main className="page"><div className="saving"><div className="spinner" /><h2>Calculating your score…</h2><p>Saving your place on the board.</p></div></main>;
+
+  if (screen === 'thankyou') return <main className="page thankyou-page"><img className="thankyou-art" src="/images/thankyou-quiz.png" alt="Thank you for participating in the Telmifast Quiz Contest" /><p>Preparing your score…</p></main>;
 
   if (screen === 'spin') return <SpinWheelPage />;
 

@@ -2,1101 +2,1101 @@
 export const questions = [
   {
     "id": 1,
-    "question": "Which of the following is the primary pathophysiological defect in Type 2 Diabetes Mellitus?",
+    "question": "Which is the fastest land animal in the world?",
     "options": {
-      "A": "Absolute insulin deficiency",
-      "B": "Insulin resistance with progressive beta-cell dysfunction",
-      "C": "Increased glucagon sensitivity",
-      "D": "Reduced renal glucose filtration"
+      "A": "Lion",
+      "B": "Cheetah",
+      "C": "Leopard",
+      "D": "Tiger"
     },
     "answer": "B"
   },
   {
     "id": 2,
-    "question": "Which HbA1c value is diagnostic of diabetes mellitus?",
+    "question": "Which bird is the fastest in the world during a hunting dive?",
     "options": {
-      "A": "≥5.7%",
-      "B": "≥6.0%",
-      "C": "≥6.5%",
-      "D": "≥7.5%"
+      "A": "Golden Eagle",
+      "B": "Peregrine Falcon",
+      "C": "Bald Eagle",
+      "D": "Hawk"
     },
-    "answer": "C"
+    "answer": "B"
   },
   {
     "id": 3,
-    "question": "Which of the following reflects average blood glucose over approximately 2–3 months?",
+    "question": "Which is the fastest dog breed in the world?",
     "options": {
-      "A": "Fasting plasma glucose",
-      "B": "HbA1c",
-      "C": "Postprandial glucose",
-      "D": "Random blood glucose"
-    },
-    "answer": "B"
-  },
-  {
-    "id": 4,
-    "question": "Which hormone is primarily responsible for suppressing hepatic glucose production?",
-    "options": {
-      "A": "Glucagon",
-      "B": "Cortisol",
-      "C": "Insulin",
-      "D": "Growth hormone"
+      "A": "German Shepherd",
+      "B": "Labrador",
+      "C": "Greyhound",
+      "D": "Rottweiler"
     },
     "answer": "C"
   },
   {
-    "id": 5,
-    "question": "Which of the following is a characteristic feature of diabetic ketoacidosis (DKA)?",
+    "id": 4,
+    "question": "Which animal is recognised as one of the fastest long-distance runners on land?",
     "options": {
-      "A": "Metabolic alkalosis",
-      "B": "High anion gap metabolic acidosis",
-      "C": "Respiratory alkalosis",
-      "D": "Hypoglycaemia in all cases"
+      "A": "Lion",
+      "B": "Pronghorn",
+      "C": "Elephant",
+      "D": "Wolf"
     },
     "answer": "B"
+  },
+  {
+    "id": 5,
+    "question": "Which is the fastest shark species commonly recognised in speed records?",
+    "options": {
+      "A": "Great White Shark",
+      "B": "Whale Shark",
+      "C": "Shortfin Mako Shark",
+      "D": "Hammerhead Shark"
+    },
+    "answer": "C"
   },
   {
     "id": 6,
-    "question": "Which organ is primarily responsible for insulin clearance?",
+    "question": "Which is the fastest bird when running on land?",
     "options": {
-      "A": "Lungs",
-      "B": "Liver and kidneys",
-      "C": "Spleen",
-      "D": "Pancreas only"
-    },
-    "answer": "B"
-  },
-  {
-    "id": 7,
-    "question": "Which of the following is a commonly used marker of insulin resistance?",
-    "options": {
-      "A": "HOMA-IR",
-      "B": "eGFR",
-      "C": "BNP",
-      "D": "Troponin-I"
+      "A": "Ostrich",
+      "B": "Peacock",
+      "C": "Emu",
+      "D": "Penguin"
     },
     "answer": "A"
   },
   {
-    "id": 8,
-    "question": "Which is the most common type of diabetes worldwide?",
+    "id": 7,
+    "question": "Which is the fastest-growing plant commonly cited in world records?",
     "options": {
-      "A": "Type 1 diabetes",
-      "B": "Type 2 diabetes",
-      "C": "Gestational diabetes",
-      "D": "Monogenic diabetes"
+      "A": "Neem",
+      "B": "Bamboo",
+      "C": "Banyan",
+      "D": "Teak"
     },
     "answer": "B"
   },
   {
-    "id": 9,
-    "question": "Which of the following is a microvascular complication of diabetes?",
+    "id": 8,
+    "question": "Which animal is famous for its extremely fast tongue projection when catching prey?",
     "options": {
-      "A": "Myocardial infarction",
-      "B": "Stroke",
-      "C": "Diabetic retinopathy",
-      "D": "Peripheral arterial disease"
+      "A": "Chameleon",
+      "B": "Crocodile",
+      "C": "Elephant",
+      "D": "Giraffe"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 9,
+    "question": "Which bird is the fastest during a high-speed hunting dive?",
+    "options": {
+      "A": "Eagle",
+      "B": "Peregrine Falcon",
+      "C": "Albatross",
+      "D": "Peacock"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 10,
+    "question": "Which horse breed is known for the fastest short-distance sprint racing?",
+    "options": {
+      "A": "Arabian",
+      "B": "Thoroughbred",
+      "C": "American Quarter Horse",
+      "D": "Mustang"
     },
     "answer": "C"
   },
   {
-    "id": 10,
-    "question": "Which test is most useful for screening diabetic kidney disease?",
-    "options": {
-      "A": "Serum bilirubin",
-      "B": "Urine albumin-to-creatinine ratio",
-      "C": "Serum amylase",
-      "D": "Total cholesterol"
-    },
-    "answer": "B"
-  },
-  {
     "id": 11,
-    "question": "What is the usual HbA1c target for many non-pregnant adults with diabetes, when safely achievable?",
+    "question": "Which planet has the fastest rotation on its axis?",
     "options": {
-      "A": "Below 5%",
-      "B": "Below 6%",
-      "C": "Below 7%",
-      "D": "Below 9%"
+      "A": "Earth",
+      "B": "Mars",
+      "C": "Jupiter",
+      "D": "Venus"
     },
     "answer": "C"
   },
   {
     "id": 12,
-    "question": "Which vitamin deficiency is associated with long-term metformin use?",
+    "question": "Which planet has the fastest revolution around the Sun?",
     "options": {
-      "A": "Vitamin A",
-      "B": "Vitamin B12",
-      "C": "Vitamin C",
-      "D": "Vitamin K"
+      "A": "Earth",
+      "B": "Mercury",
+      "C": "Jupiter",
+      "D": "Saturn"
     },
     "answer": "B"
   },
   {
     "id": 13,
-    "question": "Which of the following is a long-term complication of uncontrolled diabetes affecting peripheral nerves?",
+    "question": "Which is the fastest human-made spacecraft ever recorded?",
     "options": {
-      "A": "Neuropathy",
-      "B": "Pneumonia",
-      "C": "Hepatitis",
-      "D": "Osteoporosis"
+      "A": "Voyager 1",
+      "B": "Apollo 11",
+      "C": "Parker Solar Probe",
+      "D": "Sputnik 1"
     },
-    "answer": "A"
+    "answer": "C"
   },
   {
     "id": 14,
-    "question": "Which glucose transporter is insulin-dependent in skeletal muscle and adipose tissue?",
+    "question": "What is the fastest possible speed of light in a vacuum, approximately?",
     "options": {
-      "A": "GLUT-1",
-      "B": "GLUT-2",
-      "C": "GLUT-3",
-      "D": "GLUT-4"
+      "A": "100,000 km/s",
+      "B": "200,000 km/s",
+      "C": "300,000 km/s",
+      "D": "500,000 km/s"
     },
-    "answer": "D"
+    "answer": "C"
   },
   {
     "id": 15,
-    "question": "Which of the following is a recognised risk factor for Type 2 diabetes?",
+    "question": "Which is the fastest swimming marine mammal among these options?",
     "options": {
-      "A": "Physical inactivity",
-      "B": "Obesity",
-      "C": "Family history",
-      "D": "All of the above"
-    },
-    "answer": "D"
-  },
-  {
-    "id": 16,
-    "question": "Which parameter is used to assess long-term glycaemic exposure?",
-    "options": {
-      "A": "HbA1c",
-      "B": "Serum sodium",
-      "C": "Serum calcium",
-      "D": "Haemoglobin"
-    },
-    "answer": "A"
-  },
-  {
-    "id": 17,
-    "question": "Which of the following is a typical feature of hypoglycaemia?",
-    "options": {
-      "A": "Sweating and tremors",
-      "B": "Polyuria",
-      "C": "Excessive thirst",
-      "D": "Weight gain"
-    },
-    "answer": "A"
-  },
-  {
-    "id": 18,
-    "question": "The dawn phenomenon refers to:",
-    "options": {
-      "A": "Nocturnal hypoglycaemia",
-      "B": "Early morning rise in blood glucose",
-      "C": "Post-lunch glucose rise",
-      "D": "Sudden glucose fall after exercise"
+      "A": "Blue Whale",
+      "B": "Common Dolphin",
+      "C": "Sea Otter",
+      "D": "Seal"
     },
     "answer": "B"
   },
   {
-    "id": 19,
-    "question": "Which pancreatic cells secrete insulin?",
+    "id": 16,
+    "question": "Which planet has the fastest orbital speed around the Sun?",
     "options": {
-      "A": "Alpha cells",
-      "B": "Beta cells",
-      "C": "Delta cells",
-      "D": "PP cells"
+      "A": "Venus",
+      "B": "Mercury",
+      "C": "Mars",
+      "D": "Neptune"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 17,
+    "question": "Which is the fastest-rotating major planet in our solar system?",
+    "options": {
+      "A": "Earth",
+      "B": "Jupiter",
+      "C": "Saturn",
+      "D": "Neptune"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 18,
+    "question": "Which bird is among the fastest in level, powered flight?",
+    "options": {
+      "A": "Common Swift",
+      "B": "Ostrich",
+      "C": "Peacock",
+      "D": "Penguin"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 19,
+    "question": "Which is the fastest land animal over a short sprint?",
+    "options": {
+      "A": "Horse",
+      "B": "Cheetah",
+      "C": "Lion",
+      "D": "Greyhound"
     },
     "answer": "B"
   },
   {
     "id": 20,
-    "question": "Which of the following best describes metabolic syndrome?",
+    "question": "Which spacecraft has achieved the fastest recorded speed?",
     "options": {
-      "A": "A combination of cardiometabolic risk factors",
-      "B": "An isolated thyroid disorder",
-      "C": "A type of renal failure",
-      "D": "An acute pancreatic infection"
+      "A": "New Horizons",
+      "B": "Parker Solar Probe",
+      "C": "Voyager 2",
+      "D": "Juno"
     },
-    "answer": "A"
+    "answer": "B"
   },
   {
     "id": 21,
-    "question": "What is the most common cause of mortality among patients with Type 2 Diabetes?",
+    "question": "Who holds the record for the fastest century in Men's ODI cricket?",
     "options": {
-      "A": "Diabetic retinopathy",
-      "B": "Cardiovascular disease",
-      "C": "Diabetic neuropathy",
-      "D": "Hypothyroidism"
+      "A": "Shahid Afridi",
+      "B": "Corey Anderson",
+      "C": "AB de Villiers",
+      "D": "Chris Gayle"
     },
-    "answer": "B"
+    "answer": "C"
   },
   {
     "id": 22,
-    "question": "Which of the following is considered a major adverse cardiovascular event (MACE)?",
+    "question": "In how many balls did AB de Villiers score his fastest Men's ODI century?",
     "options": {
-      "A": "Myocardial infarction",
-      "B": "Stroke",
-      "C": "Cardiovascular death",
-      "D": "All of the above"
-    },
-    "answer": "D"
-  },
-  {
-    "id": 23,
-    "question": "Which ECG change is classically associated with acute myocardial infarction?",
-    "options": {
-      "A": "ST-segment elevation",
-      "B": "Short PR interval",
-      "C": "Prolonged QT interval only",
-      "D": "Delta wave"
+      "A": "31",
+      "B": "36",
+      "C": "40",
+      "D": "45"
     },
     "answer": "A"
   },
   {
-    "id": 24,
-    "question": "Which biomarker is most specific for myocardial injury?",
+    "id": 23,
+    "question": "Who holds the record for the fastest century in Men's Test cricket?",
     "options": {
-      "A": "CK-MB",
-      "B": "Troponin-I",
-      "C": "LDH",
-      "D": "Myoglobin"
+      "A": "Virender Sehwag",
+      "B": "Brendon McCullum",
+      "C": "Adam Gilchrist",
+      "D": "Chris Gayle"
     },
     "answer": "B"
   },
   {
-    "id": 25,
-    "question": "Which cardiovascular complication is particularly associated with diabetes?",
+    "id": 24,
+    "question": "In how many balls did Brendon McCullum score his fastest Test century?",
     "options": {
-      "A": "Silent myocardial ischaemia",
-      "B": "Aortic dissection",
-      "C": "Rheumatic heart disease",
-      "D": "Mitral stenosis"
+      "A": "54",
+      "B": "56",
+      "C": "60",
+      "D": "65"
     },
     "answer": "A"
   },
   {
-    "id": 26,
-    "question": "What is the primary mechanism of diabetic cardiomyopathy?",
+    "id": 25,
+    "question": "Who holds the record for the fastest half-century in Men's ODI cricket?",
     "options": {
-      "A": "Only coronary artery obstruction",
-      "B": "Myocardial structural and functional abnormalities associated with diabetes",
-      "C": "Congenital heart defects",
-      "D": "Acute valvular infection"
+      "A": "Yuvraj Singh",
+      "B": "AB de Villiers",
+      "C": "Shahid Afridi",
+      "D": "Sanath Jayasuriya"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 26,
+    "question": "In how many balls did AB de Villiers score his fastest ODI fifty?",
+    "options": {
+      "A": "12",
+      "B": "16",
+      "C": "18",
+      "D": "20"
     },
     "answer": "B"
   },
   {
     "id": 27,
-    "question": "Which parameter is most commonly used to assess left ventricular systolic function?",
+    "question": "Who scored a 12-ball fifty in 2007 – then the fastest in T20 International history?",
     "options": {
-      "A": "Ejection fraction",
-      "B": "Serum creatinine",
-      "C": "HbA1c",
-      "D": "Serum potassium"
+      "A": "Yuvraj Singh",
+      "B": "Rohit Sharma",
+      "C": "Chris Gayle",
+      "D": "Virat Kohli"
     },
     "answer": "A"
   },
   {
     "id": 28,
-    "question": "What is the usual diagnostic threshold for hypertension based on office BP in many major guidelines?",
+    "question": "Against which bowler did Yuvraj Singh hit six sixes in one over during the 2007 T20 World Cup?",
     "options": {
-      "A": "110/70 mmHg",
-      "B": "120/80 mmHg",
-      "C": "130/80 mmHg",
-      "D": "140/90 mmHg"
+      "A": "Stuart Broad",
+      "B": "James Anderson",
+      "C": "Andrew Flintoff",
+      "D": "Chris Tremlett"
     },
-    "answer": "D"
+    "answer": "A"
   },
   {
     "id": 29,
-    "question": "Which of the following is a major modifiable cardiovascular risk factor in diabetes?",
+    "question": "Who scored a 45-ball century in 2012 – then the fastest in T20 International history?",
     "options": {
-      "A": "Smoking",
-      "B": "Dyslipidaemia",
-      "C": "Hypertension",
-      "D": "All of the above"
-    },
-    "answer": "D"
-  },
-  {
-    "id": 30,
-    "question": "Which lipoprotein is commonly referred to as bad cholesterol?",
-    "options": {
-      "A": "HDL",
-      "B": "LDL",
-      "C": "Albumin",
-      "D": "Chylomicron"
+      "A": "Chris Gayle",
+      "B": "Richard Levi",
+      "C": "Rohit Sharma",
+      "D": "David Miller"
     },
     "answer": "B"
   },
   {
-    "id": 31,
-    "question": "Which lipid parameter is particularly associated with atherogenic dyslipidaemia in Type 2 Diabetes?",
+    "id": 30,
+    "question": "Who holds the record for the fastest century in IPL history?",
     "options": {
-      "A": "Low HDL with elevated triglycerides",
-      "B": "High HDL with low triglycerides",
-      "C": "Low total cholesterol only",
-      "D": "Low LDL with high HDL"
+      "A": "Chris Gayle",
+      "B": "David Miller",
+      "C": "Yusuf Pathan",
+      "D": "Travis Head"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 31,
+    "question": "In how many balls did Chris Gayle score his fastest IPL century?",
+    "options": {
+      "A": "30",
+      "B": "35",
+      "C": "40",
+      "D": "45"
     },
     "answer": "A"
   },
   {
     "id": 32,
-    "question": "What is the primary benefit of statin therapy in patients with diabetes and cardiovascular risk?",
+    "question": "Who was the fastest batter to reach 10,000 runs in Men's ODI cricket, by innings?",
     "options": {
-      "A": "Increased insulin secretion",
-      "B": "Reduction in LDL cholesterol and cardiovascular events",
-      "C": "Increased HDL by 50% in all patients",
-      "D": "Direct reduction of HbA1c"
+      "A": "Sachin Tendulkar",
+      "B": "Virat Kohli",
+      "C": "Sourav Ganguly",
+      "D": "MS Dhoni"
     },
     "answer": "B"
   },
   {
     "id": 33,
-    "question": "Which of the following is a common presentation of heart failure with preserved ejection fraction (HFpEF)?",
+    "question": "Who was the fastest batter to reach 15,000 runs in Men's ODI cricket, by innings?",
     "options": {
-      "A": "Heart failure symptoms with LVEF ≥50%",
-      "B": "Heart failure with LVEF below 20% only",
-      "C": "Isolated hypertension without symptoms",
-      "D": "Asymptomatic bradycardia"
+      "A": "Rohit Sharma",
+      "B": "Virat Kohli",
+      "C": "Sachin Tendulkar",
+      "D": "Babar Azam"
     },
-    "answer": "A"
+    "answer": "B"
   },
   {
     "id": 34,
-    "question": "Which peptide is commonly elevated in patients with heart failure?",
+    "question": "Which Indian batter equalled the record for the fastest IPL fifty in 13 balls in 2026?",
     "options": {
-      "A": "BNP",
-      "B": "Insulin",
-      "C": "Amylase",
-      "D": "Calcitonin"
+      "A": "Urvil Patel",
+      "B": "Yuvraj Singh",
+      "C": "Abhishek Sharma",
+      "D": "Rishabh Pant"
     },
     "answer": "A"
   },
   {
     "id": 35,
-    "question": "Which of the following is a recognised cardiovascular benefit of SGLT2 inhibitors?",
+    "question": "Which bowler delivered the fastest recorded ball in a men's Test match, commonly listed at 160.4 km/h?",
     "options": {
-      "A": "Reduction in heart failure hospitalisation",
-      "B": "Increased myocardial oxygen demand",
-      "C": "Increased sodium retention",
-      "D": "Increased LDL in every patient"
+      "A": "Mitchell Starc",
+      "B": "Shoaib Akhtar",
+      "C": "Brett Lee",
+      "D": "Shaun Tait"
     },
     "answer": "A"
   },
   {
     "id": 36,
-    "question": "Which of the following conditions increases the risk of cardiovascular disease in diabetes?",
+    "question": "Who holds the record for the fastest Test half-century, scored in 21 balls?",
     "options": {
-      "A": "Chronic kidney disease",
-      "B": "Albuminuria",
-      "C": "Hypertension",
-      "D": "All of the above"
-    },
-    "answer": "D"
-  },
-  {
-    "id": 37,
-    "question": "What does ASCVD stand for?",
-    "options": {
-      "A": "Acute Systemic Cardiac Vascular Disease",
-      "B": "Atherosclerotic Cardiovascular Disease",
-      "C": "Advanced Systolic Coronary Valve Disease",
-      "D": "Arterial Systemic Circulatory Venous Disease"
+      "A": "Brendon McCullum",
+      "B": "Misbah-ul-Haq",
+      "C": "Virender Sehwag",
+      "D": "Adam Gilchrist"
     },
     "answer": "B"
   },
   {
-    "id": 38,
-    "question": "Which of the following is a typical feature of peripheral arterial disease (PAD)?",
+    "id": 37,
+    "question": "Which Indian batter scored the fastest double century in Men's ODI cricket, in 126 balls?",
     "options": {
-      "A": "Intermittent claudication",
-      "B": "Productive cough",
-      "C": "Blurred vision only",
-      "D": "Polyuria"
+      "A": "Rohit Sharma",
+      "B": "Virender Sehwag",
+      "C": "Ishan Kishan",
+      "D": "Shubman Gill"
+    },
+    "answer": "C"
+  },
+  {
+    "id": 38,
+    "question": "Who scored the fastest century in Men's ODI World Cup history, in 40 balls in 2023?",
+    "options": {
+      "A": "Glenn Maxwell",
+      "B": "Aiden Markram",
+      "C": "Kevin O'Brien",
+      "D": "Rohit Sharma"
     },
     "answer": "A"
   },
   {
     "id": 39,
-    "question": "Which measurement is commonly used to diagnose peripheral arterial disease?",
+    "question": "Who holds the record for the fastest century in a Women's ODI World Cup match?",
     "options": {
-      "A": "Ankle-Brachial Index",
-      "B": "Body Mass Index",
-      "C": "HOMA-IR",
-      "D": "QT interval"
+      "A": "Meg Lanning",
+      "B": "Karen Rolton",
+      "C": "Nat Sciver-Brunt",
+      "D": "Mithali Raj"
     },
-    "answer": "A"
+    "answer": "B"
   },
   {
     "id": 40,
-    "question": "Which of the following best explains why cardiovascular risk is higher in diabetes?",
+    "question": "Who was the fastest Indian to reach 10,000 runs in Men's ODI cricket, by innings?",
     "options": {
-      "A": "Endothelial dysfunction",
-      "B": "Chronic inflammation",
-      "C": "Accelerated atherosclerosis",
-      "D": "All of the above"
+      "A": "MS Dhoni",
+      "B": "Virat Kohli",
+      "C": "Sourav Ganguly",
+      "D": "Rahul Dravid"
     },
-    "answer": "D"
+    "answer": "B"
   },
   {
     "id": 41,
-    "question": "Which drug class reduces glucose reabsorption in the proximal renal tubules?",
+    "question": "Who holds the men's 100-metre world record?",
     "options": {
-      "A": "DPP-4 inhibitors",
-      "B": "SGLT2 inhibitors",
-      "C": "Sulfonylureas",
-      "D": "Thiazolidinediones"
-    },
-    "answer": "B"
-  },
-  {
-    "id": 42,
-    "question": "Which of the following is an SGLT2 inhibitor?",
-    "options": {
-      "A": "Sitagliptin",
-      "B": "Empagliflozin",
-      "C": "Glimepiride",
-      "D": "Pioglitazone"
-    },
-    "answer": "B"
-  },
-  {
-    "id": 43,
-    "question": "Which drug class acts by increasing glucose-dependent insulin secretion and suppressing glucagon?",
-    "options": {
-      "A": "GLP-1 receptor agonists",
-      "B": "Biguanides",
-      "C": "Alpha-glucosidase inhibitors",
-      "D": "Sulfonylureas"
-    },
-    "answer": "A"
-  },
-  {
-    "id": 44,
-    "question": "Which of the following is a GLP-1 receptor agonist?",
-    "options": {
-      "A": "Dapagliflozin",
-      "B": "Liraglutide",
-      "C": "Metformin",
-      "D": "Gliclazide"
-    },
-    "answer": "B"
-  },
-  {
-    "id": 45,
-    "question": "Which antidiabetic drug is associated with a low risk of hypoglycaemia when used alone?",
-    "options": {
-      "A": "Glimepiride",
-      "B": "Insulin",
-      "C": "Metformin",
-      "D": "Glibenclamide"
+      "A": "Carl Lewis",
+      "B": "Yohan Blake",
+      "C": "Usain Bolt",
+      "D": "Justin Gatlin"
     },
     "answer": "C"
   },
   {
-    "id": 46,
-    "question": "Which drug class is associated with increased risk of genital mycotic infections?",
+    "id": 42,
+    "question": "What is the men's 100-metre world-record time?",
     "options": {
-      "A": "SGLT2 inhibitors",
-      "B": "DPP-4 inhibitors",
-      "C": "Biguanides",
-      "D": "Alpha-glucosidase inhibitors"
+      "A": "9.58 seconds",
+      "B": "9.69 seconds",
+      "C": "9.72 seconds",
+      "D": "9.80 seconds"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 43,
+    "question": "Who holds the men's 200-metre world record?",
+    "options": {
+      "A": "Michael Johnson",
+      "B": "Usain Bolt",
+      "C": "Yohan Blake",
+      "D": "Tyson Gay"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 44,
+    "question": "What is the men's 200-metre world-record time?",
+    "options": {
+      "A": "19.19 seconds",
+      "B": "19.30 seconds",
+      "C": "19.50 seconds",
+      "D": "19.72 seconds"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 45,
+    "question": "Who holds the women's 100-metre world record?",
+    "options": {
+      "A": "Elaine Thompson-Herah",
+      "B": "Florence Griffith-Joyner",
+      "C": "Shelly-Ann Fraser-Pryce",
+      "D": "Marion Jones"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 46,
+    "question": "What is the women's 100-metre world-record time?",
+    "options": {
+      "A": "10.49 seconds",
+      "B": "10.54 seconds",
+      "C": "10.60 seconds",
+      "D": "10.70 seconds"
     },
     "answer": "A"
   },
   {
     "id": 47,
-    "question": "Which antidiabetic drug class is associated with weight reduction and cardiovascular benefits in appropriate patients?",
+    "question": "Who holds the women's 200-metre world record?",
     "options": {
-      "A": "GLP-1 receptor agonists",
-      "B": "Sulfonylureas",
-      "C": "Thiazolidinediones",
-      "D": "Meglitinides"
+      "A": "Allyson Felix",
+      "B": "Florence Griffith-Joyner",
+      "C": "Shelly-Ann Fraser-Pryce",
+      "D": "Shaunae Miller-Uibo"
     },
-    "answer": "A"
+    "answer": "B"
   },
   {
     "id": 48,
-    "question": "Which drug class should generally be avoided in patients with symptomatic heart failure because of fluid retention?",
+    "question": "Who holds the men's 400-metre world record?",
     "options": {
-      "A": "SGLT2 inhibitors",
-      "B": "Thiazolidinediones",
-      "C": "GLP-1 receptor agonists",
-      "D": "DPP-4 inhibitors"
+      "A": "Michael Johnson",
+      "B": "Wayde van Niekerk",
+      "C": "Usain Bolt",
+      "D": "Kirani James"
     },
     "answer": "B"
   },
   {
     "id": 49,
-    "question": "Which DPP-4 inhibitor has a relatively favourable profile in patients with renal impairment because it does not generally require renal dose adjustment?",
+    "question": "Who holds the men's 800-metre world record?",
     "options": {
-      "A": "Sitagliptin",
-      "B": "Vildagliptin",
-      "C": "Linagliptin",
-      "D": "Saxagliptin"
+      "A": "David Rudisha",
+      "B": "Wilson Kipketer",
+      "C": "Sebastian Coe",
+      "D": "Emmanuel Wanyonyi"
     },
-    "answer": "C"
+    "answer": "A"
   },
   {
     "id": 50,
-    "question": "Which DPP-4 inhibitor has been associated with an increased risk of heart failure hospitalisation in clinical outcome data?",
+    "question": "Who holds the men's marathon world record as of November 2026?",
     "options": {
-      "A": "Linagliptin",
-      "B": "Sitagliptin",
-      "C": "Saxagliptin",
-      "D": "Vildagliptin"
+      "A": "Eliud Kipchoge",
+      "B": "Kelvin Kiptum",
+      "C": "Sabastian Sawe",
+      "D": "Kenenisa Bekele"
     },
     "answer": "C"
   },
   {
     "id": 51,
-    "question": "What is the primary mechanism of metformin?",
+    "question": "Who holds the women's marathon world record in a women-only race?",
     "options": {
-      "A": "Stimulation of pancreatic beta cells",
-      "B": "Reduction of hepatic glucose production",
-      "C": "Inhibition of intestinal glucose absorption only",
-      "D": "Direct insulin replacement"
+      "A": "Paula Radcliffe",
+      "B": "Tigst Assefa",
+      "C": "Brigid Kosgei",
+      "D": "Ruth Chepngetich"
     },
     "answer": "B"
   },
   {
     "id": 52,
-    "question": "Which of the following is a long-acting basal insulin analogue?",
+    "question": "Who scored the fastest goal in FIFA World Cup history?",
     "options": {
-      "A": "Regular insulin",
-      "B": "Insulin lispro",
-      "C": "Insulin glargine",
-      "D": "Insulin aspart"
+      "A": "Ronaldo Nazário",
+      "B": "Hakan Şükür",
+      "C": "Lionel Messi",
+      "D": "Miroslav Klose"
     },
-    "answer": "C"
+    "answer": "B"
   },
   {
     "id": 53,
-    "question": "Which insulin is classified as rapid-acting?",
+    "question": "How many seconds after kick-off was the fastest FIFA World Cup goal scored?",
     "options": {
-      "A": "Insulin glargine",
-      "B": "Insulin degludec",
-      "C": "Insulin lispro",
-      "D": "NPH insulin"
+      "A": "8 seconds",
+      "B": "11 seconds",
+      "C": "15 seconds",
+      "D": "20 seconds"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 54,
+    "question": "Which Indian badminton player set a 565 km/h men's doubles smash record?",
+    "options": {
+      "A": "P. V. Sindhu",
+      "B": "Kidambi Srikanth",
+      "C": "Satwiksairaj Rankireddy",
+      "D": "Lakshya Sen"
     },
     "answer": "C"
   },
   {
-    "id": 54,
-    "question": "Which drug class inhibits the enzyme responsible for incretin degradation?",
-    "options": {
-      "A": "DPP-4 inhibitors",
-      "B": "SGLT2 inhibitors",
-      "C": "Biguanides",
-      "D": "Sulfonylureas"
-    },
-    "answer": "A"
-  },
-  {
     "id": 55,
-    "question": "Which of the following is a common adverse effect of GLP-1 receptor agonists?",
+    "question": "Which sport features the fastest recorded shuttlecock smashes?",
     "options": {
-      "A": "Nausea",
-      "B": "Severe hypoglycaemia in every patient",
-      "C": "Hypercalcaemia",
-      "D": "Hearing loss"
+      "A": "Tennis",
+      "B": "Badminton",
+      "C": "Squash",
+      "D": "Table tennis"
     },
-    "answer": "A"
+    "answer": "B"
   },
   {
     "id": 56,
-    "question": "Which class of drugs is known for promoting urinary glucose excretion?",
+    "question": "Who holds the fastest recorded men's tennis serve listed by Guinness World Records?",
     "options": {
-      "A": "SGLT2 inhibitors",
-      "B": "DPP-4 inhibitors",
-      "C": "Sulfonylureas",
-      "D": "Thiazolidinediones"
+      "A": "Roger Federer",
+      "B": "Samuel Groth",
+      "C": "Novak Djokovic",
+      "D": "Rafael Nadal"
     },
-    "answer": "A"
+    "answer": "B"
   },
   {
     "id": 57,
-    "question": "Which of the following drugs has demonstrated cardiovascular mortality benefit in patients with Type 2 Diabetes and established cardiovascular disease?",
+    "question": "What was the speed of Samuel Groth's fastest recorded tennis serve?",
     "options": {
-      "A": "Empagliflozin",
-      "B": "Acarbose",
-      "C": "Glibenclamide",
-      "D": "Repaglinide"
+      "A": "230 km/h",
+      "B": "245 km/h",
+      "C": "263 km/h",
+      "D": "280 km/h"
     },
-    "answer": "A"
+    "answer": "C"
   },
   {
     "id": 58,
-    "question": "Which combination of drug classes offers complementary cardiovascular and renal protective effects in selected patients with Type 2 Diabetes?",
+    "question": "Which Formula One team achieved a 1.80-second pit stop record?",
     "options": {
-      "A": "SGLT2 inhibitor + GLP-1 receptor agonist",
-      "B": "Two sulfonylureas",
-      "C": "Two DPP-4 inhibitors",
-      "D": "Two basal insulins"
+      "A": "Ferrari",
+      "B": "Mercedes",
+      "C": "Red Bull",
+      "D": "McLaren"
     },
-    "answer": "A"
+    "answer": "D"
   },
   {
     "id": 59,
-    "question": "Which of the following is the primary action of sulfonylureas?",
+    "question": "Which team recorded the 1.80-second pit stop at the 2023 Qatar Grand Prix?",
     "options": {
-      "A": "Inhibition of renal glucose reabsorption",
-      "B": "Stimulation of insulin secretion from pancreatic beta cells",
-      "C": "Suppression of intestinal carbohydrate digestion",
-      "D": "Blocking glucagon receptors"
+      "A": "Ferrari",
+      "B": "McLaren",
+      "C": "Red Bull",
+      "D": "Mercedes"
     },
     "answer": "B"
   },
   {
     "id": 60,
-    "question": "Which medication is associated with lactic acidosis risk in certain high-risk clinical situations?",
+    "question": "Which country recorded a 603 km/h maglev train test speed in 2015?",
     "options": {
-      "A": "Metformin",
-      "B": "Sitagliptin",
-      "C": "Acarbose",
-      "D": "Linagliptin"
+      "A": "China",
+      "B": "Japan",
+      "C": "Germany",
+      "D": "France"
     },
-    "answer": "A"
+    "answer": "B"
   },
   {
     "id": 61,
-    "question": "Which antihypertensive drug class is particularly recommended in patients with diabetes, hypertension and albuminuria?",
+    "question": "Which Indian film reportedly crossed ₹1,000 crore worldwide within its first week in 2024?",
     "options": {
-      "A": "ACE inhibitors or ARBs",
-      "B": "Alpha blockers only",
-      "C": "Nitrates",
-      "D": "Loop diuretics only"
+      "A": "Jawan",
+      "B": "Pushpa 2: The Rule",
+      "C": "Baahubali 2",
+      "D": "Dangal"
     },
-    "answer": "A"
+    "answer": "B"
   },
   {
     "id": 62,
-    "question": "Telmisartan belongs to which pharmacological class?",
+    "question": "Which 2026 Hindi film was reported to have matched a seven-day ₹1,000-crore worldwide milestone?",
     "options": {
-      "A": "ACE inhibitor",
-      "B": "Angiotensin receptor blocker",
-      "C": "Beta blocker",
-      "D": "Calcium channel blocker"
+      "A": "Ramayana",
+      "B": "Dhurandhar 2: The Revenge",
+      "C": "Jawan",
+      "D": "Pathaan"
     },
     "answer": "B"
   },
   {
     "id": 63,
-    "question": "Which receptor is selectively blocked by telmisartan?",
+    "question": "Who played the lead role in Pushpa 2: The Rule?",
     "options": {
-      "A": "AT₁ receptor",
-      "B": "AT₂ receptor",
-      "C": "Beta-1 receptor",
-      "D": "Alpha-1 receptor"
+      "A": "Prabhas",
+      "B": "Yash",
+      "C": "Allu Arjun",
+      "D": "Ram Charan"
     },
-    "answer": "A"
+    "answer": "C"
   },
   {
     "id": 64,
-    "question": "What is the primary physiological action of angiotensin II?",
+    "question": "Who directed Pushpa 2: The Rule?",
     "options": {
-      "A": "Vasodilation",
-      "B": "Vasoconstriction",
-      "C": "Reduction in aldosterone secretion",
-      "D": "Reduction in sympathetic activity"
+      "A": "S. S. Rajamouli",
+      "B": "Sukumar",
+      "C": "Prashanth Neel",
+      "D": "Sandeep Reddy Vanga"
     },
     "answer": "B"
   },
   {
     "id": 65,
-    "question": "Which of the following is a thiazide-like diuretic?",
+    "question": "Which film crossed ₹1,000 crore worldwide in 10 days, according to its widely reported box-office run?",
     "options": {
-      "A": "Furosemide",
-      "B": "Chlorthalidone",
-      "C": "Spironolactone",
-      "D": "Mannitol"
+      "A": "Baahubali 2",
+      "B": "Jawan",
+      "C": "Pathaan",
+      "D": "KGF Chapter 2"
     },
-    "answer": "B"
+    "answer": "A"
   },
   {
     "id": 66,
-    "question": "What is the primary mechanism of ACE inhibitors?",
+    "question": "Which film crossed ₹1,000 crore worldwide fastest among these options?",
     "options": {
-      "A": "Block angiotensin II receptors",
-      "B": "Inhibit conversion of angiotensin I to angiotensin II",
-      "C": "Block calcium channels",
-      "D": "Stimulate aldosterone secretion"
-    },
-    "answer": "B"
-  },
-  {
-    "id": 67,
-    "question": "Which of the following is a major complication of uncontrolled hypertension?",
-    "options": {
-      "A": "Stroke",
-      "B": "Heart failure",
-      "C": "Chronic kidney disease",
-      "D": "All of the above"
+      "A": "Dangal",
+      "B": "KGF Chapter 2",
+      "C": "Pathaan",
+      "D": "Baahubali 2"
     },
     "answer": "D"
   },
   {
-    "id": 68,
-    "question": "Which of the following is the preferred lipid parameter for assessing atherogenic cholesterol burden in routine clinical practice?",
+    "id": 67,
+    "question": "Which film crossed ₹1,000 crore worldwide faster: Jawan or Pathaan?",
     "options": {
-      "A": "LDL cholesterol",
-      "B": "HDL cholesterol alone",
-      "C": "Total bilirubin",
-      "D": "Serum albumin"
+      "A": "Pathaan",
+      "B": "Jawan",
+      "C": "Both at the same time",
+      "D": "Neither"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 68,
+    "question": "Which film was reported to reach ₹1,000 crore worldwide in seven days in late 2024?",
+    "options": {
+      "A": "Pushpa 2",
+      "B": "RRR",
+      "C": "KGF Chapter 2",
+      "D": "Baahubali 2"
     },
     "answer": "A"
   },
   {
     "id": 69,
-    "question": "Which enzyme is inhibited by statins?",
+    "question": "Which actor played Pushpa Raj in Pushpa 2?",
     "options": {
-      "A": "Cyclooxygenase",
-      "B": "HMG-CoA reductase",
-      "C": "ACE",
-      "D": "DPP-4"
+      "A": "Allu Arjun",
+      "B": "Prabhas",
+      "C": "Yash",
+      "D": "Ram Charan"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 70,
+    "question": "Which film featured the song “Naatu Naatu”, which won the Academy Award for Best Original Song?",
+    "options": {
+      "A": "Baahubali",
+      "B": "RRR",
+      "C": "Pushpa",
+      "D": "KGF"
     },
     "answer": "B"
   },
   {
-    "id": 70,
-    "question": "Which lipoprotein is considered protective against atherosclerosis?",
-    "options": {
-      "A": "LDL",
-      "B": "VLDL",
-      "C": "HDL",
-      "D": "IDL"
-    },
-    "answer": "C"
-  },
-  {
     "id": 71,
-    "question": "Which lipid parameter is particularly important in patients with hypertriglyceridaemia?",
+    "question": "Which actor played Rocky in the KGF film series?",
     "options": {
-      "A": "Triglycerides",
-      "B": "Serum calcium",
-      "C": "Serum sodium",
-      "D": "Total protein"
+      "A": "Prabhas",
+      "B": "Yash",
+      "C": "Vijay",
+      "D": "Ram Charan"
     },
-    "answer": "A"
+    "answer": "B"
   },
   {
     "id": 72,
-    "question": "What does CKD stand for?",
+    "question": "Which film crossed ₹1,000 crore worldwide fastest among these options?",
     "options": {
-      "A": "Chronic Kidney Disease",
-      "B": "Cardiac Kidney Dysfunction",
-      "C": "Coronary Kinetic Disease",
-      "D": "Chronic Ketone Disorder"
+      "A": "Pathaan",
+      "B": "Jawan",
+      "C": "Dangal",
+      "D": "Dhurandhar (2025)"
     },
-    "answer": "A"
+    "answer": "B"
   },
   {
     "id": 73,
-    "question": "Which eGFR value indicates severe reduction in kidney function, corresponding to CKD G4?",
+    "question": "Who starred in the Dhurandhar film series?",
     "options": {
-      "A": "90–120 mL/min/1.73 m²",
-      "B": "60–89 mL/min/1.73 m²",
-      "C": "30–44 mL/min/1.73 m²",
-      "D": "15–29 mL/min/1.73 m²"
+      "A": "Ranbir Kapoor",
+      "B": "Ranveer Singh",
+      "C": "Shah Rukh Khan",
+      "D": "Hrithik Roshan"
     },
-    "answer": "D"
+    "answer": "B"
   },
   {
     "id": 74,
-    "question": "Which mineralocorticoid receptor antagonist has demonstrated cardiorenal benefits in selected patients with Type 2 Diabetes and CKD?",
+    "question": "Who directed Dhurandhar?",
     "options": {
-      "A": "Finerenone",
-      "B": "Hydrochlorothiazide",
-      "C": "Mannitol",
-      "D": "Acetazolamide"
+      "A": "Aditya Dhar",
+      "B": "Rohit Shetty",
+      "C": "Kabir Khan",
+      "D": "Rajkumar Hirani"
     },
     "answer": "A"
   },
   {
     "id": 75,
-    "question": "Which electrolyte abnormality is a potential adverse effect of ACE inhibitors and ARBs?",
+    "question": "Which film crossed ₹1,000 crore worldwide faster: KGF Chapter 2 or Pathaan?",
     "options": {
-      "A": "Hypocalcaemia",
-      "B": "Hyperkalaemia",
-      "C": "Hypernatraemia",
-      "D": "Hypophosphataemia"
-    },
-    "answer": "B"
-  },
-  {
-    "id": 76,
-    "question": "Which of the following is an important marker of early diabetic kidney damage?",
-    "options": {
-      "A": "Albuminuria",
-      "B": "Hyperbilirubinaemia",
-      "C": "Raised amylase",
-      "D": "Increased serum uric acid alone"
+      "A": "KGF Chapter 2",
+      "B": "Pathaan",
+      "C": "Both at the same time",
+      "D": "Neither"
     },
     "answer": "A"
   },
   {
-    "id": 77,
-    "question": "Which of the following best describes resistant hypertension?",
+    "id": 76,
+    "question": "Which Aamir Khan film crossed ₹2,000 crore worldwide, powered by its China release?",
     "options": {
-      "A": "BP controlled with one drug",
-      "B": "BP above target despite three appropriately chosen antihypertensive agents, including a diuretic, at maximally tolerated doses",
-      "C": "BP elevated only during exercise",
-      "D": "BP controlled without medication"
+      "A": "PK",
+      "B": "Dangal",
+      "C": "3 Idiots",
+      "D": "Ghajini"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 77,
+    "question": "Who played Milkha Singh in the biographical film Bhaag Milkha Bhaag?",
+    "options": {
+      "A": "Ranveer Singh",
+      "B": "Farhan Akhtar",
+      "C": "Shahid Kapoor",
+      "D": "Vicky Kaushal"
     },
     "answer": "B"
   },
   {
     "id": 78,
-    "question": "Which of the following is an important lifestyle intervention for managing hypertension in diabetes?",
+    "question": "Which film featured the dialogue “Mogambo Khush Hua”?",
     "options": {
-      "A": "Sodium restriction",
-      "B": "Regular physical activity",
-      "C": "Weight management",
-      "D": "All of the above"
+      "A": "Sholay",
+      "B": "Mr. India",
+      "C": "Don",
+      "D": "Deewar"
     },
-    "answer": "D"
+    "answer": "B"
   },
   {
     "id": 79,
-    "question": "Which of the following is a non-steroidal mineralocorticoid receptor antagonist?",
+    "question": "Which actor played Rocky in KGF?",
     "options": {
-      "A": "Spironolactone",
-      "B": "Eplerenone",
-      "C": "Finerenone",
-      "D": "Furosemide"
+      "A": "Yash",
+      "B": "Prabhas",
+      "C": "Vijay",
+      "D": "Ram Charan"
     },
-    "answer": "C"
+    "answer": "A"
   },
   {
     "id": 80,
-    "question": "Which of the following is the primary purpose of measuring urine albumin-to-creatinine ratio (UACR)?",
+    "question": "Which film was the first Indian film widely reported to cross ₹1,000 crore worldwide?",
     "options": {
-      "A": "Assessing diabetic kidney damage",
-      "B": "Diagnosing myocardial infarction",
-      "C": "Measuring insulin resistance",
-      "D": "Diagnosing thyroid disease"
+      "A": "Baahubali 2",
+      "B": "Dangal",
+      "C": "RRR",
+      "D": "KGF Chapter 2"
     },
     "answer": "A"
   },
   {
     "id": 81,
-    "question": "A 55-year-old patient with Type 2 Diabetes has an HbA1c of 6.8% but established cardiovascular disease. Which approach is most appropriate?",
+    "question": "Which is the fastest commercial passenger aircraft ever operated?",
     "options": {
-      "A": "No further treatment consideration because HbA1c is controlled",
-      "B": "Consider a glucose-lowering agent with proven cardiovascular benefit, irrespective of HbA1c",
-      "C": "Stop all antidiabetic medications",
-      "D": "Use sulfonylurea in every case"
+      "A": "Boeing 747",
+      "B": "Airbus A380",
+      "C": "Concorde",
+      "D": "Boeing 787"
+    },
+    "answer": "C"
+  },
+  {
+    "id": 82,
+    "question": "Which train holds the 603 km/h maglev test-speed record?",
+    "options": {
+      "A": "Shanghai Maglev",
+      "B": "Japan's L0 Series Maglev",
+      "C": "TGV Duplex",
+      "D": "Eurostar"
     },
     "answer": "B"
   },
   {
-    "id": 82,
-    "question": "A patient with Type 2 Diabetes and heart failure with reduced ejection fraction is being considered for an additional glucose-lowering agent. Which class has established heart failure benefits?",
-    "options": {
-      "A": "SGLT2 inhibitors",
-      "B": "Sulfonylureas",
-      "C": "Meglitinides",
-      "D": "Alpha-glucosidase inhibitors"
-    },
-    "answer": "A"
-  },
-  {
     "id": 83,
-    "question": "A patient with diabetes experiences sweating, tremors and confusion. What should be suspected first?",
+    "question": "Which country developed the L0 Series maglev train that reached 603 km/h?",
     "options": {
-      "A": "Hyperglycaemia",
-      "B": "Hypoglycaemia",
-      "C": "Hypercalcaemia",
-      "D": "Hypertension"
+      "A": "China",
+      "B": "Japan",
+      "C": "Germany",
+      "D": "France"
     },
     "answer": "B"
   },
   {
     "id": 84,
-    "question": "A diabetic patient presents with chest discomfort but has no typical anginal symptoms. Which condition should be considered?",
+    "question": "Which spacecraft has achieved the fastest recorded speed?",
     "options": {
-      "A": "Silent myocardial ischaemia",
-      "B": "Acute gastritis only",
-      "C": "Migraine",
-      "D": "Osteoarthritis"
+      "A": "Voyager 1",
+      "B": "Parker Solar Probe",
+      "C": "Apollo 11",
+      "D": "New Horizons"
     },
-    "answer": "A"
+    "answer": "B"
   },
   {
     "id": 85,
-    "question": "A patient with Type 2 Diabetes has obesity and established ASCVD. Which drug class is particularly useful for weight reduction and reduction of atherosclerotic cardiovascular events?",
+    "question": "Which vehicle holds the absolute land-speed record for a car?",
     "options": {
-      "A": "GLP-1 receptor agonists with proven cardiovascular benefit",
-      "B": "Sulfonylureas",
-      "C": "Thiazolidinediones",
-      "D": "Meglitinides"
+      "A": "Bugatti Chiron",
+      "B": "ThrustSSC",
+      "C": "Koenigsegg Agera",
+      "D": "McLaren F1"
     },
-    "answer": "A"
+    "answer": "B"
   },
   {
     "id": 86,
-    "question": "A patient with Type 2 Diabetes has eGFR of 25 mL/min/1.73 m². Which of the following is an important consideration?",
+    "question": "Which planet is fastest in completing one revolution around the Sun?",
     "options": {
-      "A": "Ignore renal function when prescribing",
-      "B": "Select glucose-lowering treatment based on renal function and cardiorenal benefits",
-      "C": "Start high-dose metformin in every case",
-      "D": "Discontinue all cardiovascular medication"
+      "A": "Venus",
+      "B": "Mercury",
+      "C": "Earth",
+      "D": "Mars"
     },
     "answer": "B"
   },
   {
     "id": 87,
-    "question": "Which clinical trial demonstrated cardiovascular mortality benefit with empagliflozin in patients with Type 2 Diabetes and established cardiovascular disease?",
+    "question": "Which planet is fastest in completing one rotation on its axis?",
     "options": {
-      "A": "EMPA-REG OUTCOME",
-      "B": "UKPDS",
-      "C": "DCCT",
-      "D": "ACCORD"
-    },
-    "answer": "A"
-  },
-  {
-    "id": 88,
-    "question": "Which trial demonstrated renal and cardiovascular benefits of canagliflozin in patients with Type 2 Diabetes and diabetic kidney disease?",
-    "options": {
-      "A": "LEADER",
-      "B": "CREDENCE",
-      "C": "EMPA-REG OUTCOME",
-      "D": "DAPA-HF"
+      "A": "Saturn",
+      "B": "Jupiter",
+      "C": "Neptune",
+      "D": "Earth"
     },
     "answer": "B"
   },
   {
-    "id": 89,
-    "question": "Which landmark study demonstrated the long-term benefits of intensive glycaemic control in newly diagnosed Type 2 Diabetes?",
+    "id": 88,
+    "question": "Which is the fastest practical mode of travel between Mumbai and Delhi?",
     "options": {
-      "A": "UKPDS",
-      "B": "EMPA-REG",
-      "C": "DAPA-HF",
-      "D": "PARADIGM-HF"
+      "A": "Road",
+      "B": "Train",
+      "C": "Aeroplane",
+      "D": "Ship"
     },
-    "answer": "A"
+    "answer": "C"
+  },
+  {
+    "id": 89,
+    "question": "Which system is commonly used for instant person-to-person digital payments in India?",
+    "options": {
+      "A": "Cheque",
+      "B": "NEFT",
+      "C": "UPI",
+      "D": "Demand Draft"
+    },
+    "answer": "C"
   },
   {
     "id": 90,
-    "question": "Which trial demonstrated cardiovascular benefit with liraglutide in patients with Type 2 Diabetes at high cardiovascular risk?",
+    "question": "Which mobile network generation offers the highest peak data speeds among these options?",
     "options": {
-      "A": "LEADER",
-      "B": "SAVOR-TIMI 53",
-      "C": "TECOS",
-      "D": "CAROLINA"
-    },
-    "answer": "A"
-  },
-  {
-    "id": 91,
-    "question": "Which study demonstrated the benefits of intensive blood pressure control in selected high-risk patients with Type 2 Diabetes?",
-    "options": {
-      "A": "ACCORD BP",
-      "B": "EMPA-REG",
-      "C": "DAPA-CKD",
-      "D": "DECLARE-TIMI 58"
-    },
-    "answer": "A"
-  },
-  {
-    "id": 92,
-    "question": "Which trial demonstrated cardiovascular safety of sitagliptin in patients with Type 2 Diabetes and established cardiovascular disease?",
-    "options": {
-      "A": "TECOS",
-      "B": "LEADER",
-      "C": "EMPA-REG",
-      "D": "CANVAS"
-    },
-    "answer": "A"
-  },
-  {
-    "id": 93,
-    "question": "What does CGM stand for in diabetes management?",
-    "options": {
-      "A": "Continuous Glucose Monitoring",
-      "B": "Cardiac Glucose Measurement",
-      "C": "Clinical Glycaemic Management",
-      "D": "Controlled Glucose Medication"
-    },
-    "answer": "A"
-  },
-  {
-    "id": 94,
-    "question": "What does Time in Range (TIR) generally refer to in CGM?",
-    "options": {
-      "A": "Percentage of time glucose remains between 70–180 mg/dL for most non-pregnant adults",
-      "B": "Percentage of time glucose remains above 250 mg/dL",
-      "C": "Average insulin dose per day",
-      "D": "Total fasting glucose readings in a month"
-    },
-    "answer": "A"
-  },
-  {
-    "id": 95,
-    "question": "Which of the following is the most common cause of diabetic foot ulceration?",
-    "options": {
-      "A": "Peripheral neuropathy with repetitive trauma",
-      "B": "Hyperthyroidism",
-      "C": "Viral infection",
-      "D": "Vitamin C excess"
-    },
-    "answer": "A"
-  },
-  {
-    "id": 96,
-    "question": "Which inflammatory marker is frequently used in cardiovascular risk research?",
-    "options": {
-      "A": "High-sensitivity C-reactive protein (hs-CRP)",
-      "B": "Serum amylase",
-      "C": "Serum bilirubin",
-      "D": "Alkaline phosphatase"
-    },
-    "answer": "A"
-  },
-  {
-    "id": 97,
-    "question": "Which of the following is the most important mechanism behind atherosclerotic plaque formation?",
-    "options": {
-      "A": "Endothelial dysfunction and lipid accumulation in arterial walls",
-      "B": "Increased red blood cell production",
-      "C": "Reduced platelet production",
-      "D": "Increased calcium absorption from the intestine"
-    },
-    "answer": "A"
-  },
-  {
-    "id": 98,
-    "question": "Which of the following is a recognised risk factor for atrial fibrillation?",
-    "options": {
-      "A": "Diabetes mellitus",
-      "B": "Hypertension",
-      "C": "Heart failure",
-      "D": "All of the above"
+      "A": "2G",
+      "B": "3G",
+      "C": "4G",
+      "D": "5G"
     },
     "answer": "D"
   },
   {
-    "id": 99,
-    "question": "Which of the following best describes the cardiorenal-metabolic syndrome?",
+    "id": 91,
+    "question": "Which is generally the fastest data-transmission medium among these options?",
     "options": {
-      "A": "Interconnected metabolic, cardiovascular and kidney disorders",
-      "B": "An isolated pancreatic disease",
-      "C": "A primary respiratory disorder",
-      "D": "A congenital heart disorder"
+      "A": "Copper telephone wire",
+      "B": "Optical fibre",
+      "C": "Dial-up connection",
+      "D": "Postal service"
     },
-    "answer": "A"
+    "answer": "B"
+  },
+  {
+    "id": 92,
+    "question": "Which type of memory is fastest among these computer components?",
+    "options": {
+      "A": "Hard disk",
+      "B": "RAM",
+      "C": "CPU cache",
+      "D": "DVD"
+    },
+    "answer": "C"
+  },
+  {
+    "id": 93,
+    "question": "Which instrument shows the instantaneous speed of a vehicle?",
+    "options": {
+      "A": "Barometer",
+      "B": "Speedometer",
+      "C": "Thermometer",
+      "D": "Hygrometer"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 94,
+    "question": "Which technology carries data as pulses of light through thin strands of glass?",
+    "options": {
+      "A": "Postal network",
+      "B": "Optical fibre",
+      "C": "Telegraph",
+      "D": "Copper telephone wire"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 95,
+    "question": "Which train has a designed maximum speed of 180 km/h among these Indian train options?",
+    "options": {
+      "A": "Rajdhani Express",
+      "B": "Vande Bharat Express",
+      "C": "Shatabdi Express",
+      "D": "Duronto Express"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 96,
+    "question": "Which country has the world's longest high-speed railway network?",
+    "options": {
+      "A": "Japan",
+      "B": "China",
+      "C": "Germany",
+      "D": "France"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 97,
+    "question": "Which Indian athlete won India's first Olympic gold medal in athletics?",
+    "options": {
+      "A": "Milkha Singh",
+      "B": "Neeraj Chopra",
+      "C": "Abhinav Bindra",
+      "D": "P. T. Usha"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 98,
+    "question": "Which payment method enables instant transfers between Indian bank accounts using a mobile app?",
+    "options": {
+      "A": "NEFT",
+      "B": "RTGS",
+      "C": "UPI",
+      "D": "Cheque"
+    },
+    "answer": "C"
+  },
+  {
+    "id": 99,
+    "question": "Which formula is used to calculate average speed?",
+    "options": {
+      "A": "Distance × Time",
+      "B": "Distance ÷ Time",
+      "C": "Time ÷ Distance",
+      "D": "Distance + Time"
+    },
+    "answer": "B"
   },
   {
     "id": 100,
-    "question": "What is the most appropriate modern approach to managing a patient with Type 2 Diabetes and multiple cardiovascular risk factors?",
+    "question": "Which Indian mission achieved India's first successful soft landing near the Moon's south polar region in 2023?",
     "options": {
-      "A": "Focus only on HbA1c",
-      "B": "Focus only on fasting glucose",
-      "C": "Comprehensive management of glucose, BP, lipids, weight, kidney function and cardiovascular risk",
-      "D": "Treat symptoms only"
+      "A": "Chandrayaan-1",
+      "B": "Chandrayaan-2",
+      "C": "Chandrayaan-3",
+      "D": "Mangalyaan"
     },
     "answer": "C"
   }
