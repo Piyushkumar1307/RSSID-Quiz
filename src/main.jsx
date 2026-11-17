@@ -277,12 +277,6 @@ function App() {
   }, [screen, result?.score, playSound]);
 
   useEffect(() => {
-    if (screen !== 'thankyou') return undefined;
-    const timer = window.setTimeout(() => setScreen('results'), 3000);
-    return () => window.clearTimeout(timer);
-  }, [screen]);
-
-  useEffect(() => {
     if (screen === 'quiz') {
       const music = prepareBackgroundMusic();
       music.volume = 0.7;
@@ -339,7 +333,7 @@ function App() {
       const response = await fetch(`${API}/submissions`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...participant, answers: finalAnswers }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
-      setResult(data); setScreen('thankyou');
+      setResult(data); setScreen('results');
     } catch (submitError) { setError(submitError.message || 'Could not save this quiz.'); setScreen('quiz'); }
   };
 
@@ -374,13 +368,11 @@ function App() {
 
   if (screen === 'saving') return <main className="page"><div className="saving"><div className="spinner" /><h2>Calculating your score…</h2><p>Saving your place on the board.</p></div></main>;
 
-  if (screen === 'thankyou') return <main className="page thankyou-page"><img className="thankyou-art" src="/images/thankyou-quiz.png" alt="Thank you for participating in the Telmifast Quiz Contest" /><p>Preparing your score…</p></main>;
-
   if (screen === 'spin') return <SpinWheelPage />;
 
   if (screen === 'leaderboard') return <main className="page results-page"><section className="result-card leaderboard-page"><img className="leaderboard-brand" src="/images/fastrack-telmifast-sticker.png" alt="Fastrack with Telmifast" /><img className="leaderboard-hero" src="/images/live-leaderboard-header.png" alt="Live Leader Board" /><PodiumLeaderboard entries={leaderboard} refreshSeconds={refreshSeconds} />{error && <p className="error">{error}</p>}</section></main>;
 
-  if (screen === 'results') return <main className="page results-page">{(result?.score ?? 0) > 0 && <Confetti />}<PageStickers /><section className="result-card"><span className="eyebrow">QUIZ COMPLETE</span><h1>Great pace, {participant.name.split(' ')[0]}!</h1><div className="score-ring"><strong>{result?.score ?? 0}</strong><span>out of 100</span></div><p><b>{result?.correctCount ?? 0}/10</b> correct answers. Your score rewards accuracy and speed.</p>{error && <p className="error">{error}</p>}</section></main>;
+  if (screen === 'results') return <main className="page results-page">{(result?.score ?? 0) > 0 && <Confetti />}<section className="result-card"><img className="score-thankyou-logo" src="/images/thankyou-quiz.png" alt="Thank you for participating in the Telmifast Quiz Contest" /><span className="eyebrow">QUIZ COMPLETE</span><h1>Great pace, {participant.name.split(' ')[0]}!</h1><div className="score-ring"><strong>{result?.score ?? 0}</strong><span>out of 100</span></div><p><b>{result?.correctCount ?? 0}/10</b> correct answers. Your score rewards accuracy and speed.</p>{error && <p className="error">{error}</p>}</section></main>;
 
   return <main className="page quiz-page"><header className="quiz-header"><img className="question-logo" src="/images/quiz-header-sticker.png" alt="Fastrack with Telmifast Quiz Contest" /><span>QUESTION {index + 1}<small>/ 10</small></span><div className={`timer ${remaining <= 3 ? 'urgent' : ''}`}><i style={{ '--progress': `${(remaining / DURATION_SECONDS) * 100}%` }} /><b>{formatTime(remaining)}</b></div></header><section className="question-card"><div className="progress"><i style={{ width: `${((index + 1) / 10) * 100}%` }} /></div><div className="question-number">QUESTION {String(index + 1).padStart(2, '0')} <span>UP TO {scorePotential} POINTS</span></div><h1><HighlightFastrack>{current?.question}</HighlightFastrack></h1><div className="answers">{current && Object.entries(current.options).map(([key, text]) => <button disabled={Boolean(feedback)} className={feedback?.answer === key ? (feedback.correct ? 'selected is-correct' : 'selected is-wrong') : ''} key={key} onClick={() => resolveAnswer(key)}><b>{key}</b><span><HighlightFastrack>{text}</HighlightFastrack></span></button>)}</div>{feedback && <div className="feedback">{feedback.message}</div>}</section><QuizBanner /></main>;
 }

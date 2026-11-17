@@ -285,6 +285,7 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 .thankyou-page { display: grid; place-items: center; align-content: center; gap: 12px; padding: 20px; background: #fff; color: #152b65; }
 .thankyou-art { display: block; width: min(1100px, 94vw); max-height: calc(100dvh - 82px); object-fit: contain; filter: drop-shadow(0 10px 24px #112a5530); }
 .thankyou-page p { margin: 0; color: #364766; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.score-thankyou-logo { display: block; width: min(430px, 100%); max-height: 150px; margin: -18px auto 6px; object-fit: contain; filter: drop-shadow(0 6px 11px #0004); }
 
 /* Use the available desktop width for a presentation-style leaderboard. */
 @media (min-width: 731px) {
@@ -310,4 +311,22 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
   .form-page .page-top-sticker { width: min(240px, 64vw); }
   .wheel-brand { width: min(340px, 90%); }
   .wheel-card h1 { font-size: clamp(1.85rem, 9vw, 2.55rem); }
+  .score-thankyou-logo { max-height: 126px; margin-top: -12px; }
 }
+
+/* Desktop credentials layout: keep the larger brand above—not behind—the card. */
+@media (min-width: 731px) {
+  .form-page .page-top-sticker { width: min(240px, 32vw); z-index: 2; }
+  .form-page .form-card { margin-top: 72px; }
+}
+
+/* Racing-wheel treatment: tire tread, lane markers, checkered rim, and speed glow. */
+.wheel-wrap { isolation: isolate; }
+.wheel-wrap::before { content: ''; position: absolute; inset: -28px; z-index: -1; border-radius: 50%; background: conic-gradient(from 20deg, #05dfff, #073e9d 12%, transparent 20%, #ff2c55 36%, transparent 45%, #ffd04d 62%, transparent 70%, #05dfff); filter: blur(13px); opacity: .8; animation: wheel-speed-glow 2.8s ease-in-out infinite; }
+.wheel-wrap::after { content: ''; position: absolute; inset: -13px; z-index: -1; border: 7px solid #06101d; border-radius: 50%; background: repeating-conic-gradient(#eaf6ff 0 3deg, #132a44 3deg 8deg, #06111f 8deg 14deg); box-shadow: 0 0 0 2px #18d9ff, 0 0 28px #00caff88, 0 12px 26px #000c; }
+.spin-wheel { border: 12px solid #07111f; box-shadow: 0 0 0 4px #13d9ff, 0 0 20px #00caffaa, 0 20px 40px #000b, inset 0 0 0 2px #ffffffaa; }
+.spin-wheel::before { inset: 7%; border: 8px dashed #e9faffd9; box-shadow: inset 0 0 22px #06172de6, 0 0 12px #00dbff; }
+.spin-wheel::after { inset: 2px; border: 0; background: repeating-conic-gradient(transparent 0 10deg, #ffffffcc 10deg 13deg, transparent 13deg 20deg); opacity: .82; -webkit-mask: radial-gradient(circle, transparent 0 60%, #000 61%); mask: radial-gradient(circle, transparent 0 60%, #000 61%); }
+.wheel-hub { border-color: #f5f8ff; box-shadow: 0 0 0 4px #ffbd27, 0 0 20px #00d9ff, 0 7px 17px #000b; background: radial-gradient(circle at 35% 25%, #245b96, #06152d 67%); }
+.wheel-pointer { background: linear-gradient(180deg, #ffec76, #ff3a45 52%, #a6002f); filter: drop-shadow(0 0 8px #ffb32d) drop-shadow(0 4px 3px #0008); }
+@keyframes wheel-speed-glow { 0%, 100% { transform: scale(.96) rotate(0deg); opacity: .55; } 50% { transform: scale(1.04) rotate(18deg); opacity: .95; } }
