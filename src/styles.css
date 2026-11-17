@@ -259,8 +259,9 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 .quiz-page .question-card { min-height: 0; transform: scale(var(--question-fit, 1)); transform-origin: center; }
 
 /* Home branding: the contest artwork replaces the former floating sticker. */
-.home-quiz-banner { position: absolute; z-index: 1; inset: 0 0 auto; width: 100%; height: 62%; object-fit: cover; object-position: center; filter: drop-shadow(0 8px 14px #000a); }
+.home-quiz-banner { position: absolute; z-index: 1; inset: 0 0 auto; width: 100%; height: auto; object-fit: contain; object-position: center; background: #fff; filter: drop-shadow(0 8px 14px #000a); }
 .home-linux-logo { position: absolute; z-index: 3; bottom: 66px; width: min(170px, 38%); height: auto; filter: drop-shadow(0 4px 9px #000b); }
+.home-linux-mobile { display: none; }
 .fastrack-highlight { color: #ff7b1d; font-weight: 800; text-shadow: 0 0 12px #ff7b1d55; }
 
 /* Reuse the quiz header and sponsor artwork on the credentials and score screens. */
@@ -271,8 +272,9 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 .form-page .form-card, .results-page > .result-card { z-index: 1; }
 @keyframes page-sticker-3d { 0%, 100% { transform: translateX(-50%) perspective(520px) rotateX(4deg) rotateY(-8deg); } 50% { transform: translateX(-50%) perspective(520px) rotateX(-4deg) rotateY(8deg) scale(1.035); } }
 @media (max-width: 730px) {
-  .home-quiz-banner { height: 61%; }
-  .home-linux-logo { bottom: max(52px, env(safe-area-inset-bottom)); width: min(124px, 36%); }
+  .home-quiz-banner { height: auto; }
+  .home-linux-desktop { display: none; }
+  .welcome > .home-linux-mobile { display: block; position: absolute; z-index: 5; left: 50%; bottom: max(10px, env(safe-area-inset-bottom)); width: min(124px, 36vw); transform: translateX(-50%); }
   .page-top-sticker { top: max(6px, env(safe-area-inset-top)); width: min(170px, 48vw); }
   .page-bottom-sticker { bottom: max(7px, env(safe-area-inset-bottom)); width: min(152px, 43vw); }
 }
