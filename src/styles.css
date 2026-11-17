@@ -286,6 +286,19 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 .thankyou-art { display: block; width: min(1100px, 94vw); max-height: calc(100dvh - 82px); object-fit: contain; filter: drop-shadow(0 10px 24px #112a5530); }
 .thankyou-page p { margin: 0; color: #364766; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 
+/* Use the available desktop width for a presentation-style leaderboard. */
+@media (min-width: 731px) {
+  .leaderboard-page .podium-stage { gap: clamp(48px, 8vw, 130px); padding-left: 42px; padding-right: 42px; }
+  .leaderboard-page .podium-place { width: min(28%, 260px); }
+  .leaderboard-page .podium-person { min-height: 142px; }
+  .leaderboard-page .medal { font-size: 2.55rem; }
+  .leaderboard-page .gold .medal { font-size: 3.15rem; }
+  .leaderboard-page .podium-person b { font-size: clamp(1.3rem, 2vw, 1.65rem); }
+  .leaderboard-page .podium-person small { font-size: .9rem; }
+  .leaderboard-page .podium-person strong { font-size: clamp(1.7rem, 2.6vw, 2.2rem); }
+  .leaderboard-page .podium-person strong i { font-size: .82rem; }
+}
+
 /* Higher-visibility identity and answer feedback. */
 .form-page .page-top-sticker { width: min(300px, 48vw); }
 .wheel-brand { width: min(440px, 88%); margin-bottom: 10px; }
