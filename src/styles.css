@@ -317,7 +317,8 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 /* Desktop credentials layout: keep the larger brand above—not behind—the card. */
 @media (min-width: 731px) {
   .form-page .page-top-sticker { width: min(240px, 32vw); z-index: 2; }
-  .form-page .form-card { margin-top: 72px; }
+  .form-page .page-bottom-sticker { z-index: 2; bottom: 14px; width: min(190px, 28vw); }
+  .form-page .form-card { margin-top: 72px; transform: translateY(-34px) scale(var(--page-fit, 1)); }
 }
 
 /* Racing-wheel treatment: tire tread, lane markers, checkered rim, and speed glow. */
