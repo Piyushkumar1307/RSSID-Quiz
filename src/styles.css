@@ -330,3 +330,11 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 .wheel-hub { border-color: #f5f8ff; box-shadow: 0 0 0 4px #ffbd27, 0 0 20px #00d9ff, 0 7px 17px #000b; background: radial-gradient(circle at 35% 25%, #245b96, #06152d 67%); }
 .wheel-pointer { background: linear-gradient(180deg, #ffec76, #ff3a45 52%, #a6002f); filter: drop-shadow(0 0 8px #ffb32d) drop-shadow(0 4px 3px #0008); }
 @keyframes wheel-speed-glow { 0%, 100% { transform: scale(.96) rotate(0deg); opacity: .55; } 50% { transform: scale(1.04) rotate(18deg); opacity: .95; } }
+
+/* Mobile quiz header: a larger race logo with a dedicated timer position. */
+@media (max-width: 730px) {
+  .quiz-header { height: 132px; }
+  .quiz-page { grid-template-rows: 132px minmax(0, 1fr) 92px; }
+  .question-logo { width: min(205px, 54vw); height: 67px; top: 21px; left: 45%; }
+  .timer { right: max(14px, env(safe-area-inset-right)); bottom: 12px; min-width: 104px; height: 44px; font-size: 1rem; }
+}
