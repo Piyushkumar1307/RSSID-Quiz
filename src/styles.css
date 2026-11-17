@@ -353,7 +353,7 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 @media (max-width: 730px) {
   .quiz-header { height: 132px; justify-content: center; }
   .quiz-page { grid-template-rows: 132px minmax(0, 1fr) 92px; }
-  .question-logo { width: min(280px, 76vw); height: 98px; top: 14px; left: 50%; }
+  .question-logo { width: min(280px, 76vw); height: 98px; top: 53%; left: 50%; }
   .header-timer { display: none; }
   .question-card .card-timer { display: grid; position: absolute; top: 13px; right: auto; bottom: auto; left: 50%; min-width: 90px; height: 39px; transform: translateX(-50%); font-size: .9rem; z-index: 2; }
   .question-card .question-number { font-size: .58rem; }
