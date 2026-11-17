@@ -274,7 +274,8 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 @media (max-width: 730px) {
   .home-quiz-banner { height: auto; }
   .home-linux-desktop { display: none; }
-  .welcome > .home-linux-mobile { display: block; position: absolute; z-index: 5; left: 50%; bottom: max(10px, env(safe-area-inset-bottom)); width: min(124px, 36vw); transform: translateX(-50%); }
+  .hero-copy { position: relative; padding-bottom: 88px; }
+  .hero-copy > .home-linux-mobile { display: block; position: absolute; z-index: 5; left: 50%; bottom: 17px; width: min(124px, 36vw); transform: translateX(-50%); }
   .page-top-sticker { top: max(6px, env(safe-area-inset-top)); width: min(170px, 48vw); }
   .page-bottom-sticker { bottom: max(7px, env(safe-area-inset-bottom)); width: min(152px, 43vw); }
 }
