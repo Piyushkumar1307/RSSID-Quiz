@@ -361,6 +361,72 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 .auth-message { color: #7dffd0 !important; font-size: .82rem; line-height: 1.35; margin: 10px 0 !important; }
 .form-card .primary:disabled, .form-card .secondary:disabled { cursor: not-allowed; opacity: .52; transform: none; }
 .login-again { margin-top: 8px; border-color: #27d6ff; color: #d2f8ff; }
+.verified-returning { margin: 14px 0 0; color: #75f5c9; font-size: .84rem; font-weight: 700; }
+
+/* Credentials need a document flow rather than the kiosk-style scaled canvas.
+   This keeps the whole form usable and gives the footer mark its own space. */
+html:has(.form-page), body:has(.form-page), #root:has(.form-page) {
+  height: auto;
+  min-height: 100%;
+  overflow: auto;
+}
+
+.form-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(18px, 3vh, 34px);
+  height: auto;
+  min-height: 100dvh;
+  max-height: none;
+  padding: max(18px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  overflow: visible;
+}
+
+.form-page .page-stickers {
+  display: contents;
+}
+
+.form-page .page-top-sticker,
+.form-page .page-bottom-sticker {
+  position: static;
+  display: block;
+  flex: 0 0 auto;
+  max-width: 100%;
+  transform: none;
+}
+
+.form-page .page-top-sticker {
+  order: 1;
+  width: min(240px, 58vw);
+  animation: none;
+}
+
+.form-page .form-card {
+  order: 2;
+  flex: 0 0 auto;
+  margin: 0;
+  transform: none;
+}
+
+.form-page .page-bottom-sticker {
+  order: 3;
+  width: min(210px, 52vw);
+  margin-bottom: max(2px, env(safe-area-inset-bottom));
+}
+
+@media (max-width: 730px) {
+  .form-page {
+    gap: 16px;
+    padding-top: max(14px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+
+  .form-page .page-top-sticker { width: min(200px, 60vw); }
+  .form-page .form-card { width: min(510px, 100%); }
+  .form-page .page-bottom-sticker { width: min(175px, 52vw); }
+}
 
 @media (max-width: 480px) {
   .otp-actions { grid-template-columns: 1fr; gap: 8px; }
