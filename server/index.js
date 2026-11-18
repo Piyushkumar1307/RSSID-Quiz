@@ -15,6 +15,7 @@ const OTP_TTL_MS = 10 * 60 * 1000;
 const SESSION_TTL_MS = 10 * 60 * 60 * 1000;
 const OTP_FALLBACK_CODE = process.env.OTP_FALLBACK_CODE || '2345';
 const OTP_FALLBACK_ENABLED = process.env.OTP_ALLOW_FALLBACK !== 'false';
+const SESSION_COOKIE = 'telmifast_quiz_session';
 const twilioClient = process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN
   ? twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
   : null;
@@ -91,7 +92,9 @@ function cleanParticipant(payload = {}) {
 
 function authenticationToken(request) {
   const authorization = request.get('authorization') || '';
-  return authorization.startsWith('Bearer ') ? authorization.slice(7).trim() : '';
+  if (authorization.startsWith('Bearer ')) return authorization.slice(7).trim();
+  const cookie = request.get('cookie') || '';
+  return cookie.split(';').map((entry) => entry.trim()).find((entry) => entry.startsWith(`${SESSION_COOKIE}=`))?.slice(SESSION_COOKIE.length + 1) || '';
 }
 
 async function requireSession(req, res, next) {
@@ -210,8 +213,29 @@ app.post('/api/auth/verify-otp', async (req, res, next) => {
        VALUES ($1, $2, $3, $4, $5, $6)`,
       [tokenHash, phone, challenge.participant_name, challenge.city, challenge.state, expiresAt],
     );
+    const cookieAttributes = [
+      `${SESSION_COOKIE}=${token}`,
+      `Max-Age=${Math.floor(SESSION_TTL_MS / 1000)}`,
+      'Path=/',
+      'HttpOnly',
+      'SameSite=Lax',
+    ];
+    if (process.env.NODE_ENV === 'production') cookieAttributes.push('Secure');
+    res.setHeader('Set-Cookie', cookieAttributes.join('; '));
     res.json({ token, expiresAt: expiresAt.toISOString(), participant: { name: challenge.participant_name, city: challenge.city, state: challenge.state, phone } });
   } catch (error) { next(error); }
+});
+
+app.get('/api/auth/session', requireSession, (req, res) => {
+  const { participant_name: name, city, state, phone, expires_at: expiresAt } = req.quizSession;
+  res.json({ verified: true, expiresAt, participant: { name, city, state, phone } });
+});
+
+app.post('/api/auth/logout', (_req, res) => {
+  const cookieAttributes = [`${SESSION_COOKIE}=`, 'Max-Age=0', 'Path=/', 'HttpOnly', 'SameSite=Lax'];
+  if (process.env.NODE_ENV === 'production') cookieAttributes.push('Secure');
+  res.setHeader('Set-Cookie', cookieAttributes.join('; '));
+  res.status(204).end();
 });
 
 app.get('/api/quiz', requireSession, (req, res) => {

@@ -229,7 +229,26 @@ function App() {
 
   useViewportFit(screen);
 
-  const sessionActive = Boolean(session?.token && new Date(session.expiresAt).getTime() > Date.now());
+  // Render serves the API from the same origin. Restore the secure server-side
+  // login cookie after a reload so verified participants only see Play quiz.
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`${API}/auth/session`, { credentials: 'include' })
+      .then(async (response) => {
+        if (!response.ok) return null;
+        return response.json();
+      })
+      .then((savedSession) => {
+        if (cancelled || !savedSession?.verified) return;
+        const restoredSession = { expiresAt: savedSession.expiresAt, participant: savedSession.participant };
+        setSession(restoredSession);
+        setParticipant(savedSession.participant);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
+  const sessionActive = Boolean(session && new Date(session.expiresAt).getTime() > Date.now());
   const authHeaders = sessionActive ? { Authorization: `Bearer ${session.token}` } : {};
 
   const validateParticipant = () => {
@@ -241,6 +260,7 @@ function App() {
   const clearSession = () => {
     window.localStorage.removeItem(OTP_SESSION_KEY);
     setSession(null);
+    fetch(`${API}/auth/logout`, { method: 'POST', credentials: 'include' }).catch(() => {});
   };
 
   const prepareSound = useCallback(() => {
@@ -379,7 +399,7 @@ function App() {
 
   const startQuiz = async (activeSession = session) => {
     setError('');
-    if (!activeSession?.token || new Date(activeSession.expiresAt).getTime() <= Date.now()) { setError('Verify the OTP to log in before starting the challenge.'); return; }
+    if (new Date(activeSession?.expiresAt).getTime() <= Date.now()) { setError('Verify the OTP to log in before starting the challenge.'); return; }
     // Preload the provided feedback tracks while the browser has a user gesture.
     prepareSound();
     // Start silently during the tap so mobile browsers permit the quiz music on the next screen.
@@ -387,7 +407,7 @@ function App() {
     music.volume = 0;
     music.play().catch(() => {});
     try {
-      const response = await fetch(`${API}/quiz`, { headers: { Authorization: `Bearer ${activeSession.token}` } });
+      const response = await fetch(`${API}/quiz`, { headers: activeSession.token ? { Authorization: `Bearer ${activeSession.token}` } : {}, credentials: 'include' });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
       setQuiz(data.questions); setAnswers([]); setIndex(0); setRemaining(DURATION_SECONDS); setScreen('quiz');
