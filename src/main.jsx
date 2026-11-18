@@ -211,6 +211,7 @@ function App() {
   const [participant, setParticipant] = useState(() => session?.participant || { name: '', city: '', state: '', phone: '' });
   const [otp, setOtp] = useState('');
   const [otpSent, setOtpSent] = useState(false);
+  const [resendSeconds, setResendSeconds] = useState(0);
   const [authPending, setAuthPending] = useState(false);
   const [quiz, setQuiz] = useState([]);
   const [index, setIndex] = useState(0);
@@ -228,6 +229,12 @@ function App() {
   const backgroundMusic = useRef(null);
 
   useViewportFit(screen);
+
+  useEffect(() => {
+    if (resendSeconds <= 0) return undefined;
+    const timer = window.setTimeout(() => setResendSeconds((seconds) => seconds - 1), 1000);
+    return () => window.clearTimeout(timer);
+  }, [resendSeconds]);
 
   // Render serves the API from the same origin. Restore the secure server-side
   // login cookie after a reload so verified participants only see Play quiz.
@@ -355,6 +362,7 @@ function App() {
 
   const requestOtp = async () => {
     setError('');
+    if (otpSent && resendSeconds > 0) return;
     if (!validateParticipant()) return;
     setAuthPending(true);
     try {
@@ -366,6 +374,7 @@ function App() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
       setOtpSent(true);
+      setResendSeconds(15);
       setOtp('');
       setError(data.delivery === 'fallback' ? 'SMS is unavailable. Enter the organizer fallback OTP to continue.' : 'OTP sent by SMS. Enter it below to verify your phone.');
     } catch (authError) {
@@ -453,9 +462,9 @@ function App() {
   const current = quiz[index];
   const scorePotential = useMemo(() => Math.max(1, Math.ceil(10 - (DURATION_SECONDS - remaining) / 2)), [remaining]);
 
-  if (screen === 'welcome') return <main className="page welcome"><div className="glow glow-one" /><div className="hero-card"><div className="hero-art"><img className="home-quiz-banner" src="/images/home-quiz-banner.png" alt="Fastrack with Telmifast Quiz Contest" /><img className="home-linux-logo home-linux-desktop" src="/images/linux-laboratories-logo.png" alt="Linux Laboratories" /><div className="road">THE <HighlightFastrack>FAST TRACK</HighlightFastrack> TO BP CONTROL</div></div><div className="hero-copy"><span className="eyebrow">CARDIO–DIABETES CHALLENGE</span><h1>Think <HighlightFastrack>fast</HighlightFastrack>.<br /><em>Make every second count.</em></h1><p>10 clinical questions. 20 seconds each. <HighlightFastrack>Faster</HighlightFastrack> correct answers earn more points.</p>{sessionActive ? <><button className="primary" onClick={() => startQuiz()}>Play quiz <span>→</span></button><p className="verified-returning">✓ You&apos;re verified. Your saved session is ready.</p></> : <button className="primary" onClick={() => { setParticipant({ name: '', city: '', state: '', phone: '' }); setOtp(''); setOtpSent(false); setError(''); setScreen('details'); }}>Touch to start <span>→</span></button>}<img className="home-linux-logo home-linux-mobile" src="/images/linux-laboratories-logo.png" alt="Linux Laboratories" /></div></div></main>;
+  if (screen === 'welcome') return <main className="page welcome"><div className="glow glow-one" /><div className="hero-card"><div className="hero-art"><img className="home-quiz-banner" src="/images/home-quiz-banner.png" alt="Fastrack with Telmifast Quiz Contest" /><img className="home-linux-logo home-linux-desktop" src="/images/linux-laboratories-logo.png" alt="Linux Laboratories" /><div className="road">THE <HighlightFastrack>FAST TRACK</HighlightFastrack> TO BP CONTROL</div></div><div className="hero-copy"><span className="eyebrow">CARDIO–DIABETES CHALLENGE</span><h1>Think <HighlightFastrack>fast</HighlightFastrack>.<br /><em>Make every second count.</em></h1><p>10 clinical questions. 20 seconds each. <HighlightFastrack>Faster</HighlightFastrack> correct answers earn more points.</p>{sessionActive ? <><button className="primary" onClick={() => startQuiz()}>Play quiz <span>→</span></button><p className="verified-returning">✓ You&apos;re verified. Your saved session is ready.</p></> : <button className="primary" onClick={() => { setParticipant({ name: '', city: '', state: '', phone: '' }); setOtp(''); setOtpSent(false); setResendSeconds(0); setError(''); setScreen('details'); }}>Touch to start <span>→</span></button>}<img className="home-linux-logo home-linux-mobile" src="/images/linux-laboratories-logo.png" alt="Linux Laboratories" /></div></div></main>;
 
-  if (screen === 'details') return <main className="page form-page"><PageStickers /><section className="form-card"><button className="back" onClick={() => setScreen('welcome')}>← Back</button><span className="eyebrow">WELCOME, CHALLENGER</span><h1>Before we begin</h1><p>Get Ready with your Credentials<br />on <HighlightFastrack>Fast Track</HighlightFastrack> with Telmifast!</p><label>Full name<input autoComplete="name" placeholder="Your name" value={participant.name} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, name: event.target.value })} /></label><label>City<input placeholder="Your city" value={participant.city} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, city: event.target.value })} /></label><label>State<input autoComplete="address-level1" placeholder="Your state" value={participant.state} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, state: event.target.value })} /></label><label>Phone number<input inputMode="numeric" autoComplete="tel" maxLength="10" placeholder="9876543210" value={participant.phone} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, phone: event.target.value.replace(/\D/g, '').slice(0, 10) })} /></label>{!sessionActive && <><label>OTP<input inputMode="numeric" autoComplete="one-time-code" maxLength="8" placeholder="Enter OTP" value={otp} disabled={!otpSent || authPending} onChange={(event) => setOtp(event.target.value.replace(/\D/g, '').slice(0, 8))} /></label><div className="otp-actions"><button className="secondary" disabled={authPending} onClick={requestOtp}>{authPending ? 'Sending…' : otpSent ? 'Resend OTP' : 'Send OTP'}</button><button className="primary" disabled={authPending || !otpSent} onClick={verifyOtp}>{authPending ? 'Verifying…' : 'Verify & login'}</button></div><p className="otp-note">If SMS cannot be received, use the organizer fallback OTP.</p></>}{error && <p className={error.startsWith('OTP sent') || error.startsWith('SMS is unavailable') ? 'auth-message' : 'error'}>{error}</p>}</section></main>;
+  if (screen === 'details') return <main className="page form-page"><PageStickers /><section className="form-card"><button className="back" onClick={() => setScreen('welcome')}>← Back</button><span className="eyebrow">WELCOME, CHALLENGER</span><h1>Before we begin</h1><p>Get Ready with your Credentials<br />on <HighlightFastrack>Fast Track</HighlightFastrack> with Telmifast!</p><label>Full name<input autoComplete="name" placeholder="Your name" value={participant.name} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, name: event.target.value })} /></label><label>City<input placeholder="Your city" value={participant.city} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, city: event.target.value })} /></label><label>State<input autoComplete="address-level1" placeholder="Your state" value={participant.state} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, state: event.target.value })} /></label><label>Phone number<input inputMode="numeric" autoComplete="tel" maxLength="10" placeholder="9876543210" value={participant.phone} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, phone: event.target.value.replace(/\D/g, '').slice(0, 10) })} /></label>{!sessionActive && <><label>OTP<input inputMode="numeric" autoComplete="one-time-code" maxLength="8" placeholder="Enter OTP" value={otp} disabled={!otpSent || authPending} onChange={(event) => setOtp(event.target.value.replace(/\D/g, '').slice(0, 8))} /></label><div className="otp-actions"><button className="secondary" disabled={authPending || (otpSent && resendSeconds > 0)} onClick={requestOtp}>{authPending ? 'Sending…' : otpSent && resendSeconds > 0 ? `Resend OTP (${resendSeconds}s)` : otpSent ? 'Resend OTP' : 'Send OTP'}</button><button className="primary" disabled={authPending || !otpSent} onClick={verifyOtp}>{authPending ? 'Verifying…' : 'Verify & login'}</button></div><p className="otp-note">If SMS cannot be received, use the organizer fallback OTP.</p></>}{error && <p className={error.startsWith('OTP sent') || error.startsWith('SMS is unavailable') ? 'auth-message' : 'error'}>{error}</p>}</section></main>;
 
   if (screen === 'saving') return <main className="page"><div className="saving"><div className="spinner" /><h2>Calculating your score…</h2><p>Saving your place on the board.</p></div></main>;
 
