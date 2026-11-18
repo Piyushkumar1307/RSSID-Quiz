@@ -9,11 +9,27 @@ An interactive 10-question cardio-diabetes quiz with a 20-second timer per quest
 3. Start the app with `npm run dev`.
 4. Open the Vite URL shown in the terminal (normally `http://localhost:5173`).
 
-The API starts at `http://localhost:3001` and creates `quiz_submissions` and its leaderboard index automatically.
+The API starts at `http://localhost:3001` and creates its submission, OTP, and 10-hour login-session tables automatically.
+
+## OTP login with Twilio
+
+The participant form sends and verifies an SMS OTP before a quiz can start. The account SID and auth token stay on the server; never add them to a `VITE_` variable or commit `.env`.
+
+For the recommended Twilio Verify integration, configure these encrypted variables locally and on Render:
+
+```sh
+TWILIO_ACCOUNT_SID=AC...
+TWILIO_AUTH_TOKEN=...
+TWILIO_VERIFY_SERVICE_SID=VA...
+```
+
+Twilio Verify requires a Verify Service SID in addition to the Account SID and Auth Token. A Twilio trial account can only SMS phone numbers that have been verified in Twilio. If instead using Programmable Messaging, configure either `TWILIO_PHONE_NUMBER` or `TWILIO_MESSAGING_SERVICE_SID`.
+
+For the requested organizer fallback, `OTP_FALLBACK_CODE=2345` is accepted only after an OTP request for that same phone number. Set `OTP_ALLOW_FALLBACK=false` to turn this shared bypass off for production.
 
 ## Deploy
 
-Set `DATABASE_URL` and `PORT` in the host's encrypted environment variables. Then run:
+Set `DATABASE_URL`, `PORT`, and the Twilio variables above in the host's encrypted environment variables. Then run:
 
 ```sh
 npm run build

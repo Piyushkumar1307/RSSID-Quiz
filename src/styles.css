@@ -349,6 +349,26 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 
 .card-timer { display: none; }
 
+/* OTP login controls in the participant panel. */
+.otp-actions { display: grid; grid-template-columns: 1fr 1.25fr; gap: 10px; margin: 2px 0 4px; }
+.otp-actions button { min-height: 47px; padding: 11px 14px; }
+.otp-actions .primary { align-self: stretch; }
+.otp-note { margin: 9px 0 0 !important; color: #89a8c8 !important; font-size: .76rem; line-height: 1.35; }
+.session-status { display: grid; gap: 4px; margin: 12px 0 4px; padding: 12px 14px; border: 1px solid #2be8a5; border-radius: 10px; background: #0b3f393d; color: #d7fff0; font-size: .82rem; }
+.session-status b { color: #5ff1bd; }
+.session-status span { color: #bddce4; }
+.change-login { justify-self: start; border: 0; padding: 2px 0; background: transparent; color: #5bdcff; font-size: .76rem; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.auth-message { color: #7dffd0 !important; font-size: .82rem; line-height: 1.35; margin: 10px 0 !important; }
+.form-card .primary:disabled, .form-card .secondary:disabled { cursor: not-allowed; opacity: .52; transform: none; }
+.login-again { margin-top: 8px; border-color: #27d6ff; color: #d2f8ff; }
+
+@media (max-width: 480px) {
+  .otp-actions { grid-template-columns: 1fr; gap: 8px; }
+  .otp-actions button { width: 100%; }
+  .otp-note { font-size: .71rem; }
+  .session-status { padding: 10px 12px; font-size: .76rem; }
+}
+
 /* Center the race logo on tablet and desktop; metadata stays at each side. */
 @media (min-width: 731px) {
   .quiz-header { position: relative; justify-content: center; }

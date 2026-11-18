@@ -5,11 +5,19 @@ import './styles.css';
 const API = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:3001/api' : '/api');
 const DURATION = 20_000;
 const DURATION_SECONDS = DURATION / 1000;
+const OTP_SESSION_KEY = 'telmifast-quiz-session';
 const SOUND_FILES = {
   correct: '/audio/correct.mp3',
   wrong: '/audio/fail.mp3',
   confetti: '/audio/confetti.mp3',
 };
+
+function readStoredSession() {
+  try {
+    const session = JSON.parse(window.localStorage.getItem(OTP_SESSION_KEY) || 'null');
+    return session?.token && new Date(session.expiresAt).getTime() > Date.now() ? session : null;
+  } catch { return null; }
+}
 
 function playTick() {
   if (!window.AudioContext && !window.webkitAudioContext) return;
@@ -197,6 +205,10 @@ function App() {
     return 'welcome';
   });
   const [participant, setParticipant] = useState({ name: '', city: '', state: '', phone: '' });
+  const [otp, setOtp] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [authPending, setAuthPending] = useState(false);
+  const [session, setSession] = useState(readStoredSession);
   const [quiz, setQuiz] = useState([]);
   const [index, setIndex] = useState(0);
   const [remaining, setRemaining] = useState(DURATION_SECONDS);
@@ -213,6 +225,20 @@ function App() {
   const backgroundMusic = useRef(null);
 
   useViewportFit(screen);
+
+  const sessionActive = Boolean(session?.token && new Date(session.expiresAt).getTime() > Date.now());
+  const authHeaders = sessionActive ? { Authorization: `Bearer ${session.token}` } : {};
+
+  const validateParticipant = () => {
+    if (participant.name.trim() && participant.city.trim() && participant.state.trim() && /^\d{10}$/.test(participant.phone)) return true;
+    setError('Please add your name, city, state, and a valid 10-digit phone number.');
+    return false;
+  };
+
+  const clearSession = () => {
+    window.localStorage.removeItem(OTP_SESSION_KEY);
+    setSession(null);
+  };
 
   const prepareSound = useCallback(() => {
     Object.entries(SOUND_FILES).forEach(([kind, source]) => {
@@ -304,11 +330,54 @@ function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screen, index, feedback]);
 
+  const requestOtp = async () => {
+    setError('');
+    if (!validateParticipant()) return;
+    setAuthPending(true);
+    try {
+      const response = await fetch(`${API}/auth/request-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(participant),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      setOtpSent(true);
+      setOtp('');
+      setError(data.delivery === 'fallback' ? 'SMS is unavailable. Enter the organizer fallback OTP to continue.' : 'OTP sent by SMS. Enter it below to verify your phone.');
+    } catch (authError) {
+      setError(authError.message || 'Could not send the OTP. Please try again.');
+    } finally { setAuthPending(false); }
+  };
+
+  const verifyOtp = async () => {
+    setError('');
+    if (!validateParticipant()) return;
+    if (!otpSent) { setError('Please send an OTP first.'); return; }
+    if (!/^\d{4,8}$/.test(otp)) { setError('Enter the OTP you received.'); return; }
+    setAuthPending(true);
+    try {
+      const response = await fetch(`${API}/auth/verify-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: participant.phone, code: otp }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      const nextSession = { token: data.token, expiresAt: data.expiresAt };
+      window.localStorage.setItem(OTP_SESSION_KEY, JSON.stringify(nextSession));
+      setSession(nextSession);
+      setParticipant(data.participant);
+      setError('Phone verified. Your login is active for 10 hours.');
+    } catch (authError) {
+      setError(authError.message || 'Could not verify the OTP. Please try again.');
+    } finally { setAuthPending(false); }
+  };
+
   const startQuiz = async () => {
     setError('');
-    if (!participant.name.trim() || !participant.city.trim() || !participant.state.trim() || !/^\d{10}$/.test(participant.phone)) {
-      setError('Please add your name, city, state, and a valid 10-digit phone number.'); return;
-    }
+    if (!validateParticipant()) return;
+    if (!sessionActive) { setError('Verify the OTP to log in before starting the challenge.'); return; }
     // Preload the provided feedback tracks while the browser has a user gesture.
     prepareSound();
     // Start silently during the tap so mobile browsers permit the quiz music on the next screen.
@@ -316,21 +385,21 @@ function App() {
     music.volume = 0;
     music.play().catch(() => {});
     try {
-      const response = await fetch(`${API}/quiz`);
-      if (!response.ok) throw new Error();
+      const response = await fetch(`${API}/quiz`, { headers: authHeaders });
       const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
       setQuiz(data.questions); setAnswers([]); setIndex(0); setRemaining(DURATION_SECONDS); setScreen('quiz');
-    } catch {
+    } catch (quizError) {
       music.pause();
       music.currentTime = 0;
-      setError('Quiz is not available yet. Please check the server connection.');
+      setError(quizError.message || 'Quiz is not available yet. Please check the server connection.');
     }
   };
 
   const finishQuiz = async (finalAnswers) => {
     setScreen('saving');
     try {
-      const response = await fetch(`${API}/submissions`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...participant, answers: finalAnswers }) });
+      const response = await fetch(`${API}/submissions`, { method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders }, body: JSON.stringify({ answers: finalAnswers }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
       setResult(data); setScreen('results');
@@ -345,7 +414,7 @@ function App() {
     let correct = false;
     if (answer) {
       try {
-        const response = await fetch(`${API}/check-answer`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(item) });
+        const response = await fetch(`${API}/check-answer`, { method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders }, body: JSON.stringify(item) });
         correct = response.ok && (await response.json()).correct;
       } catch { /* scoring remains verified by the final submission */ }
     }
@@ -364,7 +433,7 @@ function App() {
 
   if (screen === 'welcome') return <main className="page welcome"><div className="glow glow-one" /><div className="hero-card"><div className="hero-art"><img className="home-quiz-banner" src="/images/home-quiz-banner.png" alt="Fastrack with Telmifast Quiz Contest" /><img className="home-linux-logo home-linux-desktop" src="/images/linux-laboratories-logo.png" alt="Linux Laboratories" /><div className="road">THE <HighlightFastrack>FAST TRACK</HighlightFastrack> TO BP CONTROL</div></div><div className="hero-copy"><span className="eyebrow">CARDIO–DIABETES CHALLENGE</span><h1>Think <HighlightFastrack>fast</HighlightFastrack>.<br /><em>Make every second count.</em></h1><p>10 clinical questions. 20 seconds each. <HighlightFastrack>Faster</HighlightFastrack> correct answers earn more points.</p><button className="primary" onClick={() => setScreen('details')}>Touch to start <span>→</span></button><img className="home-linux-logo home-linux-mobile" src="/images/linux-laboratories-logo.png" alt="Linux Laboratories" /></div></div></main>;
 
-  if (screen === 'details') return <main className="page form-page"><PageStickers /><section className="form-card"><button className="back" onClick={() => setScreen('welcome')}>← Back</button><span className="eyebrow">WELCOME, CHALLENGER</span><h1>Before we begin</h1><p>Get Ready with your Credentials<br />on <HighlightFastrack>Fast Track</HighlightFastrack> with Telmifast!</p><label>Full name<input autoComplete="name" placeholder="Your name" value={participant.name} onChange={(event) => setParticipant({ ...participant, name: event.target.value })} /></label><label>City<input placeholder="Your city" value={participant.city} onChange={(event) => setParticipant({ ...participant, city: event.target.value })} /></label><label>State<input autoComplete="address-level1" placeholder="Your state" value={participant.state} onChange={(event) => setParticipant({ ...participant, state: event.target.value })} /></label><label>Phone number<input inputMode="numeric" autoComplete="tel" maxLength="10" placeholder="9876543210" value={participant.phone} onChange={(event) => setParticipant({ ...participant, phone: event.target.value.replace(/\D/g, '').slice(0, 10) })} /></label>{error && <p className="error">{error}</p>}<button className="primary full" onClick={startQuiz}>Start the challenge <span>→</span></button></section></main>;
+  if (screen === 'details') return <main className="page form-page"><PageStickers /><section className="form-card"><button className="back" onClick={() => setScreen('welcome')}>← Back</button><span className="eyebrow">WELCOME, CHALLENGER</span><h1>Before we begin</h1><p>Get Ready with your Credentials<br />on <HighlightFastrack>Fast Track</HighlightFastrack> with Telmifast!</p><label>Full name<input autoComplete="name" placeholder="Your name" value={participant.name} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, name: event.target.value })} /></label><label>City<input placeholder="Your city" value={participant.city} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, city: event.target.value })} /></label><label>State<input autoComplete="address-level1" placeholder="Your state" value={participant.state} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, state: event.target.value })} /></label><label>Phone number<input inputMode="numeric" autoComplete="tel" maxLength="10" placeholder="9876543210" value={participant.phone} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, phone: event.target.value.replace(/\D/g, '').slice(0, 10) })} /></label>{!sessionActive && <><label>OTP<input inputMode="numeric" autoComplete="one-time-code" maxLength="8" placeholder="Enter OTP" value={otp} disabled={!otpSent || authPending} onChange={(event) => setOtp(event.target.value.replace(/\D/g, '').slice(0, 8))} /></label><div className="otp-actions"><button className="secondary" disabled={authPending} onClick={requestOtp}>{authPending ? 'Sending…' : otpSent ? 'Resend OTP' : 'Send OTP'}</button><button className="primary" disabled={authPending || !otpSent} onClick={verifyOtp}>{authPending ? 'Verifying…' : 'Verify & login'}</button></div><p className="otp-note">If SMS cannot be received, use the organizer fallback OTP.</p></>}{sessionActive && <div className="session-status"><b>✓ Phone verified</b><span>Login active for 10 hours.</span><button className="change-login" onClick={clearSession}>Use another number</button></div>}{error && <p className={error.startsWith('Phone verified') || error.startsWith('OTP sent') || error.startsWith('SMS is unavailable') ? 'auth-message' : 'error'}>{error}</p>}<button className="primary full" disabled={!sessionActive} onClick={startQuiz}>{sessionActive ? 'Start the challenge' : 'Verify OTP to start'} <span>→</span></button></section></main>;
 
   if (screen === 'saving') return <main className="page"><div className="saving"><div className="spinner" /><h2>Calculating your score…</h2><p>Saving your place on the board.</p></div></main>;
 
@@ -372,7 +441,7 @@ function App() {
 
   if (screen === 'leaderboard') return <main className="page results-page"><section className="result-card leaderboard-page"><img className="leaderboard-brand" src="/images/fastrack-telmifast-sticker.png" alt="Fastrack with Telmifast" /><img className="leaderboard-hero" src="/images/live-leaderboard-header.png" alt="Live Leader Board" /><PodiumLeaderboard entries={leaderboard} refreshSeconds={refreshSeconds} />{error && <p className="error">{error}</p>}</section></main>;
 
-  if (screen === 'results') return <main className="page results-page">{(result?.score ?? 0) > 0 && <Confetti />}<section className="result-card"><img className="score-thankyou-logo" src="/images/thankyou-quiz.png" alt="Thank you for participating in the Telmifast Quiz Contest" /><span className="eyebrow">QUIZ COMPLETE</span><h1>Great pace, {participant.name.split(' ')[0]}!</h1><div className="score-ring"><strong>{result?.score ?? 0}</strong><span>out of 100</span></div><p><b>{result?.correctCount ?? 0}/10</b> correct answers. Your score rewards accuracy and speed.</p>{error && <p className="error">{error}</p>}</section></main>;
+  if (screen === 'results') return <main className="page results-page">{(result?.score ?? 0) > 0 && <Confetti />}<section className="result-card"><img className="score-thankyou-logo" src="/images/thankyou-quiz.png" alt="Thank you for participating in the Telmifast Quiz Contest" /><span className="eyebrow">QUIZ COMPLETE</span><h1>Great pace, {participant.name.split(' ')[0]}!</h1><div className="score-ring"><strong>{result?.score ?? 0}</strong><span>out of 100</span></div><p><b>{result?.correctCount ?? 0}/10</b> correct answers. Your score rewards accuracy and speed.</p><button className="secondary login-again" onClick={() => { clearSession(); setOtp(''); setOtpSent(false); setError(''); setScreen('details'); }}>Login to play again</button>{error && <p className="error">{error}</p>}</section></main>;
 
   return <main className="page quiz-page"><header className="quiz-header"><img className="question-logo" src="/images/quiz-header-sticker.png" alt="Fastrack with Telmifast Quiz Contest" /><span>QUESTION {index + 1}<small>/ 10</small></span><div className={`timer header-timer ${remaining <= 3 ? 'urgent' : ''}`}><i style={{ '--progress': `${(remaining / DURATION_SECONDS) * 100}%` }} /><b>{formatTime(remaining)}</b></div></header><section className="question-card"><div className="progress"><i style={{ width: `${((index + 1) / 10) * 100}%` }} /></div><div className="question-number">QUESTION {String(index + 1).padStart(2, '0')} <span>UP TO {scorePotential} POINTS</span></div><div className={`timer card-timer ${remaining <= 3 ? 'urgent' : ''}`}><i style={{ '--progress': `${(remaining / DURATION_SECONDS) * 100}%` }} /><b>{formatTime(remaining)}</b></div><h1><HighlightFastrack>{current?.question}</HighlightFastrack></h1><div className="answers">{current && Object.entries(current.options).map(([key, text]) => <button disabled={Boolean(feedback)} className={feedback?.answer === key ? (feedback.correct ? 'selected is-correct' : 'selected is-wrong') : ''} key={key} onClick={() => resolveAnswer(key)}><b>{key}</b><span><HighlightFastrack>{text}</HighlightFastrack></span></button>)}</div>{feedback && <div className="feedback">{feedback.message}</div>}</section><QuizBanner /></main>;
 }
