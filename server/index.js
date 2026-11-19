@@ -255,7 +255,6 @@ app.post('/api/auth/logout', (_req, res) => {
 });
 
 app.get('/api/quiz', requireSession, (req, res) => {
-  if (req.quizSession.used_at) return res.status(409).json({ message: 'This login has already been used for one quiz. Please log in again to play another round.' });
   const selected = [...questions].sort(() => Math.random() - 0.5).slice(0, 10).map(publicQuestion);
   res.json({ questions: selected, durationSeconds: 20, maxScorePerQuestion: 10 });
 });
@@ -342,7 +341,7 @@ app.post('/api/spin-winner', async (_req, res, next) => {
 app.post('/api/submissions', requireSession, async (req, res, next) => {
   try {
     const { answers } = req.body ?? {};
-    const { participant_name: cleanName, city: cleanCity, state: cleanState, phone: cleanPhone, token_hash: tokenHash } = req.quizSession;
+    const { participant_name: cleanName, city: cleanCity, state: cleanState, phone: cleanPhone } = req.quizSession;
     if (!Array.isArray(answers) || answers.length !== 10 || new Set(answers.map((item) => item?.questionId)).size !== 10) {
       return res.status(400).json({ message: 'A complete quiz submission is required.' });
     }
@@ -366,16 +365,6 @@ app.post('/api/submissions', requireSession, async (req, res, next) => {
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
-      const claimed = await client.query(
-        `UPDATE quiz_sessions SET used_at = now()
-         WHERE token_hash = $1 AND used_at IS NULL AND expires_at > now()
-         RETURNING token_hash`,
-        [tokenHash],
-      );
-      if (!claimed.rowCount) {
-        await client.query('ROLLBACK');
-        return res.status(409).json({ message: 'This login has already been used. Please log in again to play another round.' });
-      }
       await client.query(
         `INSERT INTO quiz_submissions (participant_name, city, state, phone, score, correct_count, window_start)
          VALUES ($1, $2, $3, $4, $5, $6, $7)`,
