@@ -200,11 +200,68 @@ function SpinWheelPage() {
   return <main className="page wheel-page">{celebrating && <Confetti />}<section className="wheel-card"><img className="wheel-brand" src="/images/fastrack-telmifast-sticker.png" alt="Fastrack with Telmifast" /><span className="eyebrow">RSSDI PARTICIPANT DRAW</span><h1>Spin the<br /><em>winner wheel.</em></h1><p className="wheel-intro">Tap the center to choose one unique quiz participant at random from the database.</p><div className="wheel-wrap"><div className="wheel-pointer" aria-hidden="true" /><div className={`spin-wheel ${spinning ? 'is-spinning' : ''}`} style={wheelStyle} /><img className="wheel-road-ring" src="/images/racing-wheel-road-ring.png" alt="" aria-hidden="true" /><button className={`wheel-hub ${winner ? 'has-winner' : ''}`} disabled={spinning || Boolean(winner)} onClick={spin} aria-label={spinning ? 'Selecting a winner' : 'Spin the winner wheel'}>{spinning ? <span>SPINNING</span> : winner ? <><small>WINNER</small><strong>{winner}</strong><em>Congratulations!</em></> : <><span>TAP TO</span><b>SPIN</b></>}</button></div>{winner && <div className="winner-sticker" aria-live="polite"><img src="/images/winner-sticker.png" alt="Winner" /><strong>{winner}</strong><span>Congratulations!</span></div>}{error && <p className="error wheel-error">{error}</p>}</section></main>;
 }
 
+function WinnerAdminPage() {
+  const [adminKey, setAdminKey] = useState(() => window.sessionStorage.getItem('winner-admin-key') || '');
+  const [authorized, setAuthorized] = useState(false);
+  const [name, setName] = useState('');
+  const [durationHours, setDurationHours] = useState(1);
+  const [scheduledWinner, setScheduledWinner] = useState(null);
+  const [message, setMessage] = useState('');
+  const [pending, setPending] = useState(false);
+
+  const adminRequest = useCallback(async (url, options = {}) => {
+    const response = await fetch(`${API}${url}`, {
+      ...options,
+      headers: { 'X-Winner-Admin-Key': adminKey, ...(options.headers || {}) },
+    });
+    if (response.status === 204) return null;
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || 'Winner controls are unavailable.');
+    return data;
+  }, [adminKey]);
+
+  const openControls = async () => {
+    setPending(true); setMessage('');
+    try {
+      const data = await adminRequest('/winner-schedule');
+      window.sessionStorage.setItem('winner-admin-key', adminKey);
+      setScheduledWinner(data.winner);
+      setAuthorized(true);
+    } catch (requestError) { setMessage(requestError.message); }
+    finally { setPending(false); }
+  };
+
+  const scheduleWinner = async (event) => {
+    event.preventDefault();
+    setPending(true); setMessage('');
+    try {
+      const data = await adminRequest('/winner-schedule', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, durationHours }) });
+      setScheduledWinner(data.winner); setName('');
+      setMessage(`Winner scheduled for ${durationHours} hour${durationHours === 1 ? '' : 's'}.`);
+    } catch (requestError) { setMessage(requestError.message); }
+    finally { setPending(false); }
+  };
+
+  const removeSchedule = async () => {
+    setPending(true); setMessage('');
+    try {
+      await adminRequest('/winner-schedule', { method: 'DELETE' });
+      setScheduledWinner(null); setMessage('Scheduled winner removed. The wheel will now select randomly.');
+    } catch (requestError) { setMessage(requestError.message); }
+    finally { setPending(false); }
+  };
+
+  const formatExpiry = (expiresAt) => new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(expiresAt));
+
+  return <main className="page winner-admin-page"><section className="winner-admin-card"><span className="eyebrow">ORGANIZER CONTROLS</span><h1>Schedule the<br /><em>wheel winner.</em></h1>{!authorized ? <><p>Enter the organizer key to manage the temporary winner shown by the spin wheel.</p><label>Organizer key<input type="password" autoComplete="current-password" value={adminKey} onChange={(event) => setAdminKey(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') openControls(); }} placeholder="Enter organizer key" /></label><button className="primary" disabled={pending || !adminKey} onClick={openControls}>{pending ? 'Opening…' : 'Open controls'}</button></> : <><p className="winner-admin-intro">Every spin will show the scheduled name until it expires. Removing it returns the wheel to a random participant.</p>{scheduledWinner ? <div className="scheduled-winner"><small>ACTIVE SCHEDULE</small><strong>{scheduledWinner.name}</strong><span>Ends {formatExpiry(scheduledWinner.expiresAt)}</span><button className="secondary" disabled={pending} onClick={removeSchedule}>Delete scheduled winner</button></div> : <div className="no-scheduled-winner">No scheduled winner. The wheel is selecting randomly.</div>}<form onSubmit={scheduleWinner}><label>Winner name<input value={name} maxLength="100" onChange={(event) => setName(event.target.value)} placeholder="Enter winner name" required /></label><fieldset><legend>Show this winner for</legend>{[1, 2, 3].map((hours) => <label key={hours}><input type="radio" name="duration" value={hours} checked={durationHours === hours} onChange={() => setDurationHours(hours)} /> {hours} hour{hours === 1 ? '' : 's'}</label>)}</fieldset><button className="primary" disabled={pending}>{pending ? 'Saving…' : 'Schedule winner'}</button></form></>}{message && <p className={message.includes('scheduled') || message.includes('randomly') ? 'auth-message' : 'error'}>{message}</p>}</section></main>;
+}
+
 function App() {
   const [screen, setScreen] = useState(() => {
     const path = window.location.pathname.replace(/\/+$/, '');
     if (window.location.hash === '#leaderboard' || path === '/leaderboard') return 'leaderboard';
     if (window.location.hash === '#spin-wheel' || path === '/spin-wheel') return 'spin';
+    if (window.location.hash === '#winner' || path === '/winner') return 'winner-admin';
     return 'welcome';
   });
   const [session, setSession] = useState(readStoredSession);
@@ -247,8 +304,15 @@ function App() {
       })
       .then((savedSession) => {
         if (cancelled || !savedSession?.verified) return;
-        const restoredSession = { expiresAt: savedSession.expiresAt, participant: savedSession.participant };
-        setSession(restoredSession);
+        // Keep the locally saved bearer token when it exists.  Previously this
+        // replacement dropped it and made a returning participant depend solely
+        // on the HttpOnly cookie, which is not available in every deployment
+        // arrangement (for example, a separate API origin).
+        setSession((currentSession) => ({
+          token: currentSession?.token,
+          expiresAt: savedSession.expiresAt,
+          participant: savedSession.participant,
+        }));
         setParticipant(savedSession.participant);
       })
       .catch(() => {});
@@ -370,6 +434,7 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(participant),
+        credentials: 'include',
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
@@ -393,6 +458,7 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone: participant.phone, code: otp }),
+        credentials: 'include',
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
@@ -462,13 +528,15 @@ function App() {
   const current = quiz[index];
   const scorePotential = useMemo(() => Math.max(1, Math.ceil(10 - (DURATION_SECONDS - remaining) / 2)), [remaining]);
 
-  if (screen === 'welcome') return <main className="page welcome"><div className="glow glow-one" /><div className="hero-card"><div className="hero-art"><img className="home-quiz-banner" src="/images/home-quiz-banner.png" alt="Fastrack with Telmifast Quiz Contest" /><img className="home-linux-logo home-linux-desktop" src="/images/linux-laboratories-logo.png" alt="Linux Laboratories" /><div className="road">THE <HighlightFastrack>FAST TRACK</HighlightFastrack> TO BP CONTROL</div></div><div className="hero-copy"><span className="eyebrow">CARDIO–DIABETES CHALLENGE</span><h1>Think <HighlightFastrack>fast</HighlightFastrack>.<br /><em>Make every second count.</em></h1><p>10 clinical questions. 20 seconds each. <HighlightFastrack>Faster</HighlightFastrack> correct answers earn more points.</p>{sessionActive ? <><button className="primary" onClick={() => startQuiz()}>Play quiz <span>→</span></button><p className="verified-returning">✓ You&apos;re verified. Your saved session is ready.</p></> : <button className="primary" onClick={() => { setParticipant({ name: '', city: '', state: '', phone: '' }); setOtp(''); setOtpSent(false); setResendSeconds(0); setError(''); setScreen('details'); }}>Touch to start <span>→</span></button>}<img className="home-linux-logo home-linux-mobile" src="/images/linux-laboratories-logo.png" alt="Linux Laboratories" /></div></div></main>;
+  if (screen === 'welcome') return <main className="page welcome"><div className="glow glow-one" /><div className="hero-card"><div className="hero-art"><img className="home-quiz-banner" src="/images/home-quiz-banner.png" alt="Fastrack with Telmifast Quiz Contest" /><img className="home-linux-logo home-linux-desktop" src="/images/linux-laboratories-logo.png" alt="Linux Laboratories" /><div className="road">THE <HighlightFastrack>FAST TRACK</HighlightFastrack> TO BP CONTROL</div></div><div className="hero-copy"><span className="eyebrow">CARDIO–DIABETES CHALLENGE</span><h1>Think <HighlightFastrack>fast</HighlightFastrack>.<br /><em>Make every second count.</em></h1><p>10 clinical questions. 20 seconds each. <HighlightFastrack>Faster</HighlightFastrack> correct answers earn more points.</p>{sessionActive ? <><button className="primary" onClick={() => startQuiz()}>Play quiz <span>→</span></button><p className="verified-returning">✓ You&apos;re verified. Your saved session is ready.</p>{error && <p className="error welcome-error">{error}</p>}{error.includes('already been used') && <button className="secondary welcome-login-again" onClick={() => { clearSession(); setOtp(''); setOtpSent(false); setError(''); setScreen('details'); }}>Login to play again</button>}</> : <button className="primary" onClick={() => { setParticipant({ name: '', city: '', state: '', phone: '' }); setOtp(''); setOtpSent(false); setResendSeconds(0); setError(''); setScreen('details'); }}>Touch to start <span>→</span></button>}<img className="home-linux-logo home-linux-mobile" src="/images/linux-laboratories-logo.png" alt="Linux Laboratories" /></div></div></main>;
 
   if (screen === 'details') return <main className="page form-page"><PageStickers /><section className="form-card"><button className="back" onClick={() => setScreen('welcome')}>← Back</button><span className="eyebrow">WELCOME, CHALLENGER</span><h1>Before we begin</h1><p>Get Ready with your Credentials<br />on <HighlightFastrack>Fast Track</HighlightFastrack> with Telmifast!</p><label>Full name<input autoComplete="name" placeholder="Your name" value={participant.name} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, name: event.target.value })} /></label><label>City<input placeholder="Your city" value={participant.city} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, city: event.target.value })} /></label><label>State<input autoComplete="address-level1" placeholder="Your state" value={participant.state} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, state: event.target.value })} /></label><label>Phone number<input inputMode="numeric" autoComplete="tel" maxLength="10" placeholder="9876543210" value={participant.phone} disabled={sessionActive} onChange={(event) => setParticipant({ ...participant, phone: event.target.value.replace(/\D/g, '').slice(0, 10) })} /></label>{!sessionActive && <><label>OTP<input inputMode="numeric" autoComplete="one-time-code" maxLength="8" placeholder="Enter OTP" value={otp} disabled={!otpSent || authPending} onChange={(event) => setOtp(event.target.value.replace(/\D/g, '').slice(0, 8))} /></label><div className="otp-actions"><button className="secondary" disabled={authPending || (otpSent && resendSeconds > 0)} onClick={requestOtp}>{authPending ? 'Sending…' : otpSent && resendSeconds > 0 ? `Resend OTP (${resendSeconds}s)` : otpSent ? 'Resend OTP' : 'Send OTP'}</button><button className="primary" disabled={authPending || !otpSent} onClick={verifyOtp}>{authPending ? 'Verifying…' : 'Verify & login'}</button></div><p className="otp-note">If SMS cannot be received, use the organizer fallback OTP.</p></>}{error && <p className={error.startsWith('OTP sent') || error.startsWith('SMS is unavailable') ? 'auth-message' : 'error'}>{error}</p>}</section></main>;
 
   if (screen === 'saving') return <main className="page"><div className="saving"><div className="spinner" /><h2>Calculating your score…</h2><p>Saving your place on the board.</p></div></main>;
 
   if (screen === 'spin') return <SpinWheelPage />;
+
+  if (screen === 'winner-admin') return <WinnerAdminPage />;
 
   if (screen === 'leaderboard') return <main className="page results-page"><section className="result-card leaderboard-page"><img className="leaderboard-brand" src="/images/fastrack-telmifast-sticker.png" alt="Fastrack with Telmifast" /><img className="leaderboard-hero" src="/images/live-leaderboard-header.png" alt="Live Leader Board" /><PodiumLeaderboard entries={leaderboard} refreshSeconds={refreshSeconds} />{error && <p className="error">{error}</p>}</section></main>;
 

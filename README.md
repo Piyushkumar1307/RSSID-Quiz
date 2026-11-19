@@ -38,6 +38,12 @@ npm start
 
 The Express service hosts the built app from `dist` and keeps the database credential off the client.
 
+## Scheduled wheel winner
+
+Open `/winner` to temporarily force the spin wheel to show a supplied winner name. The organizer can select 1, 2, or 3 hours, or delete the schedule to return the wheel to random participant selection immediately.
+
+Set a strong server-only `WINNER_ADMIN_KEY` environment variable locally and on the deployed host before opening this page. The page asks for that key and stores it only for the current browser session.
+
 ## Question bank
 
 `server/questions.js` contains the 100 supplied questions and answer key. It is intentionally server-only. To regenerate it after replacing the document:

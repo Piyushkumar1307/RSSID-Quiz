@@ -362,6 +362,14 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; overscroll-beha
 .form-card .primary:disabled, .form-card .secondary:disabled { cursor: not-allowed; opacity: .52; transform: none; }
 .login-again { margin-top: 8px; border-color: #27d6ff; color: #d2f8ff; }
 .verified-returning { margin: 14px 0 0; color: #75f5c9; font-size: .84rem; font-weight: 700; }
+.welcome-error { max-width: 360px; color: #ffb3a1 !important; line-height: 1.45; }
+.welcome-login-again { align-self: flex-start; margin-top: 6px; border-color: #65dfff; color: #d9f9ff; }
+
+.winner-admin-page { background: radial-gradient(circle at 80% 10%, #1b4f8b 0, transparent 31%), radial-gradient(circle at 10% 92%, #9f3b52 0, transparent 30%), #071326; }
+.winner-admin-card { width: min(570px, 100%); padding: clamp(30px, 6vw, 52px); border: 1px solid #25cbed77; border-radius: 22px; background: linear-gradient(145deg, #071d38, #09142b); box-shadow: 0 0 0 1px #f5285955, 0 0 32px #008ee955, 0 26px 70px #000b; color: #effaff; }
+.winner-admin-card h1 { margin: 8px 0 14px; font: 700 clamp(2.35rem, 7vw, 4rem)/1 'Playfair Display', Georgia, serif; letter-spacing: -.045em; }.winner-admin-card h1 em { color: #27d9ff; }.winner-admin-card > p, .winner-admin-intro { color: #bfd3e5; line-height: 1.55; }.winner-admin-card label { color: #d8edff; }.winner-admin-card input[type='password'], .winner-admin-card input[type='text'], .winner-admin-card label > input:not([type]) { color: #eafbff; border-color: #28769e; background: #06162b; }.winner-admin-card input::placeholder { color: #7fa6bf; }
+.winner-admin-card form { display: grid; gap: 16px; margin-top: 20px; }.winner-admin-card form > .primary { justify-self: start; }.winner-admin-card fieldset { display: flex; flex-wrap: wrap; gap: 12px 19px; margin: 0; padding: 13px 15px; border: 1px solid #28769e; border-radius: 10px; }.winner-admin-card legend { padding: 0 6px; color: #96bedc; font-size: .78rem; font-weight: 700; }.winner-admin-card fieldset label { display: flex; align-items: center; gap: 4px; margin: 0; font-size: .88rem; }.winner-admin-card fieldset input { width: auto; accent-color: #28d9ff; }
+.scheduled-winner, .no-scheduled-winner { display: grid; gap: 7px; margin: 19px 0; padding: 17px; border: 1px solid #36dce788; border-radius: 12px; background: #0b5c6333; }.scheduled-winner small { color: #75f5c9; font-size: .67rem; font-weight: 700; letter-spacing: .13em; }.scheduled-winner strong { color: #fff7cb; font: 700 1.8rem/1 'Playfair Display', Georgia, serif; }.scheduled-winner span, .no-scheduled-winner { color: #b9d2e7; font-size: .84rem; }.scheduled-winner .secondary { justify-self: start; margin-top: 5px; border-color: #ff91a8; color: #ffd9e2; }.no-scheduled-winner { border-color: #28769e; background: #09213c; }
 
 /* Credentials need a document flow rather than the kiosk-style scaled canvas.
    This keeps the whole form usable and gives the footer mark its own space. */

@@ -16,11 +16,14 @@ const SESSION_TTL_MS = 10 * 60 * 60 * 1000;
 const OTP_FALLBACK_CODE = process.env.OTP_FALLBACK_CODE || '2345';
 const OTP_FALLBACK_ENABLED = process.env.OTP_ALLOW_FALLBACK !== 'false';
 const SESSION_COOKIE = 'telmifast_quiz_session';
+const WINNER_ADMIN_KEY = process.env.WINNER_ADMIN_KEY;
 const twilioClient = process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN
   ? twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
   : null;
 
-app.use(cors());
+// Support the deployed UI when it and the API use different origins.  The
+// browser must be explicitly allowed to persist and send the login cookie.
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '32kb' }));
 
 const currentWindow = () => {
@@ -70,6 +73,12 @@ async function setupDatabase() {
       created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
     CREATE INDEX IF NOT EXISTS quiz_sessions_phone_idx ON quiz_sessions (phone, expires_at DESC);
+    CREATE TABLE IF NOT EXISTS scheduled_winners (
+      id BOOLEAN PRIMARY KEY DEFAULT TRUE CHECK (id),
+      winner_name VARCHAR(100) NOT NULL,
+      expires_at TIMESTAMPTZ NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
   `);
 }
 
@@ -111,6 +120,13 @@ async function requireSession(req, res, next) {
     req.quizSession = rows[0];
     next();
   } catch (error) { next(error); }
+}
+
+function requireWinnerAdmin(req, res, next) {
+  if (!WINNER_ADMIN_KEY) return res.status(503).json({ message: 'Winner controls are not configured. Set WINNER_ADMIN_KEY on the server.' });
+  const suppliedKey = req.get('x-winner-admin-key') || '';
+  if (!safeEqual(suppliedKey, WINNER_ADMIN_KEY)) return res.status(401).json({ message: 'Enter the organizer key to manage scheduled winners.' });
+  next();
 }
 
 function publicQuestion(question) {
@@ -263,19 +279,63 @@ app.get('/api/leaderboard', async (_req, res, next) => {
   } catch (error) { next(error); }
 });
 
+app.get('/api/winner-schedule', requireWinnerAdmin, async (_req, res, next) => {
+  try {
+    await pool.query('DELETE FROM scheduled_winners WHERE expires_at <= now()');
+    const { rows } = await pool.query('SELECT winner_name AS name, expires_at AS "expiresAt" FROM scheduled_winners WHERE id = TRUE');
+    res.json({ winner: rows[0] || null });
+  } catch (error) { next(error); }
+});
+
+app.post('/api/winner-schedule', requireWinnerAdmin, async (req, res, next) => {
+  try {
+    const name = typeof req.body?.name === 'string' ? req.body.name.trim().replace(/\s+/g, ' ') : '';
+    const durationHours = Number(req.body?.durationHours);
+    if (!name || name.length > 100) return res.status(400).json({ message: 'Enter a winner name (up to 100 characters).' });
+    if (![1, 2, 3].includes(durationHours)) return res.status(400).json({ message: 'Choose a duration of 1, 2, or 3 hours.' });
+    const expiresAt = new Date(Date.now() + durationHours * 60 * 60 * 1000);
+    await pool.query(
+      `INSERT INTO scheduled_winners (id, winner_name, expires_at)
+       VALUES (TRUE, $1, $2)
+       ON CONFLICT (id) DO UPDATE SET winner_name = EXCLUDED.winner_name, expires_at = EXCLUDED.expires_at, created_at = now()`,
+      [name, expiresAt],
+    );
+    res.status(201).json({ winner: { name, expiresAt: expiresAt.toISOString() } });
+  } catch (error) { next(error); }
+});
+
+app.delete('/api/winner-schedule', requireWinnerAdmin, async (_req, res, next) => {
+  try {
+    await pool.query('DELETE FROM scheduled_winners WHERE id = TRUE');
+    res.status(204).end();
+  } catch (error) { next(error); }
+});
+
 app.post('/api/spin-winner', async (_req, res, next) => {
   try {
-    // The database randomizes the eligible unique participant names; the first is the winner.
+    // An active organizer schedule takes precedence. Once it expires (or is
+    // removed), draws return to a random unique quiz participant automatically.
+    await pool.query('DELETE FROM scheduled_winners WHERE expires_at <= now()');
+    const { rows: scheduledRows } = await pool.query('SELECT winner_name FROM scheduled_winners WHERE id = TRUE');
+    const scheduledWinner = scheduledRows[0]?.winner_name;
     const { rows } = await pool.query(
-      `SELECT participant_name AS name
-       FROM quiz_submissions
-       GROUP BY participant_name
-       ORDER BY random()
-       LIMIT 12`,
+      scheduledWinner
+        ? `SELECT participant_name AS name
+           FROM quiz_submissions
+           WHERE lower(participant_name) <> lower($1)
+           GROUP BY participant_name
+           ORDER BY random()
+           LIMIT 11`
+        : `SELECT participant_name AS name
+           FROM quiz_submissions
+           GROUP BY participant_name
+           ORDER BY random()
+           LIMIT 12`,
+      scheduledWinner ? [scheduledWinner] : [],
     );
-    if (!rows.length) return res.status(404).json({ message: 'No quiz participants are available for the wheel yet.' });
-    const candidates = rows.map((row) => row.name);
-    res.json({ candidates, winner: candidates[0], winnerIndex: 0 });
+    if (!scheduledWinner && !rows.length) return res.status(404).json({ message: 'No quiz participants are available for the wheel yet.' });
+    const candidates = scheduledWinner ? [scheduledWinner, ...rows.map((row) => row.name)] : rows.map((row) => row.name);
+    res.json({ candidates, winner: candidates[0], winnerIndex: 0, scheduled: Boolean(scheduledWinner) });
   } catch (error) { next(error); }
 });
 
